@@ -156,7 +156,7 @@ module Game {
             }
         }
 
-        itemTweenComplete(PItem:Item):void 
+        itemTweenComplete(PItem:Food):void 
         {
             PItem.visible = false;
             PItem.y = 0;

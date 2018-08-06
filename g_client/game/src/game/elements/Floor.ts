@@ -16,7 +16,7 @@ module Game {
 
         private _rightBg:Sprite;
 
-        private _itemList:Array<Item>;
+        private _itemList:Array<Food>;
 
         constructor() 
         {
@@ -100,7 +100,7 @@ module Game {
                     item = this._itemList.shift();
                     item.visible = true;
                 } else {
-                    item = Laya.Pool.getItemByClass("item", Item);
+                    item = Laya.Pool.getItemByClass("item", Food);
                 }
                 
                 if (randNum > 0.95 && !specialItem) {
@@ -122,7 +122,7 @@ module Game {
             this._itemList = [].concat(arr);
         }
 
-        getItems():Array<Item> 
+        getItems():Array<Food> 
         {
             return this._itemList;
         }

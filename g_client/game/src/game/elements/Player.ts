@@ -9,49 +9,28 @@ module Game {
      */
     export class Player extends Sprite 
     {   
-        // 蓝条、血条
-        private _mpBar:ProgressBar;
-        private _hpBar:ProgressBar;
+        // 数据
+        public data:Data.PlayerData;
+
+        // 能量条
+        private _powerBar:ProgressBar;
 
         // 动作名
         private _actName:string;
         // 玩家动画
         private _body:Animation;
-        // 跳跃次数
-        private _jumpCount:number;
-        // 最大跳跃次数
-        private _jumpCountMax:number;
 
-        // 下落变量
-        private _vy:number;
-        // 下落速度
-        private _downSpeed:number;
-        // 最大下落变量
-        private _maxVy:number;
-
-        // 残影
-        // private _bodyEffect1:Animation;
-        // private _bodyEffect2:Animation;
-        // 特效
-        // private _spiritEffect:Sprite;
-
-        constructor(hpBar:ProgressBar, mpBar:ProgressBar) 
+        constructor(bar:ProgressBar) 
         {
             super();
-            this._mpBar = hpBar;
-            this._hpBar = mpBar;
+            this._powerBar = bar;
             this._actName = null;
             this._body = null;
-            this._jumpCount = 0;
-            this._jumpCountMax = 2;
-
-            this._vy = 0;
-            this._downSpeed = 2;
-            this._maxVy = 32;
 
             // this._bodyEffect1 = null;
             // this._bodyEffect2 = null;
             // this._spiritEffect = null;
+
             this.width = 96;
             this.height = 96;
 
@@ -69,29 +48,6 @@ module Game {
             }
 
             if (this._body == null) {
-                // let texture = Laya.loader.getRes(Global.Path.PNG_SPIRIT_EFFECT);
-
-                // this._spiritEffect = new Sprite();
-                // this._spiritEffect.pivot(154 * 0.5, 190 * 0.5);
-                // this._spiritEffect.visible = false;
-                // this._spiritEffect.scale(5, 5);
-                // this._spiritEffect.graphics.drawTexture(texture, 0, 0, 154, 190);
-                // this.addChild(this._spiritEffect);
-
-                // this._bodyEffect1 = new Animation();
-                // this._bodyEffect1.alpha = 0.6;
-                // this._bodyEffect1.pivot(80,60);
-                // this._bodyEffect1.interval = 100;
-                // this._bodyEffect1.visible = false;
-                // this.addChild(this._bodyEffect1);
-                
-                // this._bodyEffect2 = new Animation();
-                // this._bodyEffect2.alpha = 0.3;
-                // this._bodyEffect2.pivot(110,60);
-                // this._bodyEffect2.interval = 100;
-                // this._bodyEffect2.visible = false;
-                // this.addChild(this._bodyEffect2);
-
                 this._body = new Animation();
                 this._body.pivot(48,60);
                 this._body.interval = 100;
@@ -99,6 +55,7 @@ module Game {
             }
 
             this.playAction(Global.Const.PLAYER_STATE_RUN);
+
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
@@ -115,13 +72,6 @@ module Game {
 
         onLoop():void 
         {
-            // 玩家开始下落
-            this.y += this._vy;
-            this._vy += this._downSpeed;
-
-            if (this._vy > this._maxVy) {
-                this._vy = this._maxVy;
-            }
 
             // 判定玩家是否死亡
             if (this.y > (Global.Const.GAME_HEIGHT + 100)) {
@@ -149,54 +99,5 @@ module Game {
         {
             this.playAction(Global.Const.PLAYER_STATE_HERT);
         }
-
-        // 二级跳
-        doubleJump():void 
-        {
-            if (this._jumpCount < this._jumpCountMax) {
-                this._vy = -20;
-                this._jumpCount++;
-                this.gotoJump();
-            } else {
-                // this.gotoFly();
-            }
-        }
-
-        // 跳跃结束重置
-        jumpReset():void 
-        {
-            this._vy = 0;
-            this._jumpCount = 0;
-            this.gotoRun();
-        }
-
-        // inEffect():boolean 
-        // {
-        //     return this._bodyEffect1.visible;
-        // }
-
-        // showEffect():void 
-        // {
-        //     Data.isPause = true;
-        //     Data.speed = Global.Const.MAX_SPEED;
-        //     this._spiritEffect.visible = true;
-        //     Laya.Tween.to(this._spiritEffect, {scaleX:0.1, scaleY:0.1, rotation:360}, 1000, null, Laya.Handler.create(this, this.spiritEffectTweenComplete));
-        // }
-
-        // hideEffect():void 
-        // {
-        //     this._bodyEffect1.visible = false;
-        //     this._bodyEffect2.visible = false;
-        //     Data.speed = Global.Const.MIN_SPEED;
-        // }
-
-        // spiritEffectTweenComplete():void 
-        // {
-        //     this._spiritEffect.visible = false;
-        //     this._spiritEffect.scale(5, 5);
-        //     this._bodyEffect1.visible = true;
-        //     this._bodyEffect2.visible = true;
-        //     Data.isPause = false;
-        // }
     }
 }

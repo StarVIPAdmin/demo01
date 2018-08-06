@@ -1,8 +1,10 @@
 module Data {
-    // 移动速度
-    export let speed:number = 8;
-    // 攻击力
-    export let attack:number = 8;
-    // 是否结束
-    export let isOver:boolean = false;
+    // 玩家
+    export let Role:PlayerData;
+
+    // 食物列表
+    export let FoodList:Array<FoodData>;
+
+    // 游戏是否结束
+    export let isGameOver:boolean = false;
 }
