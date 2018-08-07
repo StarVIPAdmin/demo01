@@ -35,7 +35,7 @@ module Game {
 		/** UI界面统一注册函数，游戏UI界面初始化前均要先注册 */
         private initRegisterView():void 
         {
-            viewMgr.registerView(Global.ViewId.GAME_INFO_UI, GameInfoUI);
+            viewMgr.registerView(Global.ViewId.GAME_INFO_UI, GameStartUI);
 			viewMgr.registerView(Global.ViewId.GAME_OVER_UI, GameOverUI);
         }
 	}

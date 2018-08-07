@@ -18,22 +18,10 @@ var Game;
      */
     var Player = /** @class */ (function (_super) {
         __extends(Player, _super);
-        // 残影
-        // private _bodyEffect1:Animation;
-        // private _bodyEffect2:Animation;
-        // 特效
-        // private _spiritEffect:Sprite;
-        function Player(hpBar, mpBar) {
+        function Player() {
             var _this = _super.call(this) || this;
-            _this._mpBar = hpBar;
-            _this._hpBar = mpBar;
             _this._actName = null;
             _this._body = null;
-            _this._jumpCount = 0;
-            _this._jumpCountMax = 2;
-            _this._vy = 0;
-            _this._downSpeed = 2;
-            _this._maxVy = 32;
             // this._bodyEffect1 = null;
             // this._bodyEffect2 = null;
             // this._spiritEffect = null;
@@ -51,25 +39,6 @@ var Game;
                 Animation.createFrames([Global.Path.PNG_PLAYER_CHARA_13, Global.Path.PNG_PLAYER_CHARA_14, Global.Path.PNG_PLAYER_CHARA_15, Global.Path.PNG_PLAYER_CHARA_16], Global.Const.PLAYER_STATE_JUMP);
             }
             if (this._body == null) {
-                // let texture = Laya.loader.getRes(Global.Path.PNG_SPIRIT_EFFECT);
-                // this._spiritEffect = new Sprite();
-                // this._spiritEffect.pivot(154 * 0.5, 190 * 0.5);
-                // this._spiritEffect.visible = false;
-                // this._spiritEffect.scale(5, 5);
-                // this._spiritEffect.graphics.drawTexture(texture, 0, 0, 154, 190);
-                // this.addChild(this._spiritEffect);
-                // this._bodyEffect1 = new Animation();
-                // this._bodyEffect1.alpha = 0.6;
-                // this._bodyEffect1.pivot(80,60);
-                // this._bodyEffect1.interval = 100;
-                // this._bodyEffect1.visible = false;
-                // this.addChild(this._bodyEffect1);
-                // this._bodyEffect2 = new Animation();
-                // this._bodyEffect2.alpha = 0.3;
-                // this._bodyEffect2.pivot(110,60);
-                // this._bodyEffect2.interval = 100;
-                // this._bodyEffect2.visible = false;
-                // this.addChild(this._bodyEffect2);
                 this._body = new Animation();
                 this._body.pivot(48, 60);
                 this._body.interval = 100;
@@ -88,12 +57,6 @@ var Game;
             // this._bodyEffect2.play(0, true, this._actName);
         };
         Player.prototype.onLoop = function () {
-            // 玩家开始下落
-            this.y += this._vy;
-            this._vy += this._downSpeed;
-            if (this._vy > this._maxVy) {
-                this._vy = this._maxVy;
-            }
             // 判定玩家是否死亡
             if (this.y > (Global.Const.GAME_HEIGHT + 100)) {
                 this.event(Global.Const.PLAYER_STATE_DIE, this);
@@ -111,23 +74,6 @@ var Game;
         };
         Player.prototype.gotoHert = function () {
             this.playAction(Global.Const.PLAYER_STATE_HERT);
-        };
-        // 二级跳
-        Player.prototype.doubleJump = function () {
-            if (this._jumpCount < this._jumpCountMax) {
-                this._vy = -20;
-                this._jumpCount++;
-                this.gotoJump();
-            }
-            else {
-                // this.gotoFly();
-            }
-        };
-        // 跳跃结束重置
-        Player.prototype.jumpReset = function () {
-            this._vy = 0;
-            this._jumpCount = 0;
-            this.gotoRun();
         };
         return Player;
     }(Sprite));

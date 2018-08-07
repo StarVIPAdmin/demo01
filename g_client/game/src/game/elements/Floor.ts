@@ -133,8 +133,8 @@ module Game {
          */
         move(Dir:number):void 
         {
-            if (Data.isPause || Data.isOver) return;
-            this.x += Dir * Data.speed * 1.2;
+            if (Data.isGameOver) return;
+            this.x += Dir * 0.2 * 1.2;
 
             if (!this._isOutComplete && (this.x + this.width) < this._maxRight) {
                 this._isOutComplete = true;

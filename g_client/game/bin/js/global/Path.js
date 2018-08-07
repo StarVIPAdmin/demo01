@@ -38,6 +38,9 @@ var Global;
         Path.PNG_PLAYER_CHARA_14 = "player/chara_14.png";
         Path.PNG_PLAYER_CHARA_15 = "player/chara_15.png";
         Path.PNG_PLAYER_CHARA_16 = "player/chara_16.png";
+        // 战斗
+        Path.PNG_COMBAT_MOVE_BG = "res/move_bg.png";
+        Path.PNG_COMBAT_MOVE_ICON = "res/move_icon.png";
         return Path;
     }());
     Global.Path = Path;

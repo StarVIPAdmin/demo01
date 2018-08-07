@@ -39,7 +39,7 @@ var Game;
         };
         /** UI界面统一注册函数，游戏UI界面初始化前均要先注册 */
         Main.prototype.initRegisterView = function () {
-            Game.viewMgr.registerView(Global.ViewId.GAME_INFO_UI, Game.GameInfoUI);
+            Game.viewMgr.registerView(Global.ViewId.GAME_INFO_UI, Game.GameStartUI);
             Game.viewMgr.registerView(Global.ViewId.GAME_OVER_UI, Game.GameOverUI);
         };
         return Main;

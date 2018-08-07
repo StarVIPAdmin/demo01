@@ -87,7 +87,7 @@ var Game;
                     item.visible = true;
                 }
                 else {
-                    item = Laya.Pool.getItemByClass("item", Game.Item);
+                    item = Laya.Pool.getItemByClass("item", Game.Food);
                 }
                 if (randNum > 0.95 && !specialItem) {
                     specialItem = true;
@@ -115,9 +115,9 @@ var Game;
          * @param Dir 方向 1 →移动， -1←移动
          */
         Floor.prototype.move = function (Dir) {
-            if (Data.isPause || Data.isOver)
+            if (Data.isGameOver)
                 return;
-            this.x += Dir * Data.speed * 1.2;
+            this.x += Dir * 0.2 * 1.2;
             if (!this._isOutComplete && (this.x + this.width) < this._maxRight) {
                 this._isOutComplete = true;
                 this.event(Global.Event.FLOOR_OUT_COMPLETE, this);

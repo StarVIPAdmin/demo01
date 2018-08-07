@@ -53,9 +53,6 @@ module Game {
             let len = this._liveFloorList.length;
             for (var i = 0; i < len; i++) {
                 var tar = this._liveFloorList[i];
-                if (tar.) {
-
-                }
             }
         }
 
@@ -67,7 +64,7 @@ module Game {
         moveMap(toRight:boolean):void 
         {
             let dir = toRight ? 1 : -1;
-            this.x += Data.speed * 1.2 * dir;
+            this.x += 0.2 * 1.2 * dir;
         }
     }
 }

@@ -42,5 +42,10 @@ module Global {
         public static readonly PNG_PLAYER_CHARA_14:string = "player/chara_14.png";
         public static readonly PNG_PLAYER_CHARA_15:string = "player/chara_15.png";
         public static readonly PNG_PLAYER_CHARA_16:string = "player/chara_16.png";
+
+
+        // 战斗
+        public static readonly PNG_COMBAT_MOVE_BG:string = "res/move_bg.png";
+        public static readonly PNG_COMBAT_MOVE_ICON:string = "res/move_icon.png";
     }
 }

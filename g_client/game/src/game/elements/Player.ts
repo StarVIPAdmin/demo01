@@ -12,18 +12,14 @@ module Game {
         // 数据
         public data:Data.PlayerData;
 
-        // 能量条
-        private _powerBar:ProgressBar;
-
         // 动作名
         private _actName:string;
         // 玩家动画
         private _body:Animation;
 
-        constructor(bar:ProgressBar) 
+        constructor() 
         {
             super();
-            this._powerBar = bar;
             this._actName = null;
             this._body = null;
 

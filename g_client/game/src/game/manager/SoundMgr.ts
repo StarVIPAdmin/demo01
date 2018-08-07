@@ -1,6 +1,9 @@
 module Game {
     import Sound = Laya.SoundManager;
 
+    /**
+     * 声音管理类
+     */
     export class SoundMgr extends Core.BaseSingleton
     {
         /** 获取单例实例 */

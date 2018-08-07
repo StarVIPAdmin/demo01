@@ -41,17 +41,23 @@ var Game;
             floor.once(Global.Event.FLOOR_OUT_COMPLETE, this, this.getFloor);
             floor.once(Global.Event.FLOOR_OUT_DIE, this, this.delFloor);
             this.addChild(floor);
+            this._liveFloorList.push(floor);
             return floor;
         };
         MapFloor.prototype.delFloor = function (floor) {
             this._dieFloorList.push(floor);
+            // this._liveFloorList.slice(1, 1);
+            var len = this._liveFloorList.length;
+            for (var i = 0; i < len; i++) {
+                var tar = this._liveFloorList[i];
+            }
         };
         MapFloor.prototype.getFloor = function (floor) {
             this.addFloor(2);
         };
         MapFloor.prototype.moveMap = function (toRight) {
             var dir = toRight ? 1 : -1;
-            this.x += Data.speed * 1.2 * dir;
+            this.x += 0.2 * 1.2 * dir;
         };
         return MapFloor;
     }(Sprite));

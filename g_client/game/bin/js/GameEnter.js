@@ -30,6 +30,8 @@ function onCompleteHandler() {
     // resUrl.push({ "url":Global.Path.PNG_BIRD_4, "type":Laya.Loader.IMAGE });
     // resUrl.push({ "url":Global.Path.PNG_EFFECT, "type":Laya.Loader.IMAGE });
     // resUrl.push({ "url":Global.Path.PNG_SPIRIT_EFFECT, "type":Laya.Loader.IMAGE });
+    resUrl.push({ "url": Global.Path.PNG_COMBAT_MOVE_BG, "type": Laya.Loader.IMAGE });
+    resUrl.push({ "url": Global.Path.PNG_COMBAT_MOVE_ICON, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_MP, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_HP, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_BG, "type": Laya.Loader.IMAGE });

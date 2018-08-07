@@ -3,9 +3,9 @@ module Game {
     import Text = Laya.Text;
 
     /**
-     * 游戏介绍类
+     * 游戏开始UI
      */
-    export class GameInfoUI extends Sprite 
+    export class GameStartUI extends Sprite 
     {
         private _bg:Sprite;
         private _txt:Text;
@@ -23,7 +23,7 @@ module Game {
             this._txt = new Text();
             this._txt.fontSize = 20;
             this._txt.color = "#ffffff";
-            this._txt.text = "游戏介绍\n\n点击可控制人物跳跃\n\n（小提示 点两次可触发人物连跳 再连跳后 再次点击可出发人物飞行哦！）\n\n左上角紫色条代表当前飞行的精力 黄色条 代表加速状态\n\n\n好了 点击屏幕开始狂奔之旅吧~~";
+            this._txt.text = "游戏介绍\n\n疯狂的蚂蚁";
             this._txt.width = this.width;
             this._txt.align = "center";
             this._txt.y = 0.5 * (this.height - this._txt.height);
@@ -35,7 +35,7 @@ module Game {
         onMouseDown():void 
         {
             viewMgr.hideView(Global.ViewId.GAME_INFO_UI);
-            Data.isPause = false;
+            Data.isGameOver = false;
         }
     }
 }

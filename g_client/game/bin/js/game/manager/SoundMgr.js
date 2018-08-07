@@ -11,6 +11,9 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sound = Laya.SoundManager;
+    /**
+     * 声音管理类
+     */
     var SoundMgr = /** @class */ (function (_super) {
         __extends(SoundMgr, _super);
         function SoundMgr() {
