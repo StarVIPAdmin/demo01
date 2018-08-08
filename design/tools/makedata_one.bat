@@ -1,0 +1,1 @@
+goexcel.exe -src ../配置表/ -dst ./导出数值/ -olf %1
