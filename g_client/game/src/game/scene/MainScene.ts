@@ -54,8 +54,10 @@ module Game {
 
         initEvent():void 
         {
-            Laya.stage.on(Laya.Event.KEY_DOWN, this, this.onKeyDown);
-            Laya.stage.on(Laya.Event.KEY_UP, this, this.onKeyUp);
+            Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);
+            Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
+            Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
+            Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         }
 
         onKeyDown(Evt:Event):void 
@@ -135,13 +137,24 @@ module Game {
             PItem.scale(1, 1);
         }
 
-        onMouseDown():void 
+        onMouseDown(evt:Event):void 
         {
+            this._mainUI.onMouseDown(evt);
         }
 
-        onMouseUp():void 
+        onMouseUp(evt:Event):void 
         {
-            this._player.gotoJump();
+            this._mainUI.onMouseUp(evt);
+        }
+
+        onMouseMove(evt:Event):void
+        {
+            this._mainUI.onMouseMove(evt);
+        }
+
+        onMouseOut(evt:Event):void 
+        {
+            // this._mainUI.onMouseUp(evt);
         }
 
         playerDie():void 

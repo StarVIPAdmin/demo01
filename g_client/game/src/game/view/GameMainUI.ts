@@ -9,7 +9,7 @@ module Game {
     export class GameMainUI extends Sprite 
     {
         // 摇杆半径
-        private readonly radius:number = 500;
+        private readonly radius:number = 80;
 
         // 体力条
         private _powerBar:ProgressBar;
@@ -24,14 +24,21 @@ module Game {
         private _moveBG:Sprite;
         private _moveIcon:Sprite;
 
+        private _canMove:boolean;
+
         constructor() 
         {
             super();
-            this.init();
-            this.initEvent();
+            this.initData();
+            this.initUI();
         }
 
-        init():void 
+        initData():void
+        {
+            this._canMove = false;
+        }
+
+        initUI():void 
         {
             this._powerBar = new ProgressBar(Global.Const.BAR_TYPE_MP);
             this._powerBar.pos(10, 7);
@@ -69,13 +76,6 @@ module Game {
             let dragRegion = new Laya.Rectangle();
         }
 
-        initEvent():void 
-        {
-            this._moveBG.on(Event.MOUSE_UP, this, this.onMouseUp);
-            this._moveBG.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this._moveBG.on(Event.MOUSE_MOVE, this, this.onMouseMove);
-        }
-
         // 刷新得分
         refreshScoreTxt(Value:number):void 
         {
@@ -96,21 +96,28 @@ module Game {
 
         onMouseUp(evt:Event):void 
         {
+            this._canMove = false;
             this._moveBG.alpha = 1;
             this.setMoveIconPos(111, 111);
         }
 
         onMouseDown(evt:Event):void 
         {
-            this._moveBG.alpha = 0.6;
-            // this._moveIcon.startDrag(, false, 0);
-            this.checkMoveIconPos();
+            let mouseX = Laya.stage.mouseX;
+            let mouseY = Laya.stage.mouseY;
+            this._canMove = this._moveBG.hitTestPoint(mouseX, mouseY);
+
+            if (this._canMove) {
+                this._moveBG.alpha = 0.6;
+                this.checkMoveIconPos();
+            }
         }
 
         onMouseMove(evt:Event):void 
         {
-            // console.log("00---->", Laya.stage.mouseX);
-            // console.log("00---->", Laya.stage.mouseY);
+            if (this._canMove) {
+                this.checkMoveIconPos();
+            }
         }
 
         checkMoveIconPos():void 
@@ -131,7 +138,7 @@ module Game {
                 let targetPosy = this.radius * deltaPosy / distance + 111;
                 this.setMoveIconPos(targetPosx, targetPosy);
             } else {
-                this.setMoveIconPos(touchPosx - initPosx, touchPosy - initPosy);
+                this.setMoveIconPos(touchPosx - this._moveBG.x, touchPosy - this._moveBG.y);
             }
         }
 

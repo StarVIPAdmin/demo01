@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Point = Laya.Point;
+    var Event = Laya.Event;
     /**
      * 游戏主场景
      */
@@ -45,8 +46,10 @@ var Game;
             // Laya.timer.frameLoop(1, this, this.onLoop);
         };
         MainScene.prototype.initEvent = function () {
-            Laya.stage.on(Laya.Event.KEY_DOWN, this, this.onKeyDown);
-            Laya.stage.on(Laya.Event.KEY_UP, this, this.onKeyUp);
+            Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);
+            Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
+            Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
+            Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
         MainScene.prototype.onKeyDown = function (Evt) {
             var keyCode = Evt.keyCode;
@@ -111,10 +114,17 @@ var Game;
             PItem.alpha = 1;
             PItem.scale(1, 1);
         };
-        MainScene.prototype.onMouseDown = function () {
+        MainScene.prototype.onMouseDown = function (evt) {
+            this._mainUI.onMouseDown(evt);
         };
-        MainScene.prototype.onMouseUp = function () {
-            this._player.gotoJump();
+        MainScene.prototype.onMouseUp = function (evt) {
+            this._mainUI.onMouseUp(evt);
+        };
+        MainScene.prototype.onMouseMove = function (evt) {
+            this._mainUI.onMouseMove(evt);
+        };
+        MainScene.prototype.onMouseOut = function (evt) {
+            // this._mainUI.onMouseUp(evt);
         };
         MainScene.prototype.playerDie = function () {
             Data.isGameOver = true;

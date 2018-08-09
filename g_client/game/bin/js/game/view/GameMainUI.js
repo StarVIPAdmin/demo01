@@ -11,7 +11,6 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
-    var Event = Laya.Event;
     /**
      * 游戏主UI
      */
@@ -20,12 +19,15 @@ var Game;
         function GameMainUI() {
             var _this = _super.call(this) || this;
             // 摇杆半径
-            _this.radius = 500;
-            _this.init();
-            _this.initEvent();
+            _this.radius = 80;
+            _this.initData();
+            _this.initUI();
             return _this;
         }
-        GameMainUI.prototype.init = function () {
+        GameMainUI.prototype.initData = function () {
+            this._canMove = false;
+        };
+        GameMainUI.prototype.initUI = function () {
             this._powerBar = new Game.ProgressBar(Global.Const.BAR_TYPE_MP);
             this._powerBar.pos(10, 7);
             this.addChild(this._powerBar);
@@ -54,11 +56,6 @@ var Game;
             this.refreshScoreTxt(0);
             var dragRegion = new Laya.Rectangle();
         };
-        GameMainUI.prototype.initEvent = function () {
-            this._moveBG.on(Event.MOUSE_UP, this, this.onMouseUp);
-            this._moveBG.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this._moveBG.on(Event.MOUSE_MOVE, this, this.onMouseMove);
-        };
         // 刷新得分
         GameMainUI.prototype.refreshScoreTxt = function (Value) {
             this._score.text = "得分：" + Value;
@@ -72,17 +69,23 @@ var Game;
             this._speed.text = "速度：" + Value;
         };
         GameMainUI.prototype.onMouseUp = function (evt) {
+            this._canMove = false;
             this._moveBG.alpha = 1;
             this.setMoveIconPos(111, 111);
         };
         GameMainUI.prototype.onMouseDown = function (evt) {
-            this._moveBG.alpha = 0.6;
-            // this._moveIcon.startDrag(, false, 0);
-            this.checkMoveIconPos();
+            var mouseX = Laya.stage.mouseX;
+            var mouseY = Laya.stage.mouseY;
+            this._canMove = this._moveBG.hitTestPoint(mouseX, mouseY);
+            if (this._canMove) {
+                this._moveBG.alpha = 0.6;
+                this.checkMoveIconPos();
+            }
         };
         GameMainUI.prototype.onMouseMove = function (evt) {
-            // console.log("00---->", Laya.stage.mouseX);
-            // console.log("00---->", Laya.stage.mouseY);
+            if (this._canMove) {
+                this.checkMoveIconPos();
+            }
         };
         GameMainUI.prototype.checkMoveIconPos = function () {
             var initPosx = this._moveBG.x + 111;
@@ -98,7 +101,7 @@ var Game;
                 this.setMoveIconPos(targetPosx, targetPosy);
             }
             else {
-                this.setMoveIconPos(touchPosx - initPosx, touchPosy - initPosy);
+                this.setMoveIconPos(touchPosx - this._moveBG.x, touchPosy - this._moveBG.y);
             }
         };
         GameMainUI.prototype.setMoveIconPos = function (PosX, PosY) {
