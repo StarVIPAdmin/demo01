@@ -46,15 +46,6 @@ var Core;
         LayerMgr.prototype.addChildToGuide = function (Child, PosX, PosY) {
             this.addChildToLayer(3 /* Guide */, Child, PosX, PosY);
         };
-        LayerMgr.prototype.initLayerNode = function () {
-            var _this = this;
-            var node;
-            this._layerIdx.forEach(function (element) {
-                node = new Sprite();
-                Laya.stage.addChildAt(node, element);
-                _this._layerNode[element] = node;
-            });
-        };
         /** 添加显示对象到对应的层级 */
         LayerMgr.prototype.addChildToLayer = function (LayerIdx, Child, PosX, PosY) {
             if (!Child) {
@@ -70,6 +61,27 @@ var Core;
             Child.x = PosX || 0;
             Child.y = PosY || 0;
             layer.addChild(Child);
+        };
+        /** 检测是否存在该层级 */
+        LayerMgr.prototype.checkUILayer = function (UILayer) {
+            if (!UILayer)
+                return false;
+            if (UILayer == 0 /* Scene */ ||
+                UILayer == 1 /* Dialog */ ||
+                UILayer == 3 /* Guide */ ||
+                UILayer == 2 /* Tip */) {
+                return true;
+            }
+            return false;
+        };
+        LayerMgr.prototype.initLayerNode = function () {
+            var _this = this;
+            var node;
+            this._layerIdx.forEach(function (element) {
+                node = new Sprite();
+                Laya.stage.addChildAt(node, element);
+                _this._layerNode[element] = node;
+            });
         };
         return LayerMgr;
     }(Core.BaseSingleton));

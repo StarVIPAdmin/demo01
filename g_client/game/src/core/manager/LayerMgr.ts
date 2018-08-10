@@ -4,7 +4,7 @@ module Core {
     /** 
      * 游戏层级
      */
-    const enum UI_LAYER 
+    export const enum UI_LAYER 
     {
         Scene = 0,
         Dialog = 1,
@@ -58,18 +58,8 @@ module Core {
             this.addChildToLayer(UI_LAYER.Guide, Child, PosX, PosY);
         }
 
-        private initLayerNode():void 
-        {
-            let node:Sprite;
-            this._layerIdx.forEach(element => {
-                node = new Sprite();
-                Laya.stage.addChildAt(node, element);
-                this._layerNode[element] = node;
-            });
-        }
-
         /** 添加显示对象到对应的层级 */
-        private addChildToLayer(LayerIdx:number, Child:Sprite, PosX:number, PosY:number):void 
+        addChildToLayer(LayerIdx:number, Child:Sprite, PosX:number, PosY:number):void 
         {
             if (!Child) {
                 console.log("[LayerMgr] addChildToLayer : Child is null");
@@ -84,6 +74,30 @@ module Core {
             Child.x = PosX || 0;
             Child.y = PosY || 0;
             layer.addChild(Child);
+        }
+
+        /** 检测是否存在该层级 */
+        checkUILayer(UILayer:number):boolean
+        {
+            if (!UILayer) 
+                return false;
+            if (UILayer == UI_LAYER.Scene || 
+                UILayer == UI_LAYER.Dialog ||
+                UILayer == UI_LAYER.Guide ||
+                UILayer == UI_LAYER.Tip) {
+                return true;
+            }
+            return false;
+        }
+
+        private initLayerNode():void 
+        {
+            let node:Sprite;
+            this._layerIdx.forEach(element => {
+                node = new Sprite();
+                Laya.stage.addChildAt(node, element);
+                this._layerNode[element] = node;
+            });
         }
     }
 }

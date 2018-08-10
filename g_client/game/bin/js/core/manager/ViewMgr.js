@@ -25,6 +25,7 @@ var Core;
         ViewMgr.prototype.onCreate = function () {
             this._viewCls = [];
             this._uiViews = [];
+            this._uiLayers = [];
         };
         ViewMgr.prototype.onDestroy = function () {
         };
@@ -46,7 +47,8 @@ var Core;
             if (view["onShow"]) {
                 view["onShow"](Param);
             }
-            Core.LayerMgr.getInstance().addChildToDialog(view);
+            var uiLayer = this._uiLayers[ViewId];
+            Core.LayerMgr.getInstance().addChildToLayer(uiLayer, view, 0, 0);
             return view;
         };
         /** 根据界面唯一ID，隐藏ui界面 */
@@ -84,16 +86,25 @@ var Core;
             return view != null;
         };
         /** 注册UI界面 */
-        ViewMgr.prototype.registerView = function (ViewId, ViewCls) {
+        ViewMgr.prototype.registerView = function (ViewId, ViewCls, UILayer) {
+            if (UILayer === void 0) { UILayer = 1 /* Dialog */; }
+            // 检测参数是否为空
             if (!ViewId || !ViewCls) {
                 console.log("[ViewMgr] registerView : ViewId or ViewCls is null", ViewId, ViewCls);
                 return;
             }
+            // 检测是否重复注册
             if (this._viewCls[ViewId] != null) {
                 console.log("[ViewMgr] registerView : ViewCls is exist, ViewId = ", ViewId);
                 return;
             }
+            // 检测ui层级是否存在
+            if (!Core.LayerMgr.getInstance().checkUILayer(UILayer)) {
+                console.log("[ViewMgr] registerView : UILayer is not exist, ViewId = ", ViewId);
+                return;
+            }
             this._viewCls[ViewId] = ViewCls;
+            this._uiLayers[ViewId] = UILayer;
         };
         return ViewMgr;
     }(Core.BaseSingleton));

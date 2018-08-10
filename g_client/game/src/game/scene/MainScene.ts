@@ -4,6 +4,8 @@ module Game {
     import Point = Laya.Point;
     import Event = Laya.Event;
 
+    import MainScneneData = Data.MainSceneData;
+
     /**
      * 游戏主场景
      */
@@ -12,27 +14,27 @@ module Game {
         private _mainUI:GameMainUI;
         private _mapFloor:MapFloor;
         private _player:Player;
-        // private _scoreTxt:Text;
-        private _score:number;
-        private _itemPoint:Point;
-        private _npcTime:number;
 
+        /** 重写父类函数 */
         onInit():void 
         {
             super.onInit();
-            this.sceneId = Global.SceneId.MAIN_SCENE;
-            this._mainUI = null;
+            this.sceneData.sceneId = Global.SceneId.MAIN_SCENE;
             this._mapFloor = null;
-            this._score = 0;
-            this._itemPoint = new Point();
+            this._mainUI = null;
+            this._player = null;
 
             this.initUI();
             this.initEvent();
         }
 
+        /** 重写父类函数 */
         onShow():void 
         {
             super.onShow();
+
+            // 场景定时器
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         initUI():void 
@@ -44,12 +46,9 @@ module Game {
             this.addChild(this._mainUI);
 
             this._player = new Player();
-            this._player.pos(0, 0);
+            this._player.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
             this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
             this.addChild(this._player);
-
-            // this._npcTime = new Date().getTime();
-            // Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         initEvent():void 
@@ -60,36 +59,8 @@ module Game {
             Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         }
 
-        onKeyDown(Evt:Event):void 
+        onLoop():void 
         {
-            let keyCode:number = Evt.keyCode;
-
-            switch (keyCode) {
-                case 65:    // A
-                    this._mapFloor.moveMap(true);
-                    break;
-                case 68:    // D
-                    this._mapFloor.moveMap(false);
-                    break;
-                case 83:    // S
-                    // this._bgUI.move();
-                    break;
-                case 87:    // W
-                    // this._bgUI.move();
-                    this._player.gotoJump();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        onKeyUp(Evt:Event):void 
-        {
-
-        }
-
-        // onLoop():void 
-        // {
         //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
         //         let floor = this._mapFloor.getChildAt(i) as Floor;
         //         if (floor.checkHit(this._player.x, this._player.y)) {
@@ -127,7 +98,7 @@ module Game {
         //         let npc = Laya.Pool.getItemByClass("npc", Npc);
         //         this.addChild(npc);
         //     }
-        // }
+        }
 
         itemTweenComplete(PItem:Food):void 
         {

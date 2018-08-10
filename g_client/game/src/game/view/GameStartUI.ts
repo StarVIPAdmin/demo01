@@ -8,7 +8,7 @@ module Game {
     export class GameStartUI extends Sprite 
     {
         private _bg:Sprite;
-        private _txt:Text;
+        private _descTxt:Text;
 
         onInit():void 
 		{
@@ -20,14 +20,14 @@ module Game {
             this._bg.graphics.drawRect(0, 0, this.width, this.height, "#000000");
             this.addChild(this._bg);
 
-            this._txt = new Text();
-            this._txt.fontSize = 20;
-            this._txt.color = "#ffffff";
-            this._txt.text = "游戏介绍\n\n疯狂的蚂蚁";
-            this._txt.width = this.width;
-            this._txt.align = "center";
-            this._txt.y = 0.5 * (this.height - this._txt.height);
-            this.addChild(this._txt);
+            this._descTxt = new Text();
+            this._descTxt.fontSize = 20;
+            this._descTxt.color = "#ffffff";
+            this._descTxt.text = "游戏介绍\n\n疯狂的蚂蚁";
+            this._descTxt.width = this.width;
+            this._descTxt.align = "center";
+            this._descTxt.y = 0.5 * (this.height - this._descTxt.height);
+            this.addChild(this._descTxt);
 
             this.once(Laya.Event.MOUSE_DOWN, this, this.onMouseDown);
 		}

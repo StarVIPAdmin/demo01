@@ -16,11 +16,14 @@ module Core {
         private _viewCls:Array<any>;
         // 缓存游戏已打开的ui界面
         private _uiViews:Array<Sprite>;
+        // 缓存界面对应的层级
+        private _uiLayers:Array<number>;
 
         protected onCreate():void 
         {
             this._viewCls = [];
             this._uiViews = [];
+            this._uiLayers = [];
         }
 
         protected onDestroy():void
@@ -49,7 +52,8 @@ module Core {
             if (view["onShow"]) {
                 view["onShow"](Param);
             }
-            LayerMgr.getInstance().addChildToDialog(view);
+            let uiLayer = this._uiLayers[ViewId];
+            LayerMgr.getInstance().addChildToLayer(uiLayer, view, 0, 0);
             return view;
         }
         
@@ -97,17 +101,25 @@ module Core {
         }
 
         /** 注册UI界面 */
-        registerView(ViewId:number, ViewCls:any):void 
+        registerView(ViewId:number, ViewCls:any, UILayer:number=UI_LAYER.Dialog):void 
         {
+            // 检测参数是否为空
             if (!ViewId || !ViewCls) {
                 console.log("[ViewMgr] registerView : ViewId or ViewCls is null", ViewId, ViewCls);
                 return;
             }
+            // 检测是否重复注册
             if (this._viewCls[ViewId] != null) {
                 console.log("[ViewMgr] registerView : ViewCls is exist, ViewId = ", ViewId);
                 return;
             }
+            // 检测ui层级是否存在
+            if (!LayerMgr.getInstance().checkUILayer(UILayer)) {
+                console.log("[ViewMgr] registerView : UILayer is not exist, ViewId = ", ViewId);
+                return;
+            }
             this._viewCls[ViewId] = ViewCls;
+            this._uiLayers[ViewId] = UILayer;
         }
     }
 }

@@ -32,6 +32,8 @@ var Game;
         };
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
+            // 场景定时器
+            Laya.timer.frameLoop(1, this, this.onLoop);
         };
         MainScene.prototype.initUI = function () {
             this._mapFloor = new Game.MapFloor();
@@ -39,11 +41,9 @@ var Game;
             this._mainUI = new Game.GameMainUI();
             this.addChild(this._mainUI);
             this._player = new Game.Player();
-            this._player.pos(0, 0);
+            this._player.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
             this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
             this.addChild(this._player);
-            // this._npcTime = new Date().getTime();
-            // Laya.timer.frameLoop(1, this, this.onLoop);
         };
         MainScene.prototype.initEvent = function () {
             Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);
@@ -51,63 +51,40 @@ var Game;
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
-        MainScene.prototype.onKeyDown = function (Evt) {
-            var keyCode = Evt.keyCode;
-            switch (keyCode) {
-                case 65: // A
-                    this._mapFloor.moveMap(true);
-                    break;
-                case 68: // D
-                    this._mapFloor.moveMap(false);
-                    break;
-                case 83: // S
-                    // this._bgUI.move();
-                    break;
-                case 87: // W
-                    // this._bgUI.move();
-                    this._player.gotoJump();
-                    break;
-                default:
-                    break;
-            }
+        MainScene.prototype.onLoop = function () {
+            //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
+            //         let floor = this._mapFloor.getChildAt(i) as Floor;
+            //         if (floor.checkHit(this._player.x, this._player.y)) {
+            //             let itemList = floor.getItems();
+            //             for (var j = 0; j < itemList.length; j++) {
+            //                 let item = itemList[j];
+            //                 if (item.visible) {
+            //                     this._itemPoint.x = item.x + floor.x + this._player.width;
+            //                     this._itemPoint.y = item.y + floor.y + this._player.height;
+            //                     if (this._player.hitTestPoint(this._itemPoint.x, this._itemPoint.y)) {
+            //                         if (item.type == Global.Const.ITEM_TYPE_SPEED) {
+            //                             item.visible = false;
+            //                             // this._player.showEffect();
+            //                         } else if (item.type == Global.Const.ITEM_TYPE_FLY) {
+            //                             item.visible = false;
+            //                             this._flyBar.changeValue(100);
+            //                         } else {
+            //                             Laya.Tween.to(item, {y:-10, scaleX:0.1, alpha:0}, 300, null, Laya.Handler.create(this, this.itemTweenComplete, [item]));
+            //                             this.updateScore();
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //             this._player.y = floor.y;
+            //         }
+            //     }
+            //     let leftTime = new Date().getTime() - this._npcTime;
+            //     if (leftTime > 1500) {
+            //         this._npcTime = new Date().getTime();
+            //         let npc = Laya.Pool.getItemByClass("npc", Npc);
+            //         this.addChild(npc);
+            //     }
         };
-        MainScene.prototype.onKeyUp = function (Evt) {
-        };
-        // onLoop():void 
-        // {
-        //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
-        //         let floor = this._mapFloor.getChildAt(i) as Floor;
-        //         if (floor.checkHit(this._player.x, this._player.y)) {
-        //             let itemList = floor.getItems();
-        //             for (var j = 0; j < itemList.length; j++) {
-        //                 let item = itemList[j];
-        //                 if (item.visible) {
-        //                     this._itemPoint.x = item.x + floor.x + this._player.width;
-        //                     this._itemPoint.y = item.y + floor.y + this._player.height;
-        //                     if (this._player.hitTestPoint(this._itemPoint.x, this._itemPoint.y)) {
-        //                         if (item.type == Global.Const.ITEM_TYPE_SPEED) {
-        //                             item.visible = false;
-        //                             // this._player.showEffect();
-        //                         } else if (item.type == Global.Const.ITEM_TYPE_FLY) {
-        //                             item.visible = false;
-        //                             this._flyBar.changeValue(100);
-        //                         } else {
-        //                             Laya.Tween.to(item, {y:-10, scaleX:0.1, alpha:0}, 300, null, Laya.Handler.create(this, this.itemTweenComplete, [item]));
-        //                             this.updateScore();
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //             this._player.y = floor.y;
-        //         }
-        //     }
-        //     let leftTime = new Date().getTime() - this._npcTime;
-        //     if (leftTime > 1500) {
-        //         this._npcTime = new Date().getTime();
-        //         let npc = Laya.Pool.getItemByClass("npc", Npc);
-        //         this.addChild(npc);
-        //     }
-        // }
         MainScene.prototype.itemTweenComplete = function (PItem) {
             PItem.visible = false;
             PItem.y = 0;

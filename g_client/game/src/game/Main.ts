@@ -13,14 +13,15 @@ module Game {
 		// 执行
 		run():void 
 		{
-			this.init();
-			
+			this.initRegister();
+			Data.init();
+
 			// 进入主场景
 			sceneMgr.enterScene(Global.SceneId.MAIN_SCENE);
 			viewMgr.showView(Global.ViewId.GAME_INFO_UI);
 		}
 
-		private init():void 
+		private initRegister():void 
 		{
 			this.initRegisterScene();
 			this.initRegisterView();

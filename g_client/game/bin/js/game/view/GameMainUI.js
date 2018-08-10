@@ -18,24 +18,38 @@ var Game;
         __extends(GameMainUI, _super);
         function GameMainUI() {
             var _this = _super.call(this) || this;
-            // 摇杆半径
-            _this.radius = 80;
+            // 摇杆半径/长/宽
+            _this.MOVE_BG_RADIUS = 80;
+            _this.MOVE_BG_WIDTH = 222;
+            _this.MOVE_BG_HEIGHT = 222;
+            _this.MOVE_ICON_WIDTH = 95;
+            _this.MOVE_ICON_HEIGHT = 95;
             _this.initData();
             _this.initUI();
             return _this;
         }
         GameMainUI.prototype.initData = function () {
+            this._powerBar = null;
+            this._attack = null;
+            this._speed = null;
+            this._score = null;
+            this._moveBG = null;
+            this._moveIcon = null;
             this._canMove = false;
+            this._halfMoveBGWidth = this.MOVE_BG_WIDTH * 0.5;
+            this._halfMoveBGHeight = this.MOVE_BG_HEIGHT * 0.5;
+            this._halfMoveIconWidth = this.MOVE_ICON_WIDTH * 0.5;
+            this._halfMoveIconHeight = this.MOVE_ICON_HEIGHT * 0.5;
         };
         GameMainUI.prototype.initUI = function () {
             this._powerBar = new Game.ProgressBar(Global.Const.BAR_TYPE_MP);
             this._powerBar.pos(10, 7);
             this.addChild(this._powerBar);
             this._attack = Game.ResMgr.getInstance().createText();
-            this._attack.pos(10, 27);
+            this._attack.pos(10, 37);
             this.addChild(this._attack);
             this._speed = Game.ResMgr.getInstance().createText();
-            this._speed.pos(10, 47);
+            this._speed.pos(80, 37);
             this.addChild(this._speed);
             this._score = Game.ResMgr.getInstance().createText();
             this._score.align = "right";
@@ -44,17 +58,16 @@ var Game;
             this._moveBG = new Sprite();
             this._moveBG.graphics.clear();
             this.addChild(this._moveBG);
-            this._moveBG.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_BG), 0, 0, 222, 222);
-            this._moveBG.size(222, 222).pos(30, Global.Const.GAME_HEIGHT - 30 - 222);
+            this._moveBG.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_BG), 0, 0, this.MOVE_BG_WIDTH, this.MOVE_BG_HEIGHT);
+            this._moveBG.size(this.MOVE_BG_WIDTH, this.MOVE_BG_HEIGHT).pos(30, Global.Const.GAME_HEIGHT - this.MOVE_BG_HEIGHT - 30);
             this._moveIcon = new Sprite();
             this._moveIcon.graphics.clear();
             this._moveBG.addChild(this._moveIcon);
-            this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON), 0, 0, 95, 95);
-            this.setMoveIconPos(111, 111);
+            this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON), 0, 0, this.MOVE_ICON_WIDTH, this.MOVE_ICON_HEIGHT);
+            this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
             this.refreshAttackTxt(0);
             this.refreshSpeedTxt(0);
             this.refreshScoreTxt(0);
-            var dragRegion = new Laya.Rectangle();
         };
         // 刷新得分
         GameMainUI.prototype.refreshScoreTxt = function (Value) {
@@ -71,7 +84,7 @@ var Game;
         GameMainUI.prototype.onMouseUp = function (evt) {
             this._canMove = false;
             this._moveBG.alpha = 1;
-            this.setMoveIconPos(111, 111);
+            this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
         };
         GameMainUI.prototype.onMouseDown = function (evt) {
             var mouseX = Laya.stage.mouseX;
@@ -79,33 +92,35 @@ var Game;
             this._canMove = this._moveBG.hitTestPoint(mouseX, mouseY);
             if (this._canMove) {
                 this._moveBG.alpha = 0.6;
-                this.checkMoveIconPos();
+                this.refreshMoveIconPos();
             }
         };
         GameMainUI.prototype.onMouseMove = function (evt) {
             if (this._canMove) {
-                this.checkMoveIconPos();
+                this.refreshMoveIconPos();
             }
         };
-        GameMainUI.prototype.checkMoveIconPos = function () {
-            var initPosx = this._moveBG.x + 111;
-            var initPosy = this._moveBG.y + 111;
+        // 更新摇杆坐标
+        GameMainUI.prototype.refreshMoveIconPos = function () {
+            var initPosx = this._moveBG.x + this._halfMoveBGWidth;
+            var initPosy = this._moveBG.y + this._halfMoveBGHeight;
             var touchPosx = Laya.stage.mouseX;
             var touchPosy = Laya.stage.mouseY;
             var deltaPosx = touchPosx - initPosx;
             var deltaPosy = touchPosy - initPosy;
             var distance = Math.sqrt(deltaPosx * deltaPosx + deltaPosy * deltaPosy);
-            if (distance > this.radius) {
-                var targetPosx = this.radius * deltaPosx / distance + 111;
-                var targetPosy = this.radius * deltaPosy / distance + 111;
+            if (distance > this.MOVE_BG_RADIUS) {
+                var targetPosx = this.MOVE_BG_RADIUS * deltaPosx / distance + this._halfMoveBGWidth;
+                var targetPosy = this.MOVE_BG_RADIUS * deltaPosy / distance + this._halfMoveBGHeight;
                 this.setMoveIconPos(targetPosx, targetPosy);
             }
             else {
                 this.setMoveIconPos(touchPosx - this._moveBG.x, touchPosy - this._moveBG.y);
             }
         };
+        // 设置摇杆坐标
         GameMainUI.prototype.setMoveIconPos = function (PosX, PosY) {
-            this._moveIcon.pos(PosX - 47, PosY - 47);
+            this._moveIcon.pos(PosX - this._halfMoveIconWidth, PosY - this._halfMoveIconHeight);
         };
         return GameMainUI;
     }(Sprite));

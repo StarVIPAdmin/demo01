@@ -4,8 +4,8 @@ var Global;
         function Const() {
         }
         // 游戏宽高
-        Const.GAME_WIDTH = 852;
-        Const.GAME_HEIGHT = 480;
+        Const.GAME_WIDTH = 1024;
+        Const.GAME_HEIGHT = 768;
         // 游戏最大/最小速度
         Const.MIN_SPEED = 8;
         Const.MAX_SPEED = 12;

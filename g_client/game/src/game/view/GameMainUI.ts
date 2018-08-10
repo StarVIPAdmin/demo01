@@ -8,8 +8,12 @@ module Game {
      */
     export class GameMainUI extends Sprite 
     {
-        // 摇杆半径
-        private readonly radius:number = 80;
+        // 摇杆半径/长/宽
+        private readonly MOVE_BG_RADIUS:number = 80;
+        private readonly MOVE_BG_WIDTH:number = 222;
+        private readonly MOVE_BG_HEIGHT:number = 222;
+        private readonly MOVE_ICON_WIDTH:number = 95;
+        private readonly MOVE_ICON_HEIGHT:number = 95;
 
         // 体力条
         private _powerBar:ProgressBar;
@@ -24,7 +28,14 @@ module Game {
         private _moveBG:Sprite;
         private _moveIcon:Sprite;
 
+        // 是否可以移动摇杆
         private _canMove:boolean;
+
+        // 摇杆尺寸的一半
+        private _halfMoveBGWidth:number;
+        private _halfMoveBGHeight:number;
+        private _halfMoveIconWidth:number;
+        private _halfMoveIconHeight:number;
 
         constructor() 
         {
@@ -35,7 +46,17 @@ module Game {
 
         initData():void
         {
+            this._powerBar = null;
+            this._attack = null;
+            this._speed = null;
+            this._score = null;
+            this._moveBG = null;
+            this._moveIcon = null;
             this._canMove = false;
+            this._halfMoveBGWidth = this.MOVE_BG_WIDTH * 0.5;
+            this._halfMoveBGHeight = this.MOVE_BG_HEIGHT * 0.5;
+            this._halfMoveIconWidth = this.MOVE_ICON_WIDTH * 0.5;
+            this._halfMoveIconHeight = this.MOVE_ICON_HEIGHT * 0.5;
         }
 
         initUI():void 
@@ -45,11 +66,11 @@ module Game {
             this.addChild(this._powerBar);
 
             this._attack = ResMgr.getInstance().createText();
-            this._attack.pos(10, 27);
+            this._attack.pos(10, 37);
             this.addChild(this._attack);
 
             this._speed = ResMgr.getInstance().createText();
-            this._speed.pos(10, 47);
+            this._speed.pos(110, 37);
             this.addChild(this._speed);
 
             this._score = ResMgr.getInstance().createText();
@@ -60,20 +81,18 @@ module Game {
             this._moveBG = new Sprite();
             this._moveBG.graphics.clear();
             this.addChild(this._moveBG);
-            this._moveBG.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_BG),0,0,222,222);
-            this._moveBG.size(222, 222).pos(30, Global.Const.GAME_HEIGHT - 30 - 222);
+            this._moveBG.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_BG),0,0,this.MOVE_BG_WIDTH,this.MOVE_BG_HEIGHT);
+            this._moveBG.size(this.MOVE_BG_WIDTH,this.MOVE_BG_HEIGHT).pos(30,Global.Const.GAME_HEIGHT-this.MOVE_BG_HEIGHT-30);
 
             this._moveIcon = new Sprite();
             this._moveIcon.graphics.clear();
             this._moveBG.addChild(this._moveIcon);
-            this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON),0,0,95,95);
-            this.setMoveIconPos(111, 111);
+            this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON),0,0,this.MOVE_ICON_WIDTH,this.MOVE_ICON_HEIGHT);
+            this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
 
             this.refreshAttackTxt(0);
             this.refreshSpeedTxt(0);
             this.refreshScoreTxt(0);
-
-            let dragRegion = new Laya.Rectangle();
         }
 
         // 刷新得分
@@ -98,7 +117,7 @@ module Game {
         {
             this._canMove = false;
             this._moveBG.alpha = 1;
-            this.setMoveIconPos(111, 111);
+            this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
         }
 
         onMouseDown(evt:Event):void 
@@ -109,42 +128,41 @@ module Game {
 
             if (this._canMove) {
                 this._moveBG.alpha = 0.6;
-                this.checkMoveIconPos();
+                this.refreshMoveIconPos();
             }
         }
 
         onMouseMove(evt:Event):void 
         {
             if (this._canMove) {
-                this.checkMoveIconPos();
+                this.refreshMoveIconPos();
             }
         }
-
-        checkMoveIconPos():void 
+        
+        // 更新摇杆坐标
+        refreshMoveIconPos():void 
         {
-            let initPosx = this._moveBG.x + 111;
-            let initPosy = this._moveBG.y + 111;
-
+            let initPosx = this._moveBG.x + this._halfMoveBGWidth;
+            let initPosy = this._moveBG.y + this._halfMoveBGHeight;
             let touchPosx = Laya.stage.mouseX;
             let touchPosy = Laya.stage.mouseY;
-
             let deltaPosx = touchPosx - initPosx;
             let deltaPosy = touchPosy - initPosy;
-
             let distance = Math.sqrt(deltaPosx * deltaPosx + deltaPosy * deltaPosy);
 
-            if (distance > this.radius) {
-                let targetPosx = this.radius * deltaPosx / distance + 111; 
-                let targetPosy = this.radius * deltaPosy / distance + 111;
+            if (distance > this.MOVE_BG_RADIUS) {
+                let targetPosx = this.MOVE_BG_RADIUS * deltaPosx / distance + this._halfMoveBGWidth; 
+                let targetPosy = this.MOVE_BG_RADIUS * deltaPosy / distance + this._halfMoveBGHeight;
                 this.setMoveIconPos(targetPosx, targetPosy);
             } else {
                 this.setMoveIconPos(touchPosx - this._moveBG.x, touchPosy - this._moveBG.y);
             }
         }
 
+        // 设置摇杆坐标
         setMoveIconPos(PosX:number, PosY:number):void
         {
-            this._moveIcon.pos(PosX - 47, PosY - 47);
+            this._moveIcon.pos(PosX - this._halfMoveIconWidth, PosY - this._halfMoveIconHeight);
         }
     }
 }
