@@ -12,6 +12,8 @@ module Core {
 
         // 游戏场景类集
         private _sceneCls:Array<any>;
+        // 场景数据类集（默认是BaseSceneData）
+        private _sceneData:Array<any>;
         // 当前处在的场景
         private _curScene:BaseScene;
 
@@ -28,7 +30,7 @@ module Core {
         {
             let curSceneId:number;
             if (this._curScene) {
-                curSceneId = this._curScene.sceneId;
+                curSceneId = this._curScene.sceneData.sceneId;
             }
 
             if (curSceneId && curSceneId == SceneId) {
@@ -41,15 +43,23 @@ module Core {
                 return;
             }
 
+            let sceneDataCls = this._sceneData[SceneId];
+            if (!sceneDataCls) {
+                console.log("[SceneMgr] enterScene : SceneDataCls is not exist, SceneId = " + SceneId);
+                return;
+            }
+
             if (this._curScene) {
                 this._curScene.onDestroy();
                 this._curScene = undefined;
             }
 
+            let sceneData:BaseSceneData = new sceneDataCls(SceneId);
             let scene:BaseScene = new sceneCls();
-            this._curScene = scene;
+            scene.sceneData = sceneData;
             scene.onInit();
             scene.onShow();
+            this._curScene = scene;
         }
 
         /** 根据场景ID，获取当前场景实例 */
@@ -59,7 +69,7 @@ module Core {
         }
 
         /** 注册场景 */
-        registerScene(SceneId:number, SceneCls:any):void 
+        registerScene(SceneId:number, SceneCls:any, SceneData:any=null):void 
         {
             if (!SceneId || !SceneCls) {
                 console.log("[SceneMgr] registerScene : SceneId or SceneCls is null", SceneId, SceneCls);
@@ -70,6 +80,7 @@ module Core {
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
+            this._sceneData[SceneId] = SceneData || BaseSceneData;
         }
     }
 }

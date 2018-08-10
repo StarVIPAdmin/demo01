@@ -4,8 +4,6 @@ module Game {
     import Point = Laya.Point;
     import Event = Laya.Event;
 
-    import MainScneneData = Data.MainSceneData;
-
     /**
      * 游戏主场景
      */
@@ -19,7 +17,6 @@ module Game {
         onInit():void 
         {
             super.onInit();
-            this.sceneData.sceneId = Global.SceneId.MAIN_SCENE;
             this._mapFloor = null;
             this._mainUI = null;
             this._player = null;
@@ -131,7 +128,7 @@ module Game {
         playerDie():void 
         {
             Data.isGameOver = true;
-            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this._score);
+            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.sore);
         }
 
         updateScore():void 

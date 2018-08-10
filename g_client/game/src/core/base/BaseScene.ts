@@ -29,11 +29,34 @@ module Core {
     }
 
     /**
+     * 场景数据基类
+     */
+    export class BaseSceneData implements IBaseSceneData
+    {
+        /** 场景ID */
+        sceneId:number;
+
+        constructor(SceneId:number) 
+        {
+            this.sceneId = SceneId;
+        }
+
+        /** 初始化数据（进入场景调用） */
+        onInit():void {}
+        
+        /** 清除数据（退出场景调用） */
+        onClear():void 
+        {
+            this.sceneId = null;
+        }
+    }
+
+    /**
      * 场景基类
      */
     export class BaseScene extends Laya.Sprite implements IBaseScene
     {
-        sceneData:IBaseSceneData = null;
+        sceneData:BaseSceneData = null;
 
         /** 场景初始化 */
         onInit():void 

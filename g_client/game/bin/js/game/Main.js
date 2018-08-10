@@ -24,12 +24,13 @@ var Game;
         };
         // 执行
         Main.prototype.run = function () {
-            this.init();
+            this.initRegister();
+            Data.init();
             // 进入主场景
             Game.sceneMgr.enterScene(Global.SceneId.MAIN_SCENE);
             Game.viewMgr.showView(Global.ViewId.GAME_INFO_UI);
         };
-        Main.prototype.init = function () {
+        Main.prototype.initRegister = function () {
             this.initRegisterScene();
             this.initRegisterView();
         };

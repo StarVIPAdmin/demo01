@@ -11,15 +11,36 @@ var __extends = (this && this.__extends) || (function () {
 var Core;
 (function (Core) {
     /**
+     * 场景数据基类
+     */
+    var BaseSceneData = /** @class */ (function () {
+        function BaseSceneData(SceneId) {
+            this.sceneId = SceneId;
+        }
+        /** 初始化数据（进入场景调用） */
+        BaseSceneData.prototype.onInit = function () { };
+        /** 清除数据（退出场景调用） */
+        BaseSceneData.prototype.onClear = function () {
+            this.sceneId = null;
+        };
+        return BaseSceneData;
+    }());
+    Core.BaseSceneData = BaseSceneData;
+    /**
      * 场景基类
      */
     var BaseScene = /** @class */ (function (_super) {
         __extends(BaseScene, _super);
         function BaseScene() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.sceneData = null;
+            return _this;
         }
         /** 场景初始化 */
-        BaseScene.prototype.onInit = function () { };
+        BaseScene.prototype.onInit = function () {
+            if (this.sceneData != null)
+                this.sceneData.onInit();
+        };
         /** 场景显示 */
         BaseScene.prototype.onShow = function () {
             this.pivot(0, 0);
@@ -27,6 +48,8 @@ var Core;
         };
         /** 场景销毁 */
         BaseScene.prototype.onDestroy = function () {
+            if (this.sceneData != null)
+                this.sceneData.onClear();
             this.removeSelf();
         };
         return BaseScene;

@@ -10,7 +10,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Game;
 (function (Game) {
-    var Point = Laya.Point;
     var Event = Laya.Event;
     /**
      * 游戏主场景
@@ -20,16 +19,17 @@ var Game;
         function MainScene() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        /** 重写父类函数 */
         MainScene.prototype.onInit = function () {
             _super.prototype.onInit.call(this);
-            this.sceneId = Global.SceneId.MAIN_SCENE;
-            this._mainUI = null;
+            // this.sceneData.sceneId = Global.SceneId.MAIN_SCENE;
             this._mapFloor = null;
-            this._score = 0;
-            this._itemPoint = new Point();
+            this._mainUI = null;
+            this._player = null;
             this.initUI();
             this.initEvent();
         };
+        /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
             // 场景定时器

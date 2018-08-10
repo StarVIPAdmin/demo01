@@ -30,7 +30,7 @@ var Core;
         SceneMgr.prototype.enterScene = function (SceneId) {
             var curSceneId;
             if (this._curScene) {
-                curSceneId = this._curScene.sceneId;
+                curSceneId = this._curScene.sceneData.sceneId;
             }
             if (curSceneId && curSceneId == SceneId) {
                 return;
@@ -40,21 +40,29 @@ var Core;
                 console.log("[SceneMgr] enterScene : SceneCls is not register, SceneId = " + SceneId);
                 return;
             }
+            var sceneDataCls = this._sceneData[SceneId];
+            if (!sceneDataCls) {
+                console.log("[SceneMgr] enterScene : SceneDataCls is not exist, SceneId = " + SceneId);
+                return;
+            }
             if (this._curScene) {
                 this._curScene.onDestroy();
                 this._curScene = undefined;
             }
+            var sceneData = new sceneDataCls(SceneId);
             var scene = new sceneCls();
-            this._curScene = scene;
+            scene.sceneData = sceneData;
             scene.onInit();
             scene.onShow();
+            this._curScene = scene;
         };
         /** 根据场景ID，获取当前场景实例 */
         SceneMgr.prototype.getCurScene = function () {
             return this._curScene;
         };
         /** 注册场景 */
-        SceneMgr.prototype.registerScene = function (SceneId, SceneCls) {
+        SceneMgr.prototype.registerScene = function (SceneId, SceneCls, SceneData) {
+            if (SceneData === void 0) { SceneData = null; }
             if (!SceneId || !SceneCls) {
                 console.log("[SceneMgr] registerScene : SceneId or SceneCls is null", SceneId, SceneCls);
                 return;
@@ -64,6 +72,7 @@ var Core;
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
+            this._sceneData[SceneId] = SceneData || Core.BaseSceneData;
         };
         return SceneMgr;
     }(Core.BaseSingleton));

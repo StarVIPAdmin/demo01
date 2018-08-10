@@ -30,7 +30,7 @@ module Game {
 		/** 场景统一注册函数，游戏场景初始化前均要先注册 */
         private initRegisterScene():void 
         {
-            sceneMgr.registerScene(Global.SceneId.MAIN_SCENE, MainScene);
+            sceneMgr.registerScene(Global.SceneId.MAIN_SCENE, MainScene, Data.MainSceneData);
         }
 
 		/** UI界面统一注册函数，游戏UI界面初始化前均要先注册 */
