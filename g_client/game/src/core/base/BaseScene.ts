@@ -18,8 +18,6 @@ module Core {
      */
     export interface IBaseScene 
     {
-        /** 场景数据类 */
-        sceneData:IBaseSceneData;
         /** 场景初始化 */
         onInit():void;
         /** 场景显示 */
@@ -56,7 +54,16 @@ module Core {
      */
     export class BaseScene extends Laya.Sprite implements IBaseScene
     {
-        sceneData:BaseSceneData = null;
+        /** 场景数据类 */
+        __sceneData:BaseSceneData = null;
+        public get sceneData():BaseSceneData
+        {
+            return this.__sceneData;
+        }
+        public set sceneData(Value:BaseSceneData)
+        {
+            this.__sceneData = Value;
+        }
 
         /** 场景初始化 */
         onInit():void 

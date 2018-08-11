@@ -23,12 +23,16 @@ var Core;
         LayerMgr.getInstance = function () {
             return Core.BaseSingleton.getInstanceOrCreate(LayerMgr);
         };
+        /** 重写父类函数 */
         LayerMgr.prototype.onCreate = function () {
             this._layerNode = [];
             this._layerIdx = [0 /* Scene */, 1 /* Dialog */, 2 /* Tip */, 3 /* Guide */];
             this.initLayerNode();
         };
+        /** 重写父类函数 */
         LayerMgr.prototype.onDestroy = function () {
+            this._layerNode = null;
+            this._layerIdx = null;
         };
         /** 把显示对象添加到场景层 */
         LayerMgr.prototype.addChildToScene = function (Child, PosX, PosY) {

@@ -2,8 +2,7 @@ module Global {
     export class Path 
     {
         // 游戏资源
-        public static readonly PNG_BACKGROUND:string = "res/background.png";
-        public static readonly PNG_M_BACKGROUND:string = "res/m_background.png";
+        public static readonly JPG_BACKGROUND:string = "res/map/map.jpg";
 
         public static readonly PNG_ITEM_1:string = "res/item_1.png";
         public static readonly PNG_ITEM_2:string = "res/item_2.png";

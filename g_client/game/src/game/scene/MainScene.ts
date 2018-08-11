@@ -4,6 +4,8 @@ module Game {
     import Point = Laya.Point;
     import Event = Laya.Event;
 
+    import MainSceneData = Data.MainSceneData;
+
     /**
      * 游戏主场景
      */
@@ -12,6 +14,12 @@ module Game {
         private _mainUI:GameMainUI;
         private _mapFloor:MapFloor;
         private _player:Player;
+
+        /** 重写父类函数 */
+        public get sceneData():MainSceneData
+        {
+            return this.__sceneData as MainSceneData;
+        }
 
         /** 重写父类函数 */
         onInit():void 
@@ -127,14 +135,15 @@ module Game {
 
         playerDie():void 
         {
+            
             Data.isGameOver = true;
-            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.sore);
+            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         }
 
         updateScore():void 
         {
-            this._score++;
-            this._mainUI.refreshScoreTxt(this._score);
+            this.sceneData.score++;
+            this._mainUI.refreshScoreTxt(this.sceneData.score);
         }
     }
 }

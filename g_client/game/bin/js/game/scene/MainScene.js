@@ -19,10 +19,17 @@ var Game;
         function MainScene() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        Object.defineProperty(MainScene.prototype, "sceneData", {
+            /** 重写父类函数 */
+            get: function () {
+                return this.__sceneData;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         MainScene.prototype.onInit = function () {
             _super.prototype.onInit.call(this);
-            // this.sceneData.sceneId = Global.SceneId.MAIN_SCENE;
             this._mapFloor = null;
             this._mainUI = null;
             this._player = null;
@@ -105,11 +112,11 @@ var Game;
         };
         MainScene.prototype.playerDie = function () {
             Data.isGameOver = true;
-            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this._score);
+            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         };
         MainScene.prototype.updateScore = function () {
-            this._score++;
-            this._mainUI.refreshScoreTxt(this._score);
+            this.sceneData.score++;
+            this._mainUI.refreshScoreTxt(this.sceneData.score);
         };
         return MainScene;
     }(Core.BaseScene));

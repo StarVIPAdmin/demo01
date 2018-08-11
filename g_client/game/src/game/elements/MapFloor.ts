@@ -2,10 +2,11 @@ module Game {
     import Sprite = Laya.Sprite;
 
     /**
-     * 地图地板类
+     * 地图类
      */
     export class MapFloor extends Sprite 
     {
+        private _mapSpr:Sprite;
         private _dieFloorList:Array<Floor>;
         private _liveFloorList:Array<Floor>;
 
@@ -19,9 +20,14 @@ module Game {
 
         onInit():void 
         {
-            let floor = this.addFloor(1);
-            floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
-            Laya.timer.frameLoop(1, this, this.onLoop);
+            this._mapSpr = new Sprite();
+            this._mapSpr.graphics.clear();
+            this._mapSpr.graphics.drawTexture(Laya.loader.getRes(Global.Path.JPG_BACKGROUND),0,0,5120,5120);
+            this.addChild(this._mapSpr);
+
+            // let floor = this.addFloor(1);
+            // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
+            // Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         onLoop():void 
@@ -63,8 +69,6 @@ module Game {
 
         moveMap(toRight:boolean):void 
         {
-            let dir = toRight ? 1 : -1;
-            this.x += 0.2 * 1.2 * dir;
         }
     }
 }

@@ -22,10 +22,15 @@ var Core;
         SceneMgr.getInstance = function () {
             return Core.BaseSingleton.getInstanceOrCreate(SceneMgr);
         };
+        /** 重写父类函数 */
         SceneMgr.prototype.onCreate = function () {
             this._sceneCls = [];
+            this._sceneDataCls = [];
         };
+        /** 重写父类函数 */
         SceneMgr.prototype.onDestroy = function () {
+            this._sceneCls = null;
+            this._sceneDataCls = null;
         };
         SceneMgr.prototype.enterScene = function (SceneId) {
             var curSceneId;
@@ -40,7 +45,7 @@ var Core;
                 console.log("[SceneMgr] enterScene : SceneCls is not register, SceneId = " + SceneId);
                 return;
             }
-            var sceneDataCls = this._sceneData[SceneId];
+            var sceneDataCls = this._sceneDataCls[SceneId];
             if (!sceneDataCls) {
                 console.log("[SceneMgr] enterScene : SceneDataCls is not exist, SceneId = " + SceneId);
                 return;
@@ -72,7 +77,7 @@ var Core;
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
-            this._sceneData[SceneId] = SceneData || Core.BaseSceneData;
+            this._sceneDataCls[SceneId] = SceneData || Core.BaseSceneData;
         };
         return SceneMgr;
     }(Core.BaseSingleton));

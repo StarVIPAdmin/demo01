@@ -33,9 +33,20 @@ var Core;
         __extends(BaseScene, _super);
         function BaseScene() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.sceneData = null;
+            /** 场景数据类 */
+            _this.__sceneData = null;
             return _this;
         }
+        Object.defineProperty(BaseScene.prototype, "sceneData", {
+            get: function () {
+                return this.__sceneData;
+            },
+            set: function (Value) {
+                this.__sceneData = Value;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 场景初始化 */
         BaseScene.prototype.onInit = function () {
             if (this.sceneData != null)

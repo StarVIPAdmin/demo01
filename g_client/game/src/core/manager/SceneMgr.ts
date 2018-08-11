@@ -13,17 +13,22 @@ module Core {
         // 游戏场景类集
         private _sceneCls:Array<any>;
         // 场景数据类集（默认是BaseSceneData）
-        private _sceneData:Array<any>;
+        private _sceneDataCls:Array<any>;
         // 当前处在的场景
         private _curScene:BaseScene;
 
+        /** 重写父类函数 */
         protected onCreate():void
         {
             this._sceneCls = [];
+            this._sceneDataCls = [];
         }
 
+        /** 重写父类函数 */
         protected onDestroy():void
         {
+            this._sceneCls = null;
+            this._sceneDataCls = null;
         }
 
         enterScene(SceneId:number):void 
@@ -43,7 +48,7 @@ module Core {
                 return;
             }
 
-            let sceneDataCls = this._sceneData[SceneId];
+            let sceneDataCls = this._sceneDataCls[SceneId];
             if (!sceneDataCls) {
                 console.log("[SceneMgr] enterScene : SceneDataCls is not exist, SceneId = " + SceneId);
                 return;
@@ -54,7 +59,7 @@ module Core {
                 this._curScene = undefined;
             }
 
-            let sceneData:BaseSceneData = new sceneDataCls(SceneId);
+            let sceneData = new sceneDataCls(SceneId);
             let scene:BaseScene = new sceneCls();
             scene.sceneData = sceneData;
             scene.onInit();
@@ -80,7 +85,7 @@ module Core {
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
-            this._sceneData[SceneId] = SceneData || BaseSceneData;
+            this._sceneDataCls[SceneId] = SceneData || BaseSceneData;
         }
     }
 }

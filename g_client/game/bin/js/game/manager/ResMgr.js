@@ -23,8 +23,10 @@ var Game;
         ResMgr.getInstance = function () {
             return Core.BaseSingleton.getInstanceOrCreate(ResMgr);
         };
+        /** 重写父类函数 */
         ResMgr.prototype.onCreate = function () {
         };
+        /** 重写父类函数 */
         ResMgr.prototype.onDestroy = function () {
         };
         ResMgr.prototype.createText = function () {

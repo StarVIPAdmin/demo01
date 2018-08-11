@@ -36,7 +36,7 @@ var Game;
         };
         /** 场景统一注册函数，游戏场景初始化前均要先注册 */
         Main.prototype.initRegisterScene = function () {
-            Game.sceneMgr.registerScene(Global.SceneId.MAIN_SCENE, Game.MainScene);
+            Game.sceneMgr.registerScene(Global.SceneId.MAIN_SCENE, Game.MainScene, Data.MainSceneData);
         };
         /** UI界面统一注册函数，游戏UI界面初始化前均要先注册 */
         Main.prototype.initRegisterView = function () {

@@ -12,10 +12,12 @@ module Game {
             return Core.BaseSingleton.getInstanceOrCreate(ResMgr);
         }
 
+        /** 重写父类函数 */
         protected onCreate():void 
         {
         }
 
+        /** 重写父类函数 */
         protected onDestroy():void
         {
         }

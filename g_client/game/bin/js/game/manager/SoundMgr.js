@@ -23,9 +23,11 @@ var Game;
         SoundMgr.getInstance = function () {
             return Core.BaseSingleton.getInstanceOrCreate(SoundMgr);
         };
+        /** 重写父类函数 */
         SoundMgr.prototype.onCreate = function () {
             this.m_silence = false;
         };
+        /** 重写父类函数 */
         SoundMgr.prototype.onDestroy = function () {
         };
         SoundMgr.prototype.playMenuBgMusic = function () {

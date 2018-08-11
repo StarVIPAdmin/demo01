@@ -22,12 +22,17 @@ var Core;
         ViewMgr.getInstance = function () {
             return Core.BaseSingleton.getInstanceOrCreate(ViewMgr);
         };
+        /** 重写父类函数 */
         ViewMgr.prototype.onCreate = function () {
             this._viewCls = [];
             this._uiViews = [];
             this._uiLayers = [];
         };
+        /** 重写父类函数 */
         ViewMgr.prototype.onDestroy = function () {
+            this._viewCls = null;
+            this._uiViews = null;
+            this._uiLayers = null;
         };
         /** 根据界面唯一ID，显示ui界面 */
         ViewMgr.prototype.showView = function (ViewId, Param) {

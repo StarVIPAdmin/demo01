@@ -18,8 +18,7 @@ function onCompleteHandler() {
     Laya.Stat.show(300, 0);
     var resUrl = [];
     resUrl.push({ "url": Global.Path.JSON_PLAYER, "type": Laya.Loader.ATLAS });
-    resUrl.push({ "url": Global.Path.PNG_BACKGROUND, "type": Laya.Loader.IMAGE });
-    resUrl.push({ "url": Global.Path.PNG_M_BACKGROUND, "type": Laya.Loader.IMAGE });
+    resUrl.push({ "url": Global.Path.JPG_BACKGROUND, "type": Laya.Loader.IMAGE });
     // resUrl.push({ "url":Global.Path.PNG_ITEM_1, "type":Laya.Loader.IMAGE });
     // resUrl.push({ "url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE });
     // resUrl.push({ "url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE });

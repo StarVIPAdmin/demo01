@@ -164,5 +164,12 @@ module Game {
         {
             this._moveIcon.pos(PosX - this._halfMoveIconWidth, PosY - this._halfMoveIconHeight);
         }
+
+        getMoveIconAngle():number
+        {
+            if (!this._canMove) 
+                return 0;
+            return Math.asin(1);
+        }
     }
 }

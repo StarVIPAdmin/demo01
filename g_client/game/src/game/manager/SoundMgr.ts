@@ -14,11 +14,13 @@ module Game {
 
         private m_silence:boolean;
 
+        /** 重写父类函数 */
         protected onCreate():void 
         {
             this.m_silence = false;
         }
 
+        /** 重写父类函数 */
         protected onDestroy():void
         {
         }

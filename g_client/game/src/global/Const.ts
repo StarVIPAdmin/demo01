@@ -2,8 +2,8 @@ module Global {
     export class Const 
     {
         // 游戏宽高
-        public static readonly GAME_WIDTH:number = 1024;
-        public static readonly GAME_HEIGHT:number = 768;
+        public static readonly GAME_WIDTH:number = 1280;
+        public static readonly GAME_HEIGHT:number = 720;
 
         // 游戏最大/最小速度
         public static readonly MIN_SPEED:number = 8;

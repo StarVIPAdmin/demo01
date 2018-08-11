@@ -2,7 +2,7 @@ module Game {
     import Sprite = Laya.Sprite;
 
     /**
-     * 单个地板类
+     * 地板类
      */
     export class Floor extends Sprite 
     {

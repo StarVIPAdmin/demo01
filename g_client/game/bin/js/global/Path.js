@@ -4,8 +4,7 @@ var Global;
         function Path() {
         }
         // 游戏资源
-        Path.PNG_BACKGROUND = "res/background.png";
-        Path.PNG_M_BACKGROUND = "res/m_background.png";
+        Path.JPG_BACKGROUND = "res/map/map.jpg";
         Path.PNG_ITEM_1 = "res/item_1.png";
         Path.PNG_ITEM_2 = "res/item_2.png";
         Path.PNG_ITEM_3 = "res/item_3.png";

@@ -12,7 +12,7 @@ var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
     /**
-     * 单个地板类
+     * 地板类
      */
     var Floor = /** @class */ (function (_super) {
         __extends(Floor, _super);

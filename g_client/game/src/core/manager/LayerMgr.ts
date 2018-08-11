@@ -26,6 +26,7 @@ module Core {
         private _layerIdx:Array<number>;
         private _layerNode:Array<Sprite>;
 
+        /** 重写父类函数 */
         protected onCreate():void 
         {
             this._layerNode = [];
@@ -33,8 +34,11 @@ module Core {
             this.initLayerNode();
         }
 
+        /** 重写父类函数 */
         protected onDestroy():void 
         {
+            this._layerNode = null;
+            this._layerIdx = null;
         }
 
         /** 把显示对象添加到场景层 */

@@ -19,6 +19,7 @@ module Core {
         // 缓存界面对应的层级
         private _uiLayers:Array<number>;
 
+        /** 重写父类函数 */
         protected onCreate():void 
         {
             this._viewCls = [];
@@ -26,8 +27,12 @@ module Core {
             this._uiLayers = [];
         }
 
+        /** 重写父类函数 */
         protected onDestroy():void
         {
+            this._viewCls = null;
+            this._uiViews = null;
+            this._uiLayers = null;
         }
 
         /** 根据界面唯一ID，显示ui界面 */

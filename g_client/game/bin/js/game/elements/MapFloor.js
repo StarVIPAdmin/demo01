@@ -12,7 +12,7 @@ var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
     /**
-     * 地图地板类
+     * 地图类
      */
     var MapFloor = /** @class */ (function (_super) {
         __extends(MapFloor, _super);
