@@ -165,11 +165,15 @@ module Game {
             this._moveIcon.pos(PosX - this._halfMoveIconWidth, PosY - this._halfMoveIconHeight);
         }
 
+        // 获取行走角度
         getMoveIconAngle():number
         {
             if (!this._canMove) 
                 return 0;
-            return Math.asin(1);
+
+            let moveIconPosX = this._moveIcon.x + this._halfMoveIconWidth;
+            let moveIconPosY = this._moveIcon.y + this._halfMoveIconHeight;
+            return Math.atan2(moveIconPosY - this._halfMoveBGHeight, moveIconPosX - this._halfMoveBGWidth);
         }
     }
 }

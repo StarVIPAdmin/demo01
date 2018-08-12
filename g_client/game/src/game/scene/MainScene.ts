@@ -66,6 +66,8 @@ module Game {
 
         onLoop():void 
         {
+            this._mapFloor.moveMap(this._mainUI.getMoveIconAngle());
+            
         //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
         //         let floor = this._mapFloor.getChildAt(i) as Floor;
         //         if (floor.checkHit(this._player.x, this._player.y)) {
@@ -126,6 +128,7 @@ module Game {
         onMouseMove(evt:Event):void
         {
             this._mainUI.onMouseMove(evt);
+            
         }
 
         onMouseOut(evt:Event):void 

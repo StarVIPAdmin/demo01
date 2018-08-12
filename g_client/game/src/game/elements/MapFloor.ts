@@ -67,8 +67,25 @@ module Game {
             this.addFloor(2);
         }
 
-        moveMap(toRight:boolean):void 
+        moveMap(angle:number):void 
         {
+            if (angle == 0) 
+                return;
+
+            let deltaPosX = Data.playerData.speed * Math.cos(angle);
+            let deltaPosY = Data.playerData.speed * Math.sin(angle);
+            let targetPosX = this._mapSpr.x - deltaPosX;
+            let targetPosY = this._mapSpr.y - deltaPosY;
+
+            let minPosX = - 5120 + Global.Const.GAME_WIDTH * 0.5;
+            let minPosY = - 5120 + Global.Const.GAME_HEIGHT * 0.5;
+            let maxPosX = Global.Const.GAME_WIDTH * 0.5;
+            let maxPosY = Global.Const.GAME_HEIGHT * 0.5;
+            if (targetPosX < minPosX) targetPosX = minPosX;
+            if (targetPosX > maxPosX) targetPosX = maxPosX;
+            if (targetPosY < minPosY) targetPosY = minPosY;
+            if (targetPosY > maxPosY) targetPosY = maxPosY;
+            this._mapSpr.pos(targetPosX, targetPosY);
         }
     }
 }

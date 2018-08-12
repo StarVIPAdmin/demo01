@@ -59,6 +59,7 @@ var Game;
             Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
         MainScene.prototype.onLoop = function () {
+            this._mapFloor.moveMap(this._mainUI.getMoveIconAngle());
             //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
             //         let floor = this._mapFloor.getChildAt(i) as Floor;
             //         if (floor.checkHit(this._player.x, this._player.y)) {

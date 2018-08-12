@@ -122,6 +122,14 @@ var Game;
         GameMainUI.prototype.setMoveIconPos = function (PosX, PosY) {
             this._moveIcon.pos(PosX - this._halfMoveIconWidth, PosY - this._halfMoveIconHeight);
         };
+        // 获取行走角度
+        GameMainUI.prototype.getMoveIconAngle = function () {
+            if (!this._canMove)
+                return 0;
+            var moveIconPosX = this._moveIcon.x + this._halfMoveIconWidth;
+            var moveIconPosY = this._moveIcon.y + this._halfMoveIconHeight;
+            return Math.atan2(moveIconPosY - this._halfMoveBGHeight, moveIconPosX - this._halfMoveBGWidth);
+        };
         return GameMainUI;
     }(Sprite));
     Game.GameMainUI = GameMainUI;

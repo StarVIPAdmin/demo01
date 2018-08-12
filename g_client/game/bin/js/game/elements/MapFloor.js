@@ -24,9 +24,13 @@ var Game;
             return _this;
         }
         MapFloor.prototype.onInit = function () {
-            var floor = this.addFloor(1);
-            floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
-            Laya.timer.frameLoop(1, this, this.onLoop);
+            this._mapSpr = new Sprite();
+            this._mapSpr.graphics.clear();
+            this._mapSpr.graphics.drawTexture(Laya.loader.getRes(Global.Path.JPG_BACKGROUND), 0, 0, 5120, 5120);
+            this.addChild(this._mapSpr);
+            // let floor = this.addFloor(1);
+            // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
+            // Laya.timer.frameLoop(1, this, this.onLoop);
         };
         MapFloor.prototype.onLoop = function () {
             while (this._dieFloorList.length > 0) {
@@ -55,9 +59,26 @@ var Game;
         MapFloor.prototype.getFloor = function (floor) {
             this.addFloor(2);
         };
-        MapFloor.prototype.moveMap = function (toRight) {
-            var dir = toRight ? 1 : -1;
-            this.x += 0.2 * 1.2 * dir;
+        MapFloor.prototype.moveMap = function (angle) {
+            if (angle == 0)
+                return;
+            var deltaPosX = Data.playerData.speed * Math.cos(angle);
+            var deltaPosY = Data.playerData.speed * Math.sin(angle);
+            var targetPosX = this._mapSpr.x - deltaPosX;
+            var targetPosY = this._mapSpr.y - deltaPosY;
+            var minPosX = -5120 + Global.Const.GAME_WIDTH * 0.5;
+            var minPosY = -5120 + Global.Const.GAME_HEIGHT * 0.5;
+            var maxPosX = Global.Const.GAME_WIDTH * 0.5;
+            var maxPosY = Global.Const.GAME_HEIGHT * 0.5;
+            if (targetPosX < minPosX)
+                targetPosX = minPosX;
+            if (targetPosX > maxPosX)
+                targetPosX = maxPosX;
+            if (targetPosY < minPosY)
+                targetPosY = minPosY;
+            if (targetPosY > maxPosY)
+                targetPosY = maxPosY;
+            this._mapSpr.pos(targetPosX, targetPosY);
         };
         return MapFloor;
     }(Sprite));
