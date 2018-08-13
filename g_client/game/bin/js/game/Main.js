@@ -18,10 +18,14 @@ var Game;
         function Main() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        Main.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(Main);
-        };
+        Object.defineProperty(Main, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, Main);
+            },
+            enumerable: true,
+            configurable: true
+        });
         // 执行
         Main.prototype.run = function () {
             this.initRegister();
@@ -45,9 +49,9 @@ var Game;
         };
         return Main;
     }(Core.BaseSingleton));
-    Game.main = Main.getInstance();
-    Game.sceneMgr = Core.SceneMgr.getInstance();
-    Game.viewMgr = Core.ViewMgr.getInstance();
-    Game.loaderMgr = Core.LoaderMgr.getInstance();
+    Game.main = Main.instance;
+    Game.sceneMgr = Core.SceneMgr.instance;
+    Game.viewMgr = Core.ViewMgr.instance;
+    Game.loaderMgr = Core.LoaderMgr.instance;
 })(Game || (Game = {}));
 //# sourceMappingURL=Main.js.map

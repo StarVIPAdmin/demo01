@@ -22,7 +22,9 @@ var Data;
             // 攻击力
             this.attack = 10;
             // 速度
-            this.speed = 10;
+            this.speed = 2;
+            // 名称
+            this.name = "头号玩家";
         }
         return PlayerData;
     }());

@@ -19,10 +19,14 @@ var Game;
         function SoundMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        SoundMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(SoundMgr);
-        };
+        Object.defineProperty(SoundMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, SoundMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         SoundMgr.prototype.onCreate = function () {
             this.m_silence = false;

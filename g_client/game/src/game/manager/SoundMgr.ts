@@ -7,9 +7,9 @@ module Game {
     export class SoundMgr extends Core.BaseSingleton
     {
         /** 获取单例实例 */
-        public static getInstance():SoundMgr
+        static get instance():SoundMgr
         {
-            return Core.BaseSingleton.getInstanceOrCreate(SoundMgr);
+            return super.getInstanceOrCreate(SoundMgr);
         }
 
         private m_silence:boolean;

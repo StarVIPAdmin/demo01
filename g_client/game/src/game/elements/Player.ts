@@ -1,8 +1,9 @@
 module Game {
     import Sprite = Laya.Sprite;
     import Animation = Laya.Animation;
+    import Text = Laya.Text;
 
-    let cached:boolean = false;
+    import PlayerData = Data.PlayerData;
 
     /**
      * 玩家类
@@ -10,90 +11,81 @@ module Game {
     export class Player extends Sprite 
     {   
         // 数据
-        public data:Data.PlayerData;
+        private _data:PlayerData;
+        // 昵称
+        private _name:Text;
+        // 模型
+        private _body:Sprite;
 
-        // 动作名
-        private _actName:string;
-        // 玩家动画
-        private _body:Animation;
+        get data():PlayerData
+        {
+            return this._data;
+        }
 
         constructor() 
         {
             super();
-            this._actName = null;
+            this._data = null;
+            this._name = null;
             this._body = null;
-
-            // this._bodyEffect1 = null;
-            // this._bodyEffect2 = null;
-            // this._spiritEffect = null;
-
-            this.width = 96;
-            this.height = 96;
-
-            this.init();
+            this.size(96, 96);
         }
 
         init():void 
         {
-            if (!cached) {
-                cached = true;
-                Animation.createFrames([Global.Path.PNG_PLAYER_CHARA_1,Global.Path.PNG_PLAYER_CHARA_2,Global.Path.PNG_PLAYER_CHARA_3,Global.Path.PNG_PLAYER_CHARA_4], Global.Const.PLAYER_STATE_RUN);
-                Animation.createFrames([Global.Path.PNG_PLAYER_CHARA_5,Global.Path.PNG_PLAYER_CHARA_6,Global.Path.PNG_PLAYER_CHARA_7,Global.Path.PNG_PLAYER_CHARA_8], Global.Const.PLAYER_STATE_FLY);
-                Animation.createFrames([Global.Path.PNG_PLAYER_CHARA_9,Global.Path.PNG_PLAYER_CHARA_10,Global.Path.PNG_PLAYER_CHARA_11,Global.Path.PNG_PLAYER_CHARA_12], Global.Const.PLAYER_STATE_HERT);
-                Animation.createFrames([Global.Path.PNG_PLAYER_CHARA_13,Global.Path.PNG_PLAYER_CHARA_14,Global.Path.PNG_PLAYER_CHARA_15,Global.Path.PNG_PLAYER_CHARA_16], Global.Const.PLAYER_STATE_JUMP);
-            }
-
-            if (this._body == null) {
-                this._body = new Animation();
-                this._body.pivot(48,60);
-                this._body.interval = 100;
-                this.addChild(this._body);
-            }
-
-            this.playAction(Global.Const.PLAYER_STATE_RUN);
+            this.initData();
+            this.initUI();
 
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
-        playAction(ActName:string):void 
+        initData():void 
         {
-            if (this._actName == ActName) {
-                return;
+            this._data = new PlayerData();
+            this._data.name = "玩家A";
+        }
+
+        initUI():void 
+        {
+            if (this._body == null) {
+                this._body = ResMgr.instance.createSprite(Global.Path.PNG_PLAYER_1, 128, 128);
+                this.addChild(this._body);
             }
-            this._actName = ActName;
-            this._body.play(0, true, this._actName);
-            // this._bodyEffect1.play(0, true, this._actName);
-            // this._bodyEffect2.play(0, true, this._actName);
+
+            if (this._name == null) {
+                this._name = ResMgr.instance.createText();
+                this._name.align = "center";
+                this._name.pos(this._body.width * 0.5 - this._name.width * 0.5, 0);
+                this.addChild(this._name);
+            }
+
+            this._name.text = this.data.name;
         }
 
         onLoop():void 
         {
-
             // 判定玩家是否死亡
-            if (this.y > (Global.Const.GAME_HEIGHT + 100)) {
-                this.event(Global.Const.PLAYER_STATE_DIE, this);
-                return;
-            }
+            // if (this.y > (Global.Const.GAME_HEIGHT + 100)) {
+            //     this.event(Global.Const.PLAYER_STATE_DIE, this);
+            //     return;
+            // }
         }
 
         gotoRun():void 
         {
-            this.playAction(Global.Const.PLAYER_STATE_RUN);
+            // this.playAction(Global.Const.PLAYER_STATE_RUN);
         }
 
-        gotoJump():void 
+        // 从场景移除（返回对象池）
+        remove():void 
         {
-            this.playAction(Global.Const.PLAYER_STATE_JUMP);
+
         }
 
-        gotoFly():void 
+        // 销毁对象
+        destroy():void 
         {
-            this.playAction(Global.Const.PLAYER_STATE_FLY);
-        }
 
-        gotoHert():void 
-        {
-            this.playAction(Global.Const.PLAYER_STATE_HERT);
         }
     }
 }

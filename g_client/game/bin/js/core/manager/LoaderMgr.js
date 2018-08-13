@@ -18,10 +18,14 @@ var Core;
         function LoaderMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        LoaderMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(LoaderMgr);
-        };
+        Object.defineProperty(LoaderMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, LoaderMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         LoaderMgr.prototype.loadRes = function (Url, LoadedFunc, LoadingFunc) {
             this._loadedFunc = LoadedFunc;
             this._loadingFunc = LoadingFunc;

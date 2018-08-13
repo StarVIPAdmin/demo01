@@ -1,15 +1,17 @@
 module Game {
     import Text = Laya.Text;
+    import Button = Laya.Button;
+    import Sprite = Laya.Sprite;
 
     /**
      * 资源管理类
      */
-    export class ResMgr extends Core.BaseSingleton
+    export class ResMgr extends Core.BaseSingleton 
     {
         /** 获取单例实例 */
-        public static getInstance():ResMgr
+        static get instance():ResMgr
         {
-            return Core.BaseSingleton.getInstanceOrCreate(ResMgr);
+            return super.getInstanceOrCreate(ResMgr);
         }
 
         /** 重写父类函数 */
@@ -22,6 +24,25 @@ module Game {
         {
         }
 
+        // 创建玩家
+        createPlayer():Player
+        {
+            let player = new Player();
+            player.init();
+            return player;
+        }
+
+        // 创建按钮
+        createButton(skinPath:string):Button
+        {
+            let btn = new Button(skinPath);
+            btn.autoSize = true;
+            btn.anchorX = 0.5;
+            btn.anchorY = 0.5;
+            return btn;
+        }
+
+        // 创建文本
         createText():Text
         {
             let txt = new Text();
@@ -29,9 +50,18 @@ module Game {
             txt.color = "#ffffff";
             txt.text = "";
             txt.align = "left";
-            txt.pos(0, 0);
-            txt.size(100, 100);
+            txt.size(100, 100).pos(0, 0);
             return txt;
+        }
+
+        // 创建图片
+        createSprite(url:string, width:number, height:number, xPos:number=0, yPos:number=0):Sprite
+        {
+            let spr = new Sprite();
+            spr.graphics.clear();
+            spr.graphics.drawTexture(Laya.loader.getRes(url),0,0,width,height);
+            spr.size(width,height).pos(xPos,yPos);
+            return spr;
         }
     }
 }

@@ -7,9 +7,9 @@ module Core {
     export class ViewMgr extends BaseSingleton
     {
         /** 获取单例实例 */
-        public static getInstance():ViewMgr
+        static get instance():ViewMgr
         {
-            return BaseSingleton.getInstanceOrCreate(ViewMgr);
+            return super.getInstanceOrCreate(ViewMgr);
         }
 
         // 游戏界面类集
@@ -58,7 +58,7 @@ module Core {
                 view["onShow"](Param);
             }
             let uiLayer = this._uiLayers[ViewId];
-            LayerMgr.getInstance().addChildToLayer(uiLayer, view, 0, 0);
+            LayerMgr.instance.addChildToLayer(uiLayer, view, 0, 0);
             return view;
         }
         
@@ -119,7 +119,7 @@ module Core {
                 return;
             }
             // 检测ui层级是否存在
-            if (!LayerMgr.getInstance().checkUILayer(UILayer)) {
+            if (!LayerMgr.instance.checkUILayer(UILayer)) {
                 console.log("[ViewMgr] registerView : UILayer is not exist, ViewId = ", ViewId);
                 return;
             }

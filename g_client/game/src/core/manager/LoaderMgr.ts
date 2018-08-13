@@ -5,9 +5,9 @@ module Core {
     export class LoaderMgr extends BaseSingleton
     {
         /** 获取单例实例 */
-        public static getInstance():LoaderMgr
+        static get instance():LoaderMgr
         {
-            return BaseSingleton.getInstanceOrCreate(LoaderMgr);
+            return super.getInstanceOrCreate(LoaderMgr);
         }
 
         // 加载完成回调函数

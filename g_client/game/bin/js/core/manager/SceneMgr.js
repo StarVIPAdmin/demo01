@@ -18,10 +18,14 @@ var Core;
         function SceneMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        SceneMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(SceneMgr);
-        };
+        Object.defineProperty(SceneMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, SceneMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         SceneMgr.prototype.onCreate = function () {
             this._sceneCls = [];

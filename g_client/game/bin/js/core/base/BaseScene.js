@@ -55,7 +55,7 @@ var Core;
         /** 场景显示 */
         BaseScene.prototype.onShow = function () {
             this.pivot(0, 0);
-            Core.LayerMgr.getInstance().addChildToScene(this);
+            Core.LayerMgr.instance.addChildToScene(this);
         };
         /** 场景销毁 */
         BaseScene.prototype.onDestroy = function () {

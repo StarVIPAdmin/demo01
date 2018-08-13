@@ -18,10 +18,14 @@ var Core;
         function ViewMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        ViewMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(ViewMgr);
-        };
+        Object.defineProperty(ViewMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, ViewMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         ViewMgr.prototype.onCreate = function () {
             this._viewCls = [];
@@ -53,7 +57,7 @@ var Core;
                 view["onShow"](Param);
             }
             var uiLayer = this._uiLayers[ViewId];
-            Core.LayerMgr.getInstance().addChildToLayer(uiLayer, view, 0, 0);
+            Core.LayerMgr.instance.addChildToLayer(uiLayer, view, 0, 0);
             return view;
         };
         /** 根据界面唯一ID，隐藏ui界面 */
@@ -104,7 +108,7 @@ var Core;
                 return;
             }
             // 检测ui层级是否存在
-            if (!Core.LayerMgr.getInstance().checkUILayer(UILayer)) {
+            if (!Core.LayerMgr.instance.checkUILayer(UILayer)) {
                 console.log("[ViewMgr] registerView : UILayer is not exist, ViewId = ", ViewId);
                 return;
             }

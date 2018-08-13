@@ -43,7 +43,7 @@ module Game {
 			this._txt.text = "0%";
 
 			Game.loaderMgr.loadRes(Url, this.onLoaded, this.onLoading);
-			Core.LayerMgr.getInstance().addChildToDialog(this);
+			Core.LayerMgr.instance.addChildToDialog(this);
 		}
 
 		onLoaded = () => {

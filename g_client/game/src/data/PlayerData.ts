@@ -21,6 +21,8 @@ module Data {
         // 攻击力
         public attack:number = 10;
         // 速度
-        public speed:number = 10;
+        public speed:number = 2;
+        // 名称
+        public name:string = "头号玩家";
     }
 }

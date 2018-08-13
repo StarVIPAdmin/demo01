@@ -76,7 +76,7 @@ module Core {
         onShow():void 
         {
             this.pivot(0, 0);
-            LayerMgr.getInstance().addChildToScene(this);
+            LayerMgr.instance.addChildToScene(this);
         }
 
         /** 场景销毁 */

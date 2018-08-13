@@ -5,9 +5,9 @@ module Core {
     export class SceneMgr extends BaseSingleton
     {
         /** 获取单例实例 */
-        public static getInstance():SceneMgr
+        static get instance():SceneMgr
         {
-            return BaseSingleton.getInstanceOrCreate(SceneMgr);
+            return super.getInstanceOrCreate(SceneMgr);
         }
 
         // 游戏场景类集

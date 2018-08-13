@@ -19,10 +19,14 @@ var Core;
         function LayerMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        LayerMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(LayerMgr);
-        };
+        Object.defineProperty(LayerMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, LayerMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         LayerMgr.prototype.onCreate = function () {
             this._layerNode = [];

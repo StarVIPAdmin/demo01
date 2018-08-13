@@ -18,9 +18,9 @@ module Core {
     export class LayerMgr extends BaseSingleton
     {
         /** 获取单例实例 */
-        public static getInstance():LayerMgr
+        static get instance():LayerMgr
         {
-            return BaseSingleton.getInstanceOrCreate(LayerMgr);
+            return super.getInstanceOrCreate(LayerMgr);
         }
 
         private _layerIdx:Array<number>;

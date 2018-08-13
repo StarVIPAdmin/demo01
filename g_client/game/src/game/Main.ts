@@ -5,9 +5,9 @@ module Game {
 	class Main extends Core.BaseSingleton
 	{
 		/** 获取单例实例 */
-        public static getInstance():Main
+        static get instance():Main
         {
-            return Core.BaseSingleton.getInstanceOrCreate(Main);
+            return super.getInstanceOrCreate(Main);
         }
 
 		// 执行
@@ -41,8 +41,8 @@ module Game {
         }
 	}
 
-	export let main = Main.getInstance();
-	export let sceneMgr = Core.SceneMgr.getInstance();
-	export let viewMgr = Core.ViewMgr.getInstance();
-	export let loaderMgr = Core.LoaderMgr.getInstance();
+	export let main = Main.instance;
+	export let sceneMgr = Core.SceneMgr.instance;
+	export let viewMgr = Core.ViewMgr.instance;
+	export let loaderMgr = Core.LoaderMgr.instance;
 }

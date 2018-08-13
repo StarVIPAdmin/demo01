@@ -9,13 +9,12 @@ module Global {
         public static readonly PNG_ITEM_3:string = "res/item_3.png";
         public static readonly PNG_ITEM_4:string = "res/item_4.png";
 
-        public static readonly PNG_BIRD_1:string = "res/bird_1.png";
-        public static readonly PNG_BIRD_2:string = "res/bird_2.png";
-        public static readonly PNG_BIRD_3:string = "res/bird_3.png";
-        public static readonly PNG_BIRD_4:string = "res/bird_4.png";
+        public static readonly PNG_PLAYER_1:string = "res/role/role10001.png";
+        public static readonly PNG_PLAYER_2:string = "res/role/role10002.png";
+        public static readonly PNG_PLAYER_3:string = "res/role/role10003.png";
+        public static readonly PNG_PLAYER_4:string = "res/role/role10004.png";
 
-        public static readonly PNG_EFFECT:string = "res/effect.png";
-        public static readonly PNG_SPIRIT_EFFECT:string = "res/spiritEffect.png";
+        public static readonly PNG_CARRY_ICON:string = "res/carry_icon.png";
 
         public static readonly PNG_BAR_MP:string = "res/en_bar.png";
         public static readonly PNG_BAR_HP:string = "res/hp_bar.png";

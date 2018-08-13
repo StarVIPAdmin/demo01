@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Text = Laya.Text;
+    var Button = Laya.Button;
+    var Sprite = Laya.Sprite;
     /**
      * 资源管理类
      */
@@ -19,25 +21,53 @@ var Game;
         function ResMgr() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        /** 获取单例实例 */
-        ResMgr.getInstance = function () {
-            return Core.BaseSingleton.getInstanceOrCreate(ResMgr);
-        };
+        Object.defineProperty(ResMgr, "instance", {
+            /** 获取单例实例 */
+            get: function () {
+                return _super.getInstanceOrCreate.call(this, ResMgr);
+            },
+            enumerable: true,
+            configurable: true
+        });
         /** 重写父类函数 */
         ResMgr.prototype.onCreate = function () {
         };
         /** 重写父类函数 */
         ResMgr.prototype.onDestroy = function () {
         };
+        // 创建玩家
+        ResMgr.prototype.createPlayer = function () {
+            var player = new Game.Player();
+            player.init();
+            return player;
+        };
+        // 创建按钮
+        ResMgr.prototype.createButton = function (skinPath) {
+            var btn = new Button(skinPath);
+            btn.autoSize = true;
+            btn.anchorX = 0.5;
+            btn.anchorY = 0.5;
+            return btn;
+        };
+        // 创建文本
         ResMgr.prototype.createText = function () {
             var txt = new Text();
             txt.fontSize = 20;
             txt.color = "#ffffff";
             txt.text = "";
             txt.align = "left";
-            txt.pos(0, 0);
-            txt.size(100, 100);
+            txt.size(100, 100).pos(0, 0);
             return txt;
+        };
+        // 创建图片
+        ResMgr.prototype.createSprite = function (url, width, height, xPos, yPos) {
+            if (xPos === void 0) { xPos = 0; }
+            if (yPos === void 0) { yPos = 0; }
+            var spr = new Sprite();
+            spr.graphics.clear();
+            spr.graphics.drawTexture(Laya.loader.getRes(url), 0, 0, width, height);
+            spr.size(width, height).pos(xPos, yPos);
+            return spr;
         };
         return ResMgr;
     }(Core.BaseSingleton));

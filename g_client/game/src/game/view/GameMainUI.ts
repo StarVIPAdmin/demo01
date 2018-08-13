@@ -28,6 +28,8 @@ module Game {
         private _moveBG:Sprite;
         private _moveIcon:Sprite;
 
+        private _carryIcon:Sprite;
+
         // 是否可以移动摇杆
         private _canMove:boolean;
 
@@ -65,15 +67,15 @@ module Game {
             this._powerBar.pos(10, 7);
             this.addChild(this._powerBar);
 
-            this._attack = ResMgr.getInstance().createText();
+            this._attack = ResMgr.instance.createText();
             this._attack.pos(10, 37);
             this.addChild(this._attack);
 
-            this._speed = ResMgr.getInstance().createText();
+            this._speed = ResMgr.instance.createText();
             this._speed.pos(110, 37);
             this.addChild(this._speed);
 
-            this._score = ResMgr.getInstance().createText();
+            this._score = ResMgr.instance.createText();
             this._score.align = "right";
             this._score.pos(Global.Const.GAME_WIDTH - 120, 7);
             this.addChild(this._score);
@@ -89,6 +91,10 @@ module Game {
             this._moveBG.addChild(this._moveIcon);
             this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON),0,0,this.MOVE_ICON_WIDTH,this.MOVE_ICON_HEIGHT);
             this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
+
+            this._carryIcon = ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
+            this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234);
+            this.addChild(this._carryIcon);
 
             this.refreshAttackTxt(0);
             this.refreshSpeedTxt(0);
