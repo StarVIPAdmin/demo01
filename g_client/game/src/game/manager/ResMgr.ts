@@ -25,9 +25,9 @@ module Game {
         }
 
         // 创建玩家
-        createPlayer():Player
+        createPlayer(id:number):Player
         {
-            let player = new Player();
+            let player = new Player(id);
             player.init();
             return player;
         }

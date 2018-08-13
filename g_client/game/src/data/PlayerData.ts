@@ -24,5 +24,17 @@ module Data {
         public speed:number = 2;
         // 名称
         public name:string = "头号玩家";
+        // 唯一ID
+        public id:number;
+
+        constructor(id:number)
+        {
+            this.id = id;
+        }
+
+        init(obj:Object):void 
+        {
+
+        }
     }
 }

@@ -36,8 +36,8 @@ var Game;
         ResMgr.prototype.onDestroy = function () {
         };
         // 创建玩家
-        ResMgr.prototype.createPlayer = function () {
-            var player = new Game.Player();
+        ResMgr.prototype.createPlayer = function (id) {
+            var player = new Game.Player(id);
             player.init();
             return player;
         };

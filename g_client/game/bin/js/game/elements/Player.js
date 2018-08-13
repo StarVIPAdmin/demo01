@@ -11,15 +11,14 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
-    var PlayerData = Data.PlayerData;
     /**
      * 玩家类
      */
     var Player = /** @class */ (function (_super) {
         __extends(Player, _super);
-        function Player() {
+        function Player(Id) {
             var _this = _super.call(this) || this;
-            _this._data = null;
+            _this._id = Id;
             _this._name = null;
             _this._body = null;
             _this.size(96, 96);
@@ -27,7 +26,12 @@ var Game;
         }
         Object.defineProperty(Player.prototype, "data", {
             get: function () {
-                return this._data;
+                if (this._id == Data.myPlayerData.id) {
+                    return Data.myPlayerData;
+                }
+                else {
+                    return Data.playerDataList[this._id];
+                }
             },
             enumerable: true,
             configurable: true
@@ -38,8 +42,6 @@ var Game;
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
         Player.prototype.initData = function () {
-            this._data = new PlayerData();
-            this._data.name = "玩家A";
         };
         Player.prototype.initUI = function () {
             if (this._body == null) {

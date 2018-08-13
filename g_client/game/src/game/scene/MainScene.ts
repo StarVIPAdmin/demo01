@@ -50,7 +50,7 @@ module Game {
             this._mainUI = new GameMainUI();
             this.addChild(this._mainUI);
 
-            this._player = ResMgr.instance.createPlayer();
+            this._player = ResMgr.instance.createPlayer(1);
             this._player.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
             this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
             this.addChild(this._player);

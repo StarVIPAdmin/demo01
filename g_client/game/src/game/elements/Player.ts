@@ -10,8 +10,8 @@ module Game {
      */
     export class Player extends Sprite 
     {   
-        // 数据
-        private _data:PlayerData;
+        // 唯一ID
+        private _id:number;
         // 昵称
         private _name:Text;
         // 模型
@@ -19,13 +19,17 @@ module Game {
 
         get data():PlayerData
         {
-            return this._data;
+            if (this._id == Data.myPlayerData.id) {
+                return Data.myPlayerData;
+            } else {
+                return Data.playerDataList[this._id];
+            }
         }
 
-        constructor() 
+        constructor(Id:number) 
         {
             super();
-            this._data = null;
+            this._id = Id;
             this._name = null;
             this._body = null;
             this.size(96, 96);
@@ -41,8 +45,6 @@ module Game {
 
         initData():void 
         {
-            this._data = new PlayerData();
-            this._data.name = "玩家A";
         }
 
         initUI():void 

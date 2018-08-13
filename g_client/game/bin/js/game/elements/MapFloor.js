@@ -62,8 +62,8 @@ var Game;
         MapFloor.prototype.moveMap = function (angle) {
             if (angle == 0)
                 return;
-            var deltaPosX = Data.playerData.speed * Math.cos(angle);
-            var deltaPosY = Data.playerData.speed * Math.sin(angle);
+            var deltaPosX = Data.myPlayerData.speed * Math.cos(angle);
+            var deltaPosY = Data.myPlayerData.speed * Math.sin(angle);
             var targetPosX = this._mapSpr.x - deltaPosX;
             var targetPosY = this._mapSpr.y - deltaPosY;
             var minPosX = -5120 + Global.Const.GAME_WIDTH * 0.5;

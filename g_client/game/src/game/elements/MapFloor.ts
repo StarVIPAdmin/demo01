@@ -72,8 +72,8 @@ module Game {
             if (angle == 0) 
                 return;
 
-            let deltaPosX = Data.playerData.speed * Math.cos(angle);
-            let deltaPosY = Data.playerData.speed * Math.sin(angle);
+            let deltaPosX = Data.myPlayerData.speed * Math.cos(angle);
+            let deltaPosY = Data.myPlayerData.speed * Math.sin(angle);
             let targetPosX = this._mapSpr.x - deltaPosX;
             let targetPosY = this._mapSpr.y - deltaPosY;
 
