@@ -49,6 +49,8 @@ module Game {
             for (var i = 0; i < 3; i++) 
             {
                 recycle = this.createRecycle(i);
+                recycle.pos(i * 100, i * 100);
+                this.addChild(recycle);
                 this._recycleList[i] = recycle;
             }
         }

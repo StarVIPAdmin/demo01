@@ -21,48 +21,41 @@ var Game;
      */
     var ProgressBar = /** @class */ (function (_super) {
         __extends(ProgressBar, _super);
-        function ProgressBar(BarType) {
-            var _this = _super.call(this) || this;
-            _this.initData();
-            _this.initUI(BarType);
-            return _this;
+        function ProgressBar() {
+            return _super !== null && _super.apply(this, arguments) || this;
         }
+        Object.defineProperty(ProgressBar.prototype, "value", {
+            get: function () {
+                return this._value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ProgressBar.prototype.init = function () {
+            this.size(180 /* x */, 21 /* y */);
+            this.initData();
+            this.initUI();
+        };
         ProgressBar.prototype.initData = function () {
             this._bg = null;
             this._bar = null;
-            this.value = VALUE_MIN;
+            this._value = VALUE_MIN;
         };
-        ProgressBar.prototype.initUI = function (BarType) {
-            this.width = 180 /* x */;
-            this.height = 21 /* y */;
-            var texture1 = Laya.loader.getRes(Global.Path.PNG_BAR_BG);
-            var texture2;
-            switch (BarType) {
-                case Global.Const.BAR_TYPE_MP:
-                    texture2 = Laya.loader.getRes(Global.Path.PNG_BAR_MP);
-                    break;
-                case Global.Const.BAR_TYPE_HP:
-                    texture2 = Laya.loader.getRes(Global.Path.PNG_BAR_HP);
-                    break;
-            }
-            this._bg = new Sprite();
-            this._bar = new Sprite();
-            this._bar.x = 15;
-            this._bar.y = 2;
-            this._bg.graphics.drawTexture(texture1, 0, 0, 180 /* x */, 21 /* y */);
-            this._bar.graphics.drawTexture(texture2, 0, 0, 155 /* x */, 12 /* y */);
+        ProgressBar.prototype.initUI = function () {
+            this._bg = Game.ResMgr.instance.createSprite(Global.Path.PNG_BAR_BG, 180 /* x */, 21 /* y */);
             this.addChild(this._bg);
+            this._bar = Game.ResMgr.instance.createSprite(Global.Path.PNG_BAR_HP, 155 /* x */, 12 /* y */, 15, 2);
             this.addChild(this._bar);
         };
         ProgressBar.prototype.changeValue = function (Val) {
-            this.value += Val;
-            if (this.value < VALUE_MIN) {
-                this.value = VALUE_MIN;
+            this._value += Val;
+            if (this._value < VALUE_MIN) {
+                this._value = VALUE_MIN;
             }
-            else if (this.value > VALUE_MAX) {
-                this.value = VALUE_MAX;
+            else if (this._value > VALUE_MAX) {
+                this._value = VALUE_MAX;
             }
-            this._bar.scale(this.value / VALUE_MAX, 1);
+            this._bar.scale(this._value / VALUE_MAX, 1);
         };
         return ProgressBar;
     }(Sprite));

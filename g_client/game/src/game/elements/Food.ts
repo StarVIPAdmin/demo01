@@ -51,6 +51,8 @@ module Game {
             for (var i = 0; i < 5; i++) 
             {
                 food = this.createFood(i);
+                food.pos(i * 10, i * 10);
+                this.addChild(food);
                 this._foodList[i] = food;
             }
         }

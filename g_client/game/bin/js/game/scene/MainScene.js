@@ -30,15 +30,18 @@ var Game;
         /** 重写父类函数 */
         MainScene.prototype.onInit = function () {
             _super.prototype.onInit.call(this);
-            this._mapContainer = null;
             this._mainUI = null;
-            this._player = null;
+            this._mapContainer = null;
+            this._playerContainer = null;
             this.initUI();
             this.initEvent();
         };
         /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
+            this._playerContainer.createMyPlayer();
+            this._playerContainer.addPlayer();
+            this._mapContainer.show();
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
@@ -48,13 +51,13 @@ var Game;
         };
         MainScene.prototype.initUI = function () {
             this._mapContainer = new Game.MapContainer();
+            this._mapContainer.init();
             this.addChild(this._mapContainer);
+            this._playerContainer = new Game.PlayerContainer();
+            this._playerContainer.init();
+            this.addChild(this._playerContainer);
             this._mainUI = new Game.GameMainUI();
             this.addChild(this._mainUI);
-            this._player = Game.ResMgr.instance.createPlayer(1);
-            this._player.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
-            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
-            this.addChild(this._player);
         };
         MainScene.prototype.initEvent = function () {
             Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);

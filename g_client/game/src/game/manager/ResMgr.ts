@@ -24,14 +24,6 @@ module Game {
         {
         }
 
-        // 创建玩家
-        createPlayer(id:number):Player
-        {
-            let player = new Player(id);
-            player.init();
-            return player;
-        }
-
         // 创建按钮
         createButton(skinPath:string):Button
         {

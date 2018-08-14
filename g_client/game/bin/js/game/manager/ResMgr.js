@@ -35,12 +35,6 @@ var Game;
         /** 重写父类函数 */
         ResMgr.prototype.onDestroy = function () {
         };
-        // 创建玩家
-        ResMgr.prototype.createPlayer = function (id) {
-            var player = new Game.Player(id);
-            player.init();
-            return player;
-        };
         // 创建按钮
         ResMgr.prototype.createButton = function (skinPath) {
             var btn = new Button(skinPath);

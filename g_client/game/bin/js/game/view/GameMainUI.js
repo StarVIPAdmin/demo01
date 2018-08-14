@@ -42,7 +42,8 @@ var Game;
             this._halfMoveIconHeight = this.MOVE_ICON_HEIGHT * 0.5;
         };
         GameMainUI.prototype.initUI = function () {
-            this._powerBar = new Game.ProgressBar(Global.Const.BAR_TYPE_MP);
+            this._powerBar = new Game.ProgressBar();
+            this._powerBar.init();
             this._powerBar.pos(10, 7);
             this.addChild(this._powerBar);
             this._attack = Game.ResMgr.instance.createText();

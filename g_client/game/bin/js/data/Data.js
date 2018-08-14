@@ -6,7 +6,9 @@ var Data;
         Data.playerDataList = [];
         Data.foodDataList = [];
         Data.buffDataList = [];
+        Data.recycleDataList = [];
         Data.myPlayerData = new Data.PlayerData(1);
+        Data.myPlayerData.init();
     }
     Data.init = init;
 })(Data || (Data = {}));

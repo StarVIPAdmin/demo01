@@ -13,11 +13,7 @@ module Game {
     {
         private _mainUI:GameMainUI;
         private _mapContainer:MapContainer;
-        private _buffContainer:BuffContainer;
-        private _foodContainer:FoodContainer;
-        private _recycleContainer:RecycleContainer;
-        private _playerContainer:any;
-        private _player:Player;
+        private _playerContainer:PlayerContainer;
 
         /** 重写父类函数 */
         public get sceneData():MainSceneData
@@ -29,9 +25,9 @@ module Game {
         onInit():void 
         {
             super.onInit();
-            this._mapContainer = null;
             this._mainUI = null;
-            this._player = null;
+            this._mapContainer = null;
+            this._playerContainer = null;
 
             this.initUI();
             this.initEvent();
@@ -41,6 +37,11 @@ module Game {
         onShow():void 
         {
             super.onShow();
+
+            this._playerContainer.createMyPlayer();
+            this._playerContainer.addPlayer();
+
+            this._mapContainer.show();
 
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -55,15 +56,15 @@ module Game {
         initUI():void 
         {
             this._mapContainer = new MapContainer();
+            this._mapContainer.init();
             this.addChild(this._mapContainer);
+
+            this._playerContainer = new PlayerContainer();
+            this._playerContainer.init();
+            this.addChild(this._playerContainer);
 
             this._mainUI = new GameMainUI();
             this.addChild(this._mainUI);
-
-            this._player = ResMgr.instance.createPlayer(1);
-            this._player.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
-            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
-            this.addChild(this._player);
         }
 
         initEvent():void 

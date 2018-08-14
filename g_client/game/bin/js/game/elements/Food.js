@@ -45,16 +45,33 @@ var Game;
         function FoodContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        FoodContainer.prototype.init = function () {
+            this._foodList = [];
+        };
         FoodContainer.prototype.createFood = function (id) {
             var food = new Food(id);
             food.init();
             return food;
         };
         FoodContainer.prototype.addFood = function () {
+            var food;
+            for (var i = 0; i < 5; i++) {
+                food = this.createFood(i);
+                food.pos(i * 10, i * 10);
+                this.addChild(food);
+                this._foodList[i] = food;
+            }
         };
-        FoodContainer.prototype.removeFood = function () {
+        FoodContainer.prototype.removeFood = function (id) {
+            var food = this._foodList[id];
+            food.destroy();
+            this._foodList[id] = null;
         };
         FoodContainer.prototype.clearFood = function () {
+            this._foodList.forEach(function (item) {
+                item.destroy();
+            });
+            this._foodList = [];
         };
         return FoodContainer;
     }(Sprite));

@@ -57,6 +57,8 @@ var Game;
             var buff;
             for (var i = 0; i < 5; i++) {
                 buff = this.createBuff(i);
+                buff.pos(i * 50, i * 50);
+                this.addChild(buff);
                 this._buffList[i] = buff;
             }
         };
@@ -66,8 +68,8 @@ var Game;
             this._buffList[id] = null;
         };
         BuffContainer.prototype.clearBuff = function () {
-            this._buffList.forEach(function (buff) {
-                buff.destroy();
+            this._buffList.forEach(function (item) {
+                item.destroy();
             });
             this._buffList = [];
         };

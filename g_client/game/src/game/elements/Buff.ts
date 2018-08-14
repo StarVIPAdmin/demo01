@@ -51,6 +51,8 @@ module Game {
             for (var i = 0; i < 5; i++) 
             {
                 buff = this.createBuff(i);
+                buff.pos(i * 50, i * 50);
+                this.addChild(buff);
                 this._buffList[i] = buff;
             }
         }
