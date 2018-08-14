@@ -61,7 +61,7 @@ module Game {
                 this.addChild(this._name);
             }
 
-            this._name.text = this.data.name;
+            this._name.text = this.data.nick;
         }
 
         onLoop():void 

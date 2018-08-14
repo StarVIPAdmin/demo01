@@ -4,31 +4,71 @@ module Game {
     /**
      * 食物类
      */
-    export class Food extends Sprite
+    class Food extends BaseElement
     {
-        // 数据
-        public data:Data.FoodData;
-
-        // 图标
-        private _icon:Sprite;
-
-        init(foodId:number):void 
+        get data():Data.FoodData
         {
-            this.data.Id = foodId;
-            this.data.cfgId = 1;
-            this.data.type = Data.FoodType.BOTANY;
+            return Data.foodDataList[this.id];
+        }
 
-            let cfg:Object = {};
+        /** 重写父类函数 */
+        init():void 
+        {
+            this.size(128, 128);
+            super.init();
+        }
 
-            let iconTexture = Laya.loader.getRes(Global.Path.PNG_ITEM_1);
+        /** 重写父类函数 */
+        destroy():void 
+        {
+            super.destroy();
+        }
+    }
 
-            if (this._icon == null) {
-                this._icon = new Sprite();
-                this.addChild(this._icon);
+    /**
+     * 食物类容器
+     */
+    export class FoodContainer extends Sprite
+    {
+        // 食物列表
+        private _foodList:Array<Food>;
+
+        init():void
+        {
+            this._foodList = [];
+        }
+
+        createFood(id:number):Food
+        {
+            let food = new Food(id);
+            food.init();
+            return food;
+        }
+
+        addFood():void 
+        {
+            let food:Food;
+            for (var i = 0; i < 5; i++) 
+            {
+                food = this.createFood(i);
+                this._foodList[i] = food;
             }
+        }
 
-            this._icon.graphics.clear();
-            this._icon.graphics.drawTexture(iconTexture, 0, 0, 32, 32);
+        removeFood(id:number):void 
+        {
+            let food = this._foodList[id];
+            food.destroy();
+            this._foodList[id] = null;
+        }
+
+        clearFood():void 
+        {
+            this._foodList.forEach(item => {
+                item.destroy();
+            });
+
+            this._foodList = [];
         }
     }
 }

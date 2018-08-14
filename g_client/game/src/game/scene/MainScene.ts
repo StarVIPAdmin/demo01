@@ -12,7 +12,11 @@ module Game {
     export class MainScene extends Core.BaseScene 
     {
         private _mainUI:GameMainUI;
-        private _mapFloor:MapFloor;
+        private _mapContainer:MapContainer;
+        private _buffContainer:BuffContainer;
+        private _foodContainer:FoodContainer;
+        private _recycleContainer:RecycleContainer;
+        private _playerContainer:any;
         private _player:Player;
 
         /** 重写父类函数 */
@@ -25,7 +29,7 @@ module Game {
         onInit():void 
         {
             super.onInit();
-            this._mapFloor = null;
+            this._mapContainer = null;
             this._mainUI = null;
             this._player = null;
 
@@ -42,10 +46,16 @@ module Game {
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
+        /** 重写父类函数 */
+        onDestroy():void 
+        {
+            super.onDestroy();
+        }
+
         initUI():void 
         {
-            this._mapFloor = new MapFloor();
-            this.addChild(this._mapFloor);
+            this._mapContainer = new MapContainer();
+            this.addChild(this._mapContainer);
 
             this._mainUI = new GameMainUI();
             this.addChild(this._mainUI);
@@ -66,7 +76,7 @@ module Game {
 
         onLoop():void 
         {
-            this._mapFloor.moveMap(this._mainUI.getMoveIconAngle());
+            this._mapContainer.moveMap(this._mainUI.getMoveIconAngle());
             
         //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
         //         let floor = this._mapFloor.getChildAt(i) as Floor;
@@ -107,13 +117,13 @@ module Game {
         //     }
         }
 
-        itemTweenComplete(PItem:Food):void 
-        {
-            PItem.visible = false;
-            PItem.y = 0;
-            PItem.alpha = 1;
-            PItem.scale(1, 1);
-        }
+        // itemTweenComplete(PItem:Food):void 
+        // {
+        //     PItem.visible = false;
+        //     PItem.y = 0;
+        //     PItem.alpha = 1;
+        //     PItem.scale(1, 1);
+        // }
 
         onMouseDown(evt:Event):void 
         {

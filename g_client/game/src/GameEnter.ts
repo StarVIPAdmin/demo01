@@ -38,7 +38,7 @@ function onCompleteHandler():void
     resUrl.push({ "url":Global.Path.PNG_BAR_MP, "type":Laya.Loader.IMAGE });
     resUrl.push({ "url":Global.Path.PNG_BAR_HP, "type":Laya.Loader.IMAGE });
     resUrl.push({ "url":Global.Path.PNG_BAR_BG, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_FLOOR, "type":Laya.Loader.IMAGE });
+    // resUrl.push({ "url":Global.Path.PNG_FLOOR, "type":Laya.Loader.IMAGE });
 
     function onLoaded():void {
         // 加载完成, 进入游戏

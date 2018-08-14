@@ -4,6 +4,8 @@ var Data;
     function init() {
         Data.isGameOver = false;
         Data.playerDataList = [];
+        Data.foodDataList = [];
+        Data.buffDataList = [];
         Data.myPlayerData = new Data.PlayerData(1);
     }
     Data.init = init;

@@ -12,52 +12,49 @@ var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
     /**
-     * 食物类
+     * 食物回收点
      */
-    var Food = /** @class */ (function (_super) {
-        __extends(Food, _super);
-        function Food() {
+    var FoodRecycle = /** @class */ (function (_super) {
+        __extends(FoodRecycle, _super);
+        function FoodRecycle() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        Object.defineProperty(Food.prototype, "data", {
+        Object.defineProperty(FoodRecycle.prototype, "data", {
             get: function () {
-                return Data.foodDataList[this.id];
+                return null;
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
-        Food.prototype.init = function () {
-            this.size(128, 128);
+        FoodRecycle.prototype.init = function () {
+            this.size(512, 512);
             _super.prototype.init.call(this);
         };
         /** 重写父类函数 */
-        Food.prototype.destroy = function () {
+        FoodRecycle.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
         };
-        return Food;
+        return FoodRecycle;
     }(Game.BaseElement));
-    /**
-     * 食物类容器
-     */
-    var FoodContainer = /** @class */ (function (_super) {
-        __extends(FoodContainer, _super);
-        function FoodContainer() {
+    var FoodRecycleContainer = /** @class */ (function (_super) {
+        __extends(FoodRecycleContainer, _super);
+        function FoodRecycleContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        FoodContainer.prototype.createFood = function (id) {
-            var food = new Food(id);
-            food.init();
-            return food;
+        FoodRecycleContainer.prototype.createFoodRecycle = function (id) {
+            var foodRecycle = new FoodRecycle(id);
+            foodRecycle.init();
+            return foodRecycle;
         };
-        FoodContainer.prototype.addFood = function () {
+        FoodRecycleContainer.prototype.addFoodRecycle = function () {
         };
-        FoodContainer.prototype.removeFood = function () {
+        FoodRecycleContainer.prototype.removeFoodRecycle = function () {
         };
-        FoodContainer.prototype.clearFood = function () {
+        FoodRecycleContainer.prototype.clearFoodRecycle = function () {
         };
-        return FoodContainer;
+        return FoodRecycleContainer;
     }(Sprite));
-    Game.FoodContainer = FoodContainer;
+    Game.FoodRecycleContainer = FoodRecycleContainer;
 })(Game || (Game = {}));
-//# sourceMappingURL=Food.js.map
+//# sourceMappingURL=FoodRecycle.js.map

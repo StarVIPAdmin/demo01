@@ -30,7 +30,7 @@ var Game;
         /** 重写父类函数 */
         MainScene.prototype.onInit = function () {
             _super.prototype.onInit.call(this);
-            this._mapFloor = null;
+            this._mapContainer = null;
             this._mainUI = null;
             this._player = null;
             this.initUI();
@@ -42,9 +42,13 @@ var Game;
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
+        /** 重写父类函数 */
+        MainScene.prototype.onDestroy = function () {
+            _super.prototype.onDestroy.call(this);
+        };
         MainScene.prototype.initUI = function () {
-            this._mapFloor = new Game.MapFloor();
-            this.addChild(this._mapFloor);
+            this._mapContainer = new Game.MapContainer();
+            this.addChild(this._mapContainer);
             this._mainUI = new Game.GameMainUI();
             this.addChild(this._mainUI);
             this._player = Game.ResMgr.instance.createPlayer(1);
@@ -59,7 +63,7 @@ var Game;
             Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
         MainScene.prototype.onLoop = function () {
-            this._mapFloor.moveMap(this._mainUI.getMoveIconAngle());
+            this._mapContainer.moveMap(this._mainUI.getMoveIconAngle());
             //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
             //         let floor = this._mapFloor.getChildAt(i) as Floor;
             //         if (floor.checkHit(this._player.x, this._player.y)) {
@@ -93,12 +97,13 @@ var Game;
             //         this.addChild(npc);
             //     }
         };
-        MainScene.prototype.itemTweenComplete = function (PItem) {
-            PItem.visible = false;
-            PItem.y = 0;
-            PItem.alpha = 1;
-            PItem.scale(1, 1);
-        };
+        // itemTweenComplete(PItem:Food):void 
+        // {
+        //     PItem.visible = false;
+        //     PItem.y = 0;
+        //     PItem.alpha = 1;
+        //     PItem.scale(1, 1);
+        // }
         MainScene.prototype.onMouseDown = function (evt) {
             this._mainUI.onMouseDown(evt);
         };

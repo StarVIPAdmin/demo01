@@ -12,29 +12,25 @@ module Data {
     /**
      * 玩家数据类
      */
-    export class PlayerData
+    export class PlayerData extends BaseData
     {
         // 状态（正常，死亡，搬运，攻击）
         public state:number = PlayerState.WALK;
         // 体力
-        public power:number = 100;
+        public power:number;
         // 攻击力
-        public attack:number = 10;
+        public attack:number;
         // 速度
-        public speed:number = 2;
-        // 名称
-        public name:string = "头号玩家";
-        // 唯一ID
-        public id:number;
+        public speed:number;
 
-        constructor(id:number)
+        init():void 
         {
-            this.id = id;
-        }
+            this.nick = "玩家"+this.id;
+            this.bodyPath = Global.Path.PNG_PLAYER_1;
 
-        init(obj:Object):void 
-        {
-
+            this.power = 100;
+            this.attack = 10;
+            this.speed = 3;
         }
     }
 }

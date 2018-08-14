@@ -144,5 +144,74 @@ var Game;
         return Floor;
     }(Sprite));
     Game.Floor = Floor;
+    var MapContainer = /** @class */ (function (_super) {
+        __extends(MapContainer, _super);
+        function MapContainer() {
+            var _this = _super.call(this) || this;
+            _this._dieFloorList = [];
+            _this._liveFloorList = [];
+            _this.onInit();
+            return _this;
+        }
+        MapContainer.prototype.onInit = function () {
+            this._mapSpr = new Sprite();
+            this._mapSpr.graphics.clear();
+            this._mapSpr.graphics.drawTexture(Laya.loader.getRes(Global.Path.JPG_BACKGROUND), 0, 0, 5120, 5120);
+            this.addChild(this._mapSpr);
+            // let floor = this.addFloor(1);
+            // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
+            // Laya.timer.frameLoop(1, this, this.onLoop);
+        };
+        MapContainer.prototype.onLoop = function () {
+            while (this._dieFloorList.length > 0) {
+                var floor = this._dieFloorList.shift();
+                floor.removeSelf();
+                Laya.Pool.recover("floor", floor);
+            }
+        };
+        MapContainer.prototype.addFloor = function (floorType) {
+            var floor = Laya.Pool.getItemByClass("floor", Floor);
+            floor.init(floorType);
+            floor.once(Global.Event.FLOOR_OUT_COMPLETE, this, this.getFloor);
+            floor.once(Global.Event.FLOOR_OUT_DIE, this, this.delFloor);
+            this.addChild(floor);
+            this._liveFloorList.push(floor);
+            return floor;
+        };
+        MapContainer.prototype.delFloor = function (floor) {
+            this._dieFloorList.push(floor);
+            // this._liveFloorList.slice(1, 1);
+            var len = this._liveFloorList.length;
+            for (var i = 0; i < len; i++) {
+                var tar = this._liveFloorList[i];
+            }
+        };
+        MapContainer.prototype.getFloor = function (floor) {
+            this.addFloor(2);
+        };
+        MapContainer.prototype.moveMap = function (angle) {
+            if (angle == 0)
+                return;
+            var deltaPosX = Data.myPlayerData.speed * Math.cos(angle);
+            var deltaPosY = Data.myPlayerData.speed * Math.sin(angle);
+            var targetPosX = this._mapSpr.x - deltaPosX;
+            var targetPosY = this._mapSpr.y - deltaPosY;
+            var minPosX = -5120 + Global.Const.GAME_WIDTH * 0.5;
+            var minPosY = -5120 + Global.Const.GAME_HEIGHT * 0.5;
+            var maxPosX = Global.Const.GAME_WIDTH * 0.5;
+            var maxPosY = Global.Const.GAME_HEIGHT * 0.5;
+            if (targetPosX < minPosX)
+                targetPosX = minPosX;
+            if (targetPosX > maxPosX)
+                targetPosX = maxPosX;
+            if (targetPosY < minPosY)
+                targetPosY = minPosY;
+            if (targetPosY > maxPosY)
+                targetPosY = maxPosY;
+            this._mapSpr.pos(targetPosX, targetPosY);
+        };
+        return MapContainer;
+    }(Sprite));
+    Game.MapContainer = MapContainer;
 })(Game || (Game = {}));
-//# sourceMappingURL=Floor.js.map
+//# sourceMappingURL=Map.js.map
