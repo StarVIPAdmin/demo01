@@ -14,7 +14,9 @@ module Game {
 		run():void 
 		{
 			this.initRegister();
-			Data.init();
+
+			DataMgr.instance.testInitData();
+			// NetMgr.instance.testInitData();
 
 			// 进入主场景
 			sceneMgr.enterScene(Global.SceneId.MAIN_SCENE);

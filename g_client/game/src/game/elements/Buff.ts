@@ -8,13 +8,12 @@ module Game {
     {
         get data():Data.BuffData
         {
-            return Data.buffDataList[this.id];
+            return DataMgr.instance.getBuffData(this.id);
         }
 
         /** 重写父类函数 */
         init():void 
         {
-            this.size(512, 512);
             super.init();
         }
 
@@ -38,6 +37,7 @@ module Game {
             this._buffList = [];
         }
 
+        /** 创建buff */
         createBuff(id:number):Buff
         {
             let buff = new Buff(id);
@@ -45,32 +45,72 @@ module Game {
             return buff;
         }
 
-        addBuff():void 
+        /** 重置buff */
+        resetBuff():void 
         {
-            let buff:Buff;
-            for (var i = 0; i < 5; i++) 
-            {
-                buff = this.createBuff(i);
-                buff.pos(i * 50, i * 50);
-                this.addChild(buff);
-                this._buffList[i] = buff;
+            // 清理旧数据
+            this.clearBuff();
+
+            let dataList = DataMgr.instance.buffDataList;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+
+            dataList.forEach(data => {
+                let buff = this.createBuff(data.id);
+                this.addChild(buff);
+                this._buffList[data.id] = buff;
+            });
         }
 
+        /** 根据唯一ID，增加指定buff */
+        addBuff(id:number):void 
+        {
+            if (this.checkBuff(id)) {
+                return;
+            }
+
+            let buff = this.createBuff(id);
+            this.addChild(buff);
+            this._buffList[id] = buff;
+        }
+
+        /** 根据唯一ID，移除指定buff */
         removeBuff(id:number):void 
         {
-            let buff:Buff = this._buffList[id];
+            if (!this.checkBuff(id)) 
+                return;
+
+            let buff = this._buffList[id];
             buff.destroy();
             this._buffList[id] = null;
         }
 
+        /** 清除buff */
         clearBuff():void 
         {
+            if (!this.checkBuffList()) 
+                return;
+            
             this._buffList.forEach(item => {
                 item.destroy();
             });
-
             this._buffList = [];
+        }
+
+        /** 检测buff列表是否有数据 */
+        checkBuffList():boolean 
+        {
+            return !(this._buffList == null || this._buffList.length == 0)
+        }
+
+        /** 根据唯一ID，检测buff是否存在 */
+        checkBuff(id:number):boolean 
+        {
+            if (!this.checkBuffList()) {
+                return false;
+            }
+            return this._buffList[id] != null
         }
     }
 }

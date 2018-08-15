@@ -4,21 +4,16 @@ module Game {
     /**
      * 玩家类
      */
-    class Player extends BaseElement 
+    export class Player extends BaseElement 
     {   
         get data():Data.PlayerData
         {
-            if (this.id == Data.myPlayerData.id) {
-                return Data.myPlayerData;
-            } else {
-                return Data.playerDataList[this.id];
-            }
+            return DataMgr.instance.getPlayerData(this.id);
         }
 
         /** 重写父类函数 */
         init():void 
         {
-            this.size(96, 96);
             super.init();
 
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -54,62 +49,80 @@ module Game {
      */
     export class PlayerContainer extends Sprite
     {
-        private _myPlayer:Player;
-
         // 玩家列表
         private _playerList:Array<Player>;
-
-        get myPlayer():Player
-        {
-            return this._myPlayer;
-        }
 
         init():void 
         {
             this._playerList = [];
         }
 
-        createMyPlayer():void
+        /** 重置玩家 */
+        resetPlayer():void 
         {
-            this._myPlayer = this.createPlayer(99);
-            this._myPlayer.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
-            // this._myPlayer.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
-            this.addChild(this._myPlayer);
-        }
+            // 清理旧数据
+            this.clearPlayer();
 
-        createPlayer(id:number):Player
-        {
-            let player = new Player(id);
-            player.init();
-            return player;
-        }
-
-        addPlayer():void 
-        {
-            // let player:Player;
-            for (var i = 0; i < 4; i++) 
-            {
-                let player = this.createPlayer(i);
-                player.pos(i * 200, i * 200);
-                this.addChild(player);
-                this._playerList[i] = player;
+            let dataList = DataMgr.instance.otherPlayerData;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+
+            dataList.forEach(data => {
+                let player = ResMgr.instance.createPlayer(data.id);
+                this.addChild(player);
+                this._playerList[data.id] = player;
+            });
         }
 
+        /** 根据唯一ID，增加指定玩家 */
+        addPlayer(id:number):void 
+        {
+            if (this.checkPlayer(id)) {
+                return;
+            }
+
+            let player = ResMgr.instance.createPlayer(id);
+            this.addChild(player);
+            this._playerList[id] = player;
+        }
+
+        /** 根据唯一ID，移除指定玩家 */
         removePlayer(id:number):void 
         {
+            if (!this.checkPlayer(id))
+                return;
+
             let player = this._playerList[id];
             player.destroy();
             this._playerList[id] = null;
         }
 
+        /** 清除玩家 */
         clearPlayer():void 
         {
+            if (!this.checkPlayerList())
+                return;
+
             this._playerList.forEach(item => {
                 item.destroy();
             });
-
             this._playerList = [];
+        }
+
+        /** 检测玩家列表是否有数据 */
+        checkPlayerList():boolean 
+        {
+            return !(this._playerList == null || this._playerList.length == 0)
+        }
+
+        /** 根据唯一ID，检测玩家是否存在 */
+        checkPlayer(id:number):boolean 
+        {
+            if (!this.checkPlayerList()) {
+                return false;
+            }
+            return this._playerList[id] != null
         }
     }
 }

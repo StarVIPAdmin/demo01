@@ -30,7 +30,12 @@ module Data {
 
             this.power = 100;
             this.attack = 10;
-            this.speed = 3;
+            this.speed = 10;
+
+            this.width = 96;
+            this.height = 96;
+            this.x = this.id * 2;
+            this.y = this.id * 3;
         }
     }
 }

@@ -13,7 +13,7 @@ module Game {
     {
         private _mainUI:GameMainUI;
         private _mapContainer:MapContainer;
-        private _playerContainer:PlayerContainer;
+        private _player:Player;
 
         /** 重写父类函数 */
         public get sceneData():MainSceneData
@@ -27,7 +27,7 @@ module Game {
             super.onInit();
             this._mainUI = null;
             this._mapContainer = null;
-            this._playerContainer = null;
+            this._player = null;
 
             this.initUI();
             this.initEvent();
@@ -38,10 +38,15 @@ module Game {
         {
             super.onShow();
 
-            this._playerContainer.createMyPlayer();
-            this._playerContainer.addPlayer();
+            this._player = ResMgr.instance.createPlayer(DataMgr.instance.myPlayerData.id);
+            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
+            this.addChild(this._player);
 
-            this._mapContainer.show();
+            this._mapContainer.resetElements();
+
+            this._mainUI.refreshAttackTxt(DataMgr.instance.myPlayerData.attack);
+            this._mainUI.refreshSpeedTxt(DataMgr.instance.myPlayerData.speed);
+            this._mainUI.refreshScoreTxt(this.sceneData.score);
 
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -58,10 +63,6 @@ module Game {
             this._mapContainer = new MapContainer();
             this._mapContainer.init();
             this.addChild(this._mapContainer);
-
-            this._playerContainer = new PlayerContainer();
-            this._playerContainer.init();
-            this.addChild(this._playerContainer);
 
             this._mainUI = new GameMainUI();
             this.addChild(this._mainUI);
@@ -149,8 +150,7 @@ module Game {
 
         playerDie():void 
         {
-            
-            Data.isGameOver = true;
+            DataMgr.instance.isGameOver = true;
             viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         }
 

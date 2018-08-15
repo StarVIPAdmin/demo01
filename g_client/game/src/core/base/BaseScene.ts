@@ -60,10 +60,6 @@ module Core {
         {
             return this.__sceneData;
         }
-        public set sceneData(Value:BaseSceneData)
-        {
-            this.__sceneData = Value;
-        }
 
         /** 场景初始化 */
         onInit():void 

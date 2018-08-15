@@ -69,9 +69,6 @@ var Game;
             this._carryIcon = Game.ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
             this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234);
             this.addChild(this._carryIcon);
-            this.refreshAttackTxt(0);
-            this.refreshSpeedTxt(0);
-            this.refreshScoreTxt(0);
         };
         // 刷新得分
         GameMainUI.prototype.refreshScoreTxt = function (Value) {

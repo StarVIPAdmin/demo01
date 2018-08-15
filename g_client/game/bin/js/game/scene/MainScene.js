@@ -32,16 +32,20 @@ var Game;
             _super.prototype.onInit.call(this);
             this._mainUI = null;
             this._mapContainer = null;
-            this._playerContainer = null;
+            this._player = null;
             this.initUI();
             this.initEvent();
         };
         /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
-            this._playerContainer.createMyPlayer();
-            this._playerContainer.addPlayer();
-            this._mapContainer.show();
+            this._player = Game.ResMgr.instance.createPlayer(Game.DataMgr.instance.myPlayerData.id);
+            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
+            this.addChild(this._player);
+            this._mapContainer.resetElements();
+            this._mainUI.refreshAttackTxt(Game.DataMgr.instance.myPlayerData.attack);
+            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.myPlayerData.speed);
+            this._mainUI.refreshScoreTxt(this.sceneData.score);
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
@@ -53,9 +57,6 @@ var Game;
             this._mapContainer = new Game.MapContainer();
             this._mapContainer.init();
             this.addChild(this._mapContainer);
-            this._playerContainer = new Game.PlayerContainer();
-            this._playerContainer.init();
-            this.addChild(this._playerContainer);
             this._mainUI = new Game.GameMainUI();
             this.addChild(this._mainUI);
         };
@@ -120,7 +121,7 @@ var Game;
             // this._mainUI.onMouseUp(evt);
         };
         MainScene.prototype.playerDie = function () {
-            Data.isGameOver = true;
+            Game.DataMgr.instance.isGameOver = true;
             Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         };
         MainScene.prototype.updateScore = function () {

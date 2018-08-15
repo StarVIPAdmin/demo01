@@ -39,7 +39,7 @@ var Game;
         };
         GameStartUI.prototype.onMouseDown = function () {
             Game.viewMgr.hideView(Global.ViewId.GAME_INFO_UI);
-            Data.isGameOver = false;
+            Game.DataMgr.instance.isGameOver = false;
         };
         return GameStartUI;
     }(Sprite));

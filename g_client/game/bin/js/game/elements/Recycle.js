@@ -21,14 +21,13 @@ var Game;
         }
         Object.defineProperty(Recycle.prototype, "data", {
             get: function () {
-                return Data.recycleDataList[this.id];
+                return Game.DataMgr.instance.getRecycleData(this.id);
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
         Recycle.prototype.init = function () {
-            this.size(512, 512);
             _super.prototype.init.call(this);
         };
         /** 重写父类函数 */
@@ -45,26 +44,32 @@ var Game;
         RecycleContainer.prototype.init = function () {
             this._recycleList = [];
         };
+        /** 创建回收点 */
         RecycleContainer.prototype.createRecycle = function (id) {
             var recycle = new Recycle(id);
             recycle.init();
             return recycle;
         };
-        RecycleContainer.prototype.addRecycle = function () {
-            var recycle;
-            for (var i = 0; i < 3; i++) {
-                recycle = this.createRecycle(i);
-                recycle.pos(i * 100, i * 100);
-                this.addChild(recycle);
-                this._recycleList[i] = recycle;
+        /** 重置回收点 */
+        RecycleContainer.prototype.resetRecycle = function () {
+            var _this = this;
+            // 清理旧数据
+            this.clearRecycle();
+            var dataList = Game.DataMgr.instance.recycleDataList;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+            dataList.forEach(function (data) {
+                var recycle = _this.createRecycle(data.id);
+                _this.addChild(recycle);
+                _this._recycleList[data.id] = recycle;
+            });
         };
-        RecycleContainer.prototype.removeRecycle = function (id) {
-            var recycle = this._recycleList[id];
-            recycle.destroy();
-            this._recycleList[id] = null;
-        };
+        /** 清除回收点 */
         RecycleContainer.prototype.clearRecycle = function () {
+            if (this._recycleList == null || this._recycleList.length == 0) {
+                return;
+            }
             this._recycleList.forEach(function (item) {
                 item.destroy();
             });

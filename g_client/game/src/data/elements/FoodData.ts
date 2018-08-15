@@ -32,6 +32,11 @@ module Data {
             this.weight = 10;
             this.cfgId = 1;
 
+            this.width = 128;
+            this.height = 128;
+            this.x = this.id * 2;
+            this.y = this.id * 3;
+
             if (this.type == FoodType.BOTANY) {
                 this.attack = 0;
             } else {

@@ -60,7 +60,7 @@ var Core;
             }
             var sceneData = new sceneDataCls(SceneId);
             var scene = new sceneCls();
-            scene.sceneData = sceneData;
+            scene.__sceneData = sceneData;
             scene.onInit();
             scene.onShow();
             this._curScene = scene;
@@ -71,7 +71,7 @@ var Core;
         };
         /** 注册场景 */
         SceneMgr.prototype.registerScene = function (SceneId, SceneCls, SceneData) {
-            if (SceneData === void 0) { SceneData = null; }
+            if (SceneData === void 0) { SceneData = Core.BaseSceneData; }
             if (!SceneId || !SceneCls) {
                 console.log("[SceneMgr] registerScene : SceneId or SceneCls is null", SceneId, SceneCls);
                 return;
@@ -81,7 +81,7 @@ var Core;
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
-            this._sceneDataCls[SceneId] = SceneData || Core.BaseSceneData;
+            this._sceneDataCls[SceneId] = SceneData;
         };
         return SceneMgr;
     }(Core.BaseSingleton));

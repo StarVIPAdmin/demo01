@@ -9,13 +9,12 @@ module Game {
     {
         get data():Data.RecycleData
         {
-            return Data.recycleDataList[this.id];
+            return DataMgr.instance.getRecycleData(this.id);
         }
 
         /** 重写父类函数 */
         init():void 
         {
-            this.size(512, 512);
             super.init();
         }
 
@@ -35,7 +34,8 @@ module Game {
         {
             this._recycleList = [];
         }
-
+        
+        /** 创建回收点 */
         createRecycle(id:number):Recycle
         {
             let recycle = new Recycle(id);
@@ -43,31 +43,33 @@ module Game {
             return recycle;
         }
 
-        addRecycle():void 
+        /** 重置回收点 */
+        resetRecycle():void 
         {
-            let recycle:Recycle;
-            for (var i = 0; i < 3; i++) 
-            {
-                recycle = this.createRecycle(i);
-                recycle.pos(i * 100, i * 100);
-                this.addChild(recycle);
-                this._recycleList[i] = recycle;
+            // 清理旧数据
+            this.clearRecycle();
+
+            let dataList = DataMgr.instance.recycleDataList;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+
+            dataList.forEach(data => {
+                let recycle = this.createRecycle(data.id);
+                this.addChild(recycle);
+                this._recycleList[data.id] = recycle;
+            });
         }
 
-        removeRecycle(id:number):void 
-        {
-            let recycle:Recycle = this._recycleList[id];
-            recycle.destroy();
-            this._recycleList[id] = null;
-        }
-
+        /** 清除回收点 */
         clearRecycle():void 
         {
+            if (this._recycleList == null || this._recycleList.length == 0) {
+                return;
+            }
             this._recycleList.forEach(item => {
                 item.destroy();
             });
-
             this._recycleList = [];
         }
     }

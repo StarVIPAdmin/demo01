@@ -35,7 +35,7 @@ module Game {
         onMouseDown():void 
         {
             viewMgr.hideView(Global.ViewId.GAME_INFO_UI);
-            Data.isGameOver = false;
+            DataMgr.instance.isGameOver = false;
         }
     }
 }

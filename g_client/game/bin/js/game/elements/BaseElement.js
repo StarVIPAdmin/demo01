@@ -46,6 +46,7 @@ var Game;
                 this.nickTxt.pos(this.bodySpr.width * 0.5 - this.nickTxt.width * 0.5, 0);
                 this.addChild(this.nickTxt);
             }
+            this.size(this.data.width, this.data.height).pos(this.data.x, this.data.y);
         };
         /** 消毁 */
         BaseElement.prototype.destroy = function () {

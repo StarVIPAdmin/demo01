@@ -21,19 +21,13 @@ var Game;
         }
         Object.defineProperty(Player.prototype, "data", {
             get: function () {
-                if (this.id == Data.myPlayerData.id) {
-                    return Data.myPlayerData;
-                }
-                else {
-                    return Data.playerDataList[this.id];
-                }
+                return Game.DataMgr.instance.getPlayerData(this.id);
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
         Player.prototype.init = function () {
-            this.size(96, 96);
             _super.prototype.init.call(this);
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
@@ -55,6 +49,7 @@ var Game;
         };
         return Player;
     }(Game.BaseElement));
+    Game.Player = Player;
     /**
      * 玩家类容器
      */
@@ -63,46 +58,60 @@ var Game;
         function PlayerContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        Object.defineProperty(PlayerContainer.prototype, "myPlayer", {
-            get: function () {
-                return this._myPlayer;
-            },
-            enumerable: true,
-            configurable: true
-        });
         PlayerContainer.prototype.init = function () {
             this._playerList = [];
         };
-        PlayerContainer.prototype.createMyPlayer = function () {
-            this._myPlayer = this.createPlayer(99);
-            this._myPlayer.pos(Global.Const.GAME_WIDTH * 0.5, Global.Const.GAME_HEIGHT * 0.5);
-            // this._myPlayer.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
-            this.addChild(this._myPlayer);
-        };
-        PlayerContainer.prototype.createPlayer = function (id) {
-            var player = new Player(id);
-            player.init();
-            return player;
-        };
-        PlayerContainer.prototype.addPlayer = function () {
-            // let player:Player;
-            for (var i = 0; i < 4; i++) {
-                var player = this.createPlayer(i);
-                player.pos(i * 200, i * 200);
-                this.addChild(player);
-                this._playerList[i] = player;
+        /** 重置玩家 */
+        PlayerContainer.prototype.resetPlayer = function () {
+            var _this = this;
+            // 清理旧数据
+            this.clearPlayer();
+            var dataList = Game.DataMgr.instance.otherPlayerData;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+            dataList.forEach(function (data) {
+                var player = Game.ResMgr.instance.createPlayer(data.id);
+                _this.addChild(player);
+                _this._playerList[data.id] = player;
+            });
         };
+        /** 根据唯一ID，增加指定玩家 */
+        PlayerContainer.prototype.addPlayer = function (id) {
+            if (this.checkPlayer(id)) {
+                return;
+            }
+            var player = Game.ResMgr.instance.createPlayer(id);
+            this.addChild(player);
+            this._playerList[id] = player;
+        };
+        /** 根据唯一ID，移除指定玩家 */
         PlayerContainer.prototype.removePlayer = function (id) {
+            if (!this.checkPlayer(id))
+                return;
             var player = this._playerList[id];
             player.destroy();
             this._playerList[id] = null;
         };
+        /** 清除玩家 */
         PlayerContainer.prototype.clearPlayer = function () {
+            if (!this.checkPlayerList())
+                return;
             this._playerList.forEach(function (item) {
                 item.destroy();
             });
             this._playerList = [];
+        };
+        /** 检测玩家列表是否有数据 */
+        PlayerContainer.prototype.checkPlayerList = function () {
+            return !(this._playerList == null || this._playerList.length == 0);
+        };
+        /** 根据唯一ID，检测玩家是否存在 */
+        PlayerContainer.prototype.checkPlayer = function (id) {
+            if (!this.checkPlayerList()) {
+                return false;
+            }
+            return this._playerList[id] != null;
         };
         return PlayerContainer;
     }(Sprite));

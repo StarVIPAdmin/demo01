@@ -162,14 +162,17 @@ var Game;
             this._recycleContainer = new Game.RecycleContainer();
             this._recycleContainer.init();
             this.addChild(this._recycleContainer);
+            this._playerContainer = new Game.PlayerContainer();
+            this._playerContainer.init();
+            this.addChild(this._playerContainer);
             // let floor = this.addFloor(1);
             // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
             // Laya.timer.frameLoop(1, this, this.onLoop);
         };
-        MapContainer.prototype.show = function () {
-            this._foodContainer.addFood();
-            this._buffContainer.addBuff();
-            this._recycleContainer.addRecycle();
+        MapContainer.prototype.resetElements = function () {
+            this._foodContainer.resetFood();
+            // this._buffContainer.resetBuff();
+            // this._recycleContainer.resetRecycle();
         };
         // onLoop():void 
         // {
@@ -205,10 +208,10 @@ var Game;
         MapContainer.prototype.moveMap = function (angle) {
             if (angle == 0)
                 return;
-            var deltaPosX = Data.myPlayerData.speed * Math.cos(angle);
-            var deltaPosY = Data.myPlayerData.speed * Math.sin(angle);
-            var targetPosX = this._mapSpr.x - deltaPosX;
-            var targetPosY = this._mapSpr.y - deltaPosY;
+            var deltaPosX = Game.DataMgr.instance.myPlayerData.speed * Math.cos(angle);
+            var deltaPosY = Game.DataMgr.instance.myPlayerData.speed * Math.sin(angle);
+            var targetPosX = this.x - deltaPosX;
+            var targetPosY = this.y - deltaPosY;
             var minPosX = -5120 + Global.Const.GAME_WIDTH * 0.5;
             var minPosY = -5120 + Global.Const.GAME_HEIGHT * 0.5;
             var maxPosX = Global.Const.GAME_WIDTH * 0.5;
@@ -221,7 +224,7 @@ var Game;
                 targetPosY = minPosY;
             if (targetPosY > maxPosY)
                 targetPosY = maxPosY;
-            this._mapSpr.pos(targetPosX, targetPosY);
+            this.pos(targetPosX, targetPosY);
         };
         return MapContainer;
     }(Sprite));

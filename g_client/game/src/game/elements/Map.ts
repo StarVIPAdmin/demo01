@@ -171,6 +171,7 @@ module Game {
         private _buffContainer:BuffContainer;
         private _foodContainer:FoodContainer;
         private _recycleContainer:RecycleContainer;
+        private _playerContainer:PlayerContainer;
 
         init():void 
         {
@@ -189,16 +190,21 @@ module Game {
             this._recycleContainer.init();
             this.addChild(this._recycleContainer);
 
+            this._playerContainer = new PlayerContainer();
+            this._playerContainer.init();
+            this.addChild(this._playerContainer);
+
             // let floor = this.addFloor(1);
             // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
             // Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
-        show():void 
+        resetElements():void 
         {
-            this._foodContainer.addFood();
-            this._buffContainer.addBuff();
-            this._recycleContainer.addRecycle();
+            this._foodContainer.resetFood();
+            this._playerContainer.resetPlayer();
+            // this._buffContainer.resetBuff();
+            // this._recycleContainer.resetRecycle();
         }
 
         // onLoop():void 
@@ -243,10 +249,10 @@ module Game {
             if (angle == 0) 
                 return;
 
-            let deltaPosX = Data.myPlayerData.speed * Math.cos(angle);
-            let deltaPosY = Data.myPlayerData.speed * Math.sin(angle);
-            let targetPosX = this._mapSpr.x - deltaPosX;
-            let targetPosY = this._mapSpr.y - deltaPosY;
+            let deltaPosX = DataMgr.instance.myPlayerData.speed * Math.cos(angle);
+            let deltaPosY = DataMgr.instance.myPlayerData.speed * Math.sin(angle);
+            let targetPosX = this.x - deltaPosX;
+            let targetPosY = this.y - deltaPosY;
 
             let minPosX = - 5120 + Global.Const.GAME_WIDTH * 0.5;
             let minPosY = - 5120 + Global.Const.GAME_HEIGHT * 0.5;
@@ -256,7 +262,7 @@ module Game {
             if (targetPosX > maxPosX) targetPosX = maxPosX;
             if (targetPosY < minPosY) targetPosY = minPosY;
             if (targetPosY > maxPosY) targetPosY = maxPosY;
-            this._mapSpr.pos(targetPosX, targetPosY);
+            this.pos(targetPosX, targetPosY);
         }
     }
 }

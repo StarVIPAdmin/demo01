@@ -21,14 +21,13 @@ var Game;
         }
         Object.defineProperty(Buff.prototype, "data", {
             get: function () {
-                return Data.buffDataList[this.id];
+                return Game.DataMgr.instance.getBuffData(this.id);
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
         Buff.prototype.init = function () {
-            this.size(512, 512);
             _super.prototype.init.call(this);
         };
         /** 重写父类函数 */
@@ -48,30 +47,63 @@ var Game;
         BuffContainer.prototype.init = function () {
             this._buffList = [];
         };
+        /** 创建buff */
         BuffContainer.prototype.createBuff = function (id) {
             var buff = new Buff(id);
             buff.init();
             return buff;
         };
-        BuffContainer.prototype.addBuff = function () {
-            var buff;
-            for (var i = 0; i < 5; i++) {
-                buff = this.createBuff(i);
-                buff.pos(i * 50, i * 50);
-                this.addChild(buff);
-                this._buffList[i] = buff;
+        /** 重置buff */
+        BuffContainer.prototype.resetBuff = function () {
+            var _this = this;
+            // 清理旧数据
+            this.clearBuff();
+            var dataList = Game.DataMgr.instance.buffDataList;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+            dataList.forEach(function (data) {
+                var buff = _this.createBuff(data.id);
+                _this.addChild(buff);
+                _this._buffList[data.id] = buff;
+            });
         };
+        /** 根据唯一ID，增加指定buff */
+        BuffContainer.prototype.addBuff = function (id) {
+            if (this.checkBuff(id)) {
+                return;
+            }
+            var buff = this.createBuff(id);
+            this.addChild(buff);
+            this._buffList[id] = buff;
+        };
+        /** 根据唯一ID，移除指定buff */
         BuffContainer.prototype.removeBuff = function (id) {
+            if (!this.checkBuff(id))
+                return;
             var buff = this._buffList[id];
             buff.destroy();
             this._buffList[id] = null;
         };
+        /** 清除buff */
         BuffContainer.prototype.clearBuff = function () {
+            if (!this.checkBuffList())
+                return;
             this._buffList.forEach(function (item) {
                 item.destroy();
             });
             this._buffList = [];
+        };
+        /** 检测buff列表是否有数据 */
+        BuffContainer.prototype.checkBuffList = function () {
+            return !(this._buffList == null || this._buffList.length == 0);
+        };
+        /** 根据唯一ID，检测buff是否存在 */
+        BuffContainer.prototype.checkBuff = function (id) {
+            if (!this.checkBuffList()) {
+                return false;
+            }
+            return this._buffList[id] != null;
         };
         return BuffContainer;
     }(Sprite));

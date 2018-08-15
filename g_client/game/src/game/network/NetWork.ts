@@ -1,0 +1,6 @@
+module Game {
+
+    class NetWork 
+    {
+    }
+}

@@ -61,7 +61,7 @@ module Core {
 
             let sceneData = new sceneDataCls(SceneId);
             let scene:BaseScene = new sceneCls();
-            scene.sceneData = sceneData;
+            scene.__sceneData = sceneData;
             scene.onInit();
             scene.onShow();
             this._curScene = scene;
@@ -74,7 +74,7 @@ module Core {
         }
 
         /** 注册场景 */
-        registerScene(SceneId:number, SceneCls:any, SceneData:any=null):void 
+        registerScene(SceneId:number, SceneCls:any, SceneData:any=BaseSceneData):void 
         {
             if (!SceneId || !SceneCls) {
                 console.log("[SceneMgr] registerScene : SceneId or SceneCls is null", SceneId, SceneCls);
@@ -85,7 +85,7 @@ module Core {
                 return;
             }
             this._sceneCls[SceneId] = SceneCls;
-            this._sceneDataCls[SceneId] = SceneData || BaseSceneData;
+            this._sceneDataCls[SceneId] = SceneData;
         }
     }
 }

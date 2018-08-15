@@ -41,9 +41,6 @@ var Core;
             get: function () {
                 return this.__sceneData;
             },
-            set: function (Value) {
-                this.__sceneData = Value;
-            },
             enumerable: true,
             configurable: true
         });

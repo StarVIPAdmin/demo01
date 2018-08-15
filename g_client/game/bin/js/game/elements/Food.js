@@ -21,14 +21,13 @@ var Game;
         }
         Object.defineProperty(Food.prototype, "data", {
             get: function () {
-                return Data.foodDataList[this.id];
+                return Game.DataMgr.instance.getFoodData(this.id);
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
         Food.prototype.init = function () {
-            this.size(128, 128);
             _super.prototype.init.call(this);
         };
         /** 重写父类函数 */
@@ -48,30 +47,64 @@ var Game;
         FoodContainer.prototype.init = function () {
             this._foodList = [];
         };
+        /** 创建食物 */
         FoodContainer.prototype.createFood = function (id) {
             var food = new Food(id);
             food.init();
             return food;
         };
-        FoodContainer.prototype.addFood = function () {
-            var food;
-            for (var i = 0; i < 5; i++) {
-                food = this.createFood(i);
-                food.pos(i * 10, i * 10);
-                this.addChild(food);
-                this._foodList[i] = food;
+        /** 重置食物 */
+        FoodContainer.prototype.resetFood = function () {
+            var _this = this;
+            // 清理旧数据
+            this.clearFood();
+            var dataList = Game.DataMgr.instance.foodDataList;
+            if (dataList == null || dataList.length == 0) {
+                return;
             }
+            dataList.forEach(function (data) {
+                var food = _this.createFood(data.id);
+                _this.addChild(food);
+                _this._foodList[data.id] = food;
+            });
         };
+        /** 根据唯一ID，增加指定食物 */
+        FoodContainer.prototype.addFood = function (id) {
+            if (this.checkFood(id)) {
+                return;
+            }
+            var food = this.createFood(id);
+            this.addChild(food);
+            this._foodList[id] = food;
+        };
+        /** 根据唯一ID，移除指定食物 */
         FoodContainer.prototype.removeFood = function (id) {
+            if (!this.checkFood(id))
+                return;
             var food = this._foodList[id];
             food.destroy();
             this._foodList[id] = null;
         };
+        /** 清除食物 */
         FoodContainer.prototype.clearFood = function () {
+            if (!this.checkFoodList()) {
+                return;
+            }
             this._foodList.forEach(function (item) {
                 item.destroy();
             });
             this._foodList = [];
+        };
+        /** 检测食物列表是否有数据 */
+        FoodContainer.prototype.checkFoodList = function () {
+            return !(this._foodList == null || this._foodList.length == 0);
+        };
+        /** 根据唯一ID，检测食物是否存在 */
+        FoodContainer.prototype.checkFood = function (id) {
+            if (!this.checkFoodList()) {
+                return false;
+            }
+            return this._foodList[id] != null;
         };
         return FoodContainer;
     }(Sprite));
