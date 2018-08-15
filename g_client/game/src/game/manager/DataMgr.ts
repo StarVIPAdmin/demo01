@@ -115,20 +115,25 @@ module Game {
             let id_player = 50;
             let id_recycle = 80;
 
+            let id
             for (var i = 0; i < 5; i++) {
-                this.buffDataList[i] = this.createBuffData(i + id_buff);
+                id = i + id_buff;
+                this.buffDataList[id] = this.createBuffData(id);
             }
 
             for (var i = 0; i < 20; i++) {
-                this.foodDataList[i] = this.createFoodData(i + id_food);
+                id = i + id_food;
+                this.foodDataList[id] = this.createFoodData(id);
             }
 
             for (var i = 0; i < 3; i++) {
-                this.recycleDataList[i] = this.createRecycleData(i + id_recycle);
+                id = i + id_recycle;
+                this.recycleDataList[id] = this.createRecycleData(id);
             }
 
             for (var i = 0; i < 10; i++) {
-                this.otherPlayerData[i] = this.createPlayerData(i + id_player);
+                id = i + id_player;
+                this.otherPlayerData[id] = this.createPlayerData(id);
             }
         }
     }

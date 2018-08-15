@@ -12,8 +12,8 @@ module Data {
 
             this.width = 512;
             this.height = 512;
-            this.x = this.id * 2;
-            this.y = this.id * 3;
+            this.x = Math.random() * 5120;
+            this.y = Math.random() * 5120;
         }
     }
 }

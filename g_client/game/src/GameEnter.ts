@@ -20,25 +20,27 @@ function onCompleteHandler():void
     Laya.Stat.show(300, 0);
 
     let resUrl:Array<any> = [];
-    // resUrl.push({ "url":Global.Path.JSON_PLAYER, "type":Laya.Loader.ATLAS });
-    resUrl.push({ "url":Global.Path.JPG_BACKGROUND, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_PLAYER_1, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_ITEM_4, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_BIRD_1, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_BIRD_2, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_BIRD_3, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_BIRD_4, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_EFFECT, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_CARRY_ICON, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_COMBAT_MOVE_BG, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_COMBAT_MOVE_ICON, "type":Laya.Loader.IMAGE });
+    // resUrl.push({"url":Global.Path.JSON_PLAYER, "type":Laya.Loader.ATLAS});
+    resUrl.push({"url":Global.Path.JPG_BACKGROUND, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_PLAYER_1, "type":Laya.Loader.IMAGE});
 
-    resUrl.push({ "url":Global.Path.PNG_BAR_MP, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_BAR_HP, "type":Laya.Loader.IMAGE });
-    resUrl.push({ "url":Global.Path.PNG_BAR_BG, "type":Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_FLOOR, "type":Laya.Loader.IMAGE });
+    resUrl.push({"url":Global.Path.PNG_ITEM_1, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_ITEM_4, "type":Laya.Loader.IMAGE});
+
+    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_1, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_2, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_3, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_BUFF_1, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_BUFF_2, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_BUFF_3, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_CARRY_ICON, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_COMBAT_MOVE_BG, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_COMBAT_MOVE_ICON, "type":Laya.Loader.IMAGE});
+
+    resUrl.push({"url":Global.Path.PNG_BAR_HP, "type":Laya.Loader.IMAGE});
+    resUrl.push({"url":Global.Path.PNG_BAR_BG, "type":Laya.Loader.IMAGE});
 
     function onLoaded():void {
         // 加载完成, 进入游戏

@@ -35,6 +35,7 @@ var Game;
             if (this.data == null) {
                 return;
             }
+            this.size(this.data.width, this.data.height).pos(this.data.x, this.data.y);
             if (this.bodySpr == null) {
                 this.bodySpr = Game.ResMgr.instance.createSprite(this.data.bodyPath, this.width, this.height);
                 this.addChild(this.bodySpr);
@@ -46,7 +47,6 @@ var Game;
                 this.nickTxt.pos(this.bodySpr.width * 0.5 - this.nickTxt.width * 0.5, 0);
                 this.addChild(this.nickTxt);
             }
-            this.size(this.data.width, this.data.height).pos(this.data.x, this.data.y);
         };
         /** 消毁 */
         BaseElement.prototype.destroy = function () {

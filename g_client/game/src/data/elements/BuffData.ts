@@ -11,8 +11,8 @@ module Data {
             this.bodyPath = Global.Path.PNG_BUFF_1;
             this.width = 512;
             this.height = 512;
-            this.x = this.id * 2;
-            this.y = this.id * 3;
+            this.x = Math.random() * 5120;
+            this.y = Math.random() * 5120;
         }
     }
 }

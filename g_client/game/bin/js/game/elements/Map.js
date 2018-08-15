@@ -171,8 +171,9 @@ var Game;
         };
         MapContainer.prototype.resetElements = function () {
             this._foodContainer.resetFood();
-            // this._buffContainer.resetBuff();
-            // this._recycleContainer.resetRecycle();
+            this._playerContainer.resetPlayer();
+            this._buffContainer.resetBuff();
+            this._recycleContainer.resetRecycle();
         };
         // onLoop():void 
         // {

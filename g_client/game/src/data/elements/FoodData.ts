@@ -34,8 +34,8 @@ module Data {
 
             this.width = 128;
             this.height = 128;
-            this.x = this.id * 2;
-            this.y = this.id * 3;
+            this.x = Math.random() * 5120;
+            this.y = Math.random() * 5120;
 
             if (this.type == FoodType.BOTANY) {
                 this.attack = 0;

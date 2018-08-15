@@ -50,7 +50,7 @@ var Game;
             this._attack.pos(10, 37);
             this.addChild(this._attack);
             this._speed = Game.ResMgr.instance.createText();
-            this._speed.pos(110, 37);
+            this._speed.pos(120, 37);
             this.addChild(this._speed);
             this._score = Game.ResMgr.instance.createText();
             this._score.align = "right";

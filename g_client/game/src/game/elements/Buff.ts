@@ -15,12 +15,24 @@ module Game {
         init():void 
         {
             super.init();
+
+            // 定时器检测
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+        }
+
+        onLoop():void 
+        {
+            let xPos = DataMgr.instance.myPlayerData.x;
+            let yPos = DataMgr.instance.myPlayerData.y;
+
+            this.hitArea();
+
         }
     }
 

@@ -203,8 +203,8 @@ module Game {
         {
             this._foodContainer.resetFood();
             this._playerContainer.resetPlayer();
-            // this._buffContainer.resetBuff();
-            // this._recycleContainer.resetRecycle();
+            this._buffContainer.resetBuff();
+            this._recycleContainer.resetRecycle();
         }
 
         // onLoop():void 
