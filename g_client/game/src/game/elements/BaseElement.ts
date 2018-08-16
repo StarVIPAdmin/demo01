@@ -35,7 +35,7 @@ module Game {
             if (this.data == null) {
                 return;
             }
-            this.size(this.data.width,this.data.height).pos(this.data.x,this.data.y);
+            this.pivot(this.data.width*0.5,this.data.height*0.5).size(this.data.width,this.data.height).pos(this.data.x,this.data.y);
             
             if (this.bodySpr == null) {
                 this.bodySpr = ResMgr.instance.createSprite(this.data.bodyPath,this.width,this.height);

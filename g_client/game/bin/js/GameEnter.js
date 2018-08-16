@@ -17,7 +17,7 @@ function onCompleteHandler() {
     // 显示FPS
     Laya.Stat.show(300, 0);
     var resUrl = [];
-    // resUrl.push({ "url":Global.Path.JSON_PLAYER, "type":Laya.Loader.ATLAS });
+    // resUrl.push({"url":Global.Path.JSON_PLAYER, "type":Laya.Loader.ATLAS});
     resUrl.push({ "url": Global.Path.JPG_BACKGROUND, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_PLAYER_1, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_ITEM_1, "type": Laya.Loader.IMAGE });
@@ -35,7 +35,6 @@ function onCompleteHandler() {
     resUrl.push({ "url": Global.Path.PNG_COMBAT_MOVE_ICON, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_HP, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_BG, "type": Laya.Loader.IMAGE });
-    // resUrl.push({ "url":Global.Path.PNG_FLOOR, "type":Laya.Loader.IMAGE });
     function onLoaded() {
         // 加载完成, 进入游戏
         Game.main.run();

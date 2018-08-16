@@ -15,12 +15,22 @@ module Game {
         init():void 
         {
             super.init();
+
+            // 定时器检测
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+        }
+
+        onLoop():void 
+        {
+            let parent = this.parent as FoodContainer;
+            let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+            console.log("--->"+isTouch);
         }
     }
 
@@ -29,11 +39,19 @@ module Game {
      */
     export class FoodContainer extends Sprite
     {
+        // 父容器
+        private _mapContainer:MapContainer;
         // 食物列表
         private _foodList:Array<Food>;
 
-        init():void
+        get mapContainer():MapContainer
         {
+            return this._mapContainer;
+        }
+
+        init(parentContainer:MapContainer):void
+        {
+            this._mapContainer = parentContainer;
             this._foodList = [];
         }
 

@@ -11,8 +11,9 @@ module Data {
             this.bodyPath = Global.Path.PNG_BUFF_1;
             this.width = 512;
             this.height = 512;
-            this.x = Math.random() * 5120;
-            this.y = Math.random() * 5120;
+            this.collisionRadius = 500;
+            this.x = Math.random() * MAP_WIDTH;
+            this.y = Math.random() * MAP_HEIGHT;
         }
     }
 }

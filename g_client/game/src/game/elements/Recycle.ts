@@ -27,11 +27,14 @@ module Game {
 
     export class RecycleContainer extends Sprite
     {
+        // 父容器
+        private _mapContainer:MapContainer;
         // 回收点列表
         private _recycleList:Array<Recycle>;
 
-        init():void 
+        init(parentContainer:MapContainer):void 
         {
+            this._mapContainer = parentContainer;
             this._recycleList = [];
         }
         

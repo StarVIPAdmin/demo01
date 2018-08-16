@@ -17,6 +17,8 @@ module Data {
         /** 长宽 */
         public width:number = 1;
         public height:number = 1;
+        /** 碰撞半径 */
+        public collisionRadius:number = 0;
 
         constructor(id:number)
         {

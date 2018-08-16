@@ -31,8 +31,6 @@ module Game {
             let xPos = DataMgr.instance.myPlayerData.x;
             let yPos = DataMgr.instance.myPlayerData.y;
 
-            this.hitArea();
-
         }
     }
 
@@ -41,11 +39,14 @@ module Game {
      */
     export class BuffContainer extends Sprite
     {
+        // 父容器
+        private _mapContainer:MapContainer;
         // buff列表
         private _buffList:Array<Buff>;
 
-        init():void 
+        init(parentContainer:MapContainer):void 
         {
+            this._mapContainer = parentContainer;
             this._buffList = [];
         }
 

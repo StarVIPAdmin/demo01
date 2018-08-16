@@ -5,6 +5,10 @@ module Global {
         public static readonly GAME_WIDTH:number = 1280;
         public static readonly GAME_HEIGHT:number = 720;
 
+        // 地图尺寸
+        public static readonly MAP_WIDTH:number = 5120;
+        public static readonly MAP_HEIGHT:number = 5120;
+
         // 游戏最大/最小速度
         public static readonly MIN_SPEED:number = 8;
         public static readonly MAX_SPEED:number = 12;

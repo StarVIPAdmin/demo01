@@ -32,10 +32,11 @@ module Data {
             this.weight = 10;
             this.cfgId = 1;
 
+            this.collisionRadius = 120;
             this.width = 128;
             this.height = 128;
-            this.x = Math.random() * 5120;
-            this.y = Math.random() * 5120;
+            this.x = Math.random() * Global.Const.MAP_WIDTH;
+            this.y = Math.random() * Global.Const.MAP_HEIGHT;
 
             if (this.type == FoodType.BOTANY) {
                 this.attack = 0;

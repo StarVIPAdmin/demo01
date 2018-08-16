@@ -164,6 +164,10 @@ module Game {
 
     export class MapContainer extends Sprite 
     {
+        /** 地图宽高 */
+        private _mapWidth:number;
+        private _mapHeight:number;
+
         private _mapSpr:Sprite;
         // private _dieFloorList:Array<Floor>;
         // private _liveFloorList:Array<Floor>;
@@ -175,23 +179,35 @@ module Game {
 
         init():void 
         {
-            this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, 5120, 5120);
+            this.initData();
+            this.initUI();
+        }
+
+        initData():void 
+        {
+            this._mapWidth = Global.Const.MAP_WIDTH;
+            this._mapHeight = Global.Const.MAP_HEIGHT;
+        }
+
+        initUI():void 
+        {
+            this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
             this.addChild(this._mapSpr);
 
             this._foodContainer = new FoodContainer();
-            this._foodContainer.init();
+            this._foodContainer.init(this);
             this.addChild(this._foodContainer);
 
             this._buffContainer = new BuffContainer();
-            this._buffContainer.init();
+            this._buffContainer.init(this);
             this.addChild(this._buffContainer);
 
             this._recycleContainer = new RecycleContainer();
-            this._recycleContainer.init();
+            this._recycleContainer.init(this);
             this.addChild(this._recycleContainer);
 
             this._playerContainer = new PlayerContainer();
-            this._playerContainer.init();
+            this._playerContainer.init(this);
             this.addChild(this._playerContainer);
 
             // let floor = this.addFloor(1);
@@ -254,8 +270,8 @@ module Game {
             let targetPosX = this.x - deltaPosX;
             let targetPosY = this.y - deltaPosY;
 
-            let minPosX = - 5120 + Global.Const.GAME_WIDTH * 0.5;
-            let minPosY = - 5120 + Global.Const.GAME_HEIGHT * 0.5;
+            let minPosX = -this._mapWidth + Global.Const.GAME_WIDTH * 0.5;
+            let minPosY = -this._mapHeight + Global.Const.GAME_HEIGHT * 0.5;
             let maxPosX = Global.Const.GAME_WIDTH * 0.5;
             let maxPosY = Global.Const.GAME_HEIGHT * 0.5;
             if (targetPosX < minPosX) targetPosX = minPosX;
@@ -263,6 +279,16 @@ module Game {
             if (targetPosY < minPosY) targetPosY = minPosY;
             if (targetPosY > maxPosY) targetPosY = maxPosY;
             this.pos(targetPosX, targetPosY);
+        }
+
+        /** 与玩家的检测碰撞 */
+        checkPlayerCollision(x:number, y:number, radius:number=0):boolean
+        {
+            let myPlayerData = DataMgr.instance.myPlayerData;
+            myPlayerData.x
+            myPlayerData.y
+            myPlayerData.collisionRadius
+            return false;
         }
     }
 }

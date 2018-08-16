@@ -33,12 +33,8 @@ module Game {
             //     return;
             // }
         }
-
-        gotoRun():void 
-        {
-        }
-
-        // 从场景移除（返回对象池）
+        
+        /** 从场景移除（返回对象池） */
         remove():void 
         {
         }
@@ -49,11 +45,14 @@ module Game {
      */
     export class PlayerContainer extends Sprite
     {
+        // 父容器
+        private _mapContainer:MapContainer;
         // 玩家列表
         private _playerList:Array<Player>;
 
-        init():void 
+        init(parentContainer:MapContainer):void 
         {
+            this._mapContainer = parentContainer;
             this._playerList = [];
         }
 

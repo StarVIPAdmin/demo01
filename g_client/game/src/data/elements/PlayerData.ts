@@ -32,10 +32,11 @@ module Data {
             this.attack = 10;
             this.speed = 10;
 
+            this.collisionRadius = 90;
             this.width = 96;
             this.height = 96;
-            this.x = Math.random() * 5120;
-            this.y = Math.random() * 5120;
+            this.x = Math.random() * Global.Const.MAP_WIDTH;
+            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         }
     }
 }

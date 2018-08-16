@@ -29,10 +29,16 @@ var Game;
         /** 重写父类函数 */
         Buff.prototype.init = function () {
             _super.prototype.init.call(this);
+            // 定时器检测
+            Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Buff.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+        };
+        Buff.prototype.onLoop = function () {
+            var xPos = Game.DataMgr.instance.myPlayerData.x;
+            var yPos = Game.DataMgr.instance.myPlayerData.y;
         };
         return Buff;
     }(Game.BaseElement));
