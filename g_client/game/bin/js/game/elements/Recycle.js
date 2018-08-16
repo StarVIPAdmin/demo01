@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    // 食物回收点类标识（用于对象池回收）
+    var RECYCLE_CLASS_SIGN = "recycle";
     /**
      * 食物回收点
      */
@@ -27,12 +29,18 @@ var Game;
             configurable: true
         });
         /** 重写父类函数 */
-        Recycle.prototype.init = function () {
-            _super.prototype.init.call(this);
+        Recycle.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
+            // 定时器检测
+            Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Recycle.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+            Laya.timer.clear(this, this.onLoop);
+            Laya.Pool.recover(RECYCLE_CLASS_SIGN, this);
+        };
+        Recycle.prototype.onLoop = function () {
         };
         return Recycle;
     }(Game.BaseElement));
@@ -41,13 +49,14 @@ var Game;
         function RecycleContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        RecycleContainer.prototype.init = function () {
+        RecycleContainer.prototype.init = function (parentContainer) {
+            this._mapContainer = parentContainer;
             this._recycleList = [];
         };
         /** 创建回收点 */
         RecycleContainer.prototype.createRecycle = function (id) {
-            var recycle = new Recycle(id);
-            recycle.init();
+            var recycle = Laya.Pool.getItemByClass(RECYCLE_CLASS_SIGN, Recycle);
+            recycle.init(id);
             return recycle;
         };
         /** 重置回收点 */

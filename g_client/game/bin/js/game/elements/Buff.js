@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    // buff类标识（用于对象池回收）
+    var BUFF_CLASS_SIGN = "buff";
     /**
      * 药剂buff
      */
@@ -27,18 +29,27 @@ var Game;
             configurable: true
         });
         /** 重写父类函数 */
-        Buff.prototype.init = function () {
-            _super.prototype.init.call(this);
+        Buff.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Buff.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+            Laya.timer.clear(this, this.onLoop);
+            Laya.Pool.recover(BUFF_CLASS_SIGN, this);
         };
         Buff.prototype.onLoop = function () {
-            var xPos = Game.DataMgr.instance.myPlayerData.x;
-            var yPos = Game.DataMgr.instance.myPlayerData.y;
+            // buff是否可以叠加，任何状态下都可以触发buff效果
+            var parent = this.parent;
+            var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+            if (isTouch) {
+                // 玩家获取一个buff
+                Game.EventMgr.instance.event(Global.Event.GET_BUFF, [this.data.cfgId]);
+                // 删除buff
+                parent.removeBuff(this.data.id);
+            }
         };
         return Buff;
     }(Game.BaseElement));
@@ -50,13 +61,21 @@ var Game;
         function BuffContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        BuffContainer.prototype.init = function () {
+        Object.defineProperty(BuffContainer.prototype, "mapContainer", {
+            get: function () {
+                return this._mapContainer;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        BuffContainer.prototype.init = function (parentContainer) {
+            this._mapContainer = parentContainer;
             this._buffList = [];
         };
         /** 创建buff */
         BuffContainer.prototype.createBuff = function (id) {
-            var buff = new Buff(id);
-            buff.init();
+            var buff = Laya.Pool.getItemByClass(BUFF_CLASS_SIGN, Buff);
+            buff.init(id);
             return buff;
         };
         /** 重置buff */
@@ -90,6 +109,7 @@ var Game;
             var buff = this._buffList[id];
             buff.destroy();
             this._buffList[id] = null;
+            Game.DataMgr.instance.removeBuffData(id);
         };
         /** 清除buff */
         BuffContainer.prototype.clearBuff = function () {
@@ -99,6 +119,7 @@ var Game;
                 item.destroy();
             });
             this._buffList = [];
+            Game.DataMgr.instance.buffDataList = [];
         };
         /** 检测buff列表是否有数据 */
         BuffContainer.prototype.checkBuffList = function () {

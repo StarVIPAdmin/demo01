@@ -94,7 +94,7 @@ module Game {
             this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
 
             this._carryIcon = ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
-            this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234);
+            this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
             this.addChild(this._carryIcon);
         }
 
@@ -177,6 +177,12 @@ module Game {
             let moveIconPosX = this._moveIcon.x + this._halfMoveIconWidth;
             let moveIconPosY = this._moveIcon.y + this._halfMoveIconHeight;
             return Math.atan2(moveIconPosY - this._halfMoveBGHeight, moveIconPosX - this._halfMoveBGWidth);
+        }
+
+        /** 设置拾取按钮是否显示 */
+        setCarryIconVisible(isShow:boolean):void 
+        {
+            this._carryIcon.visible = isShow;
         }
     }
 }

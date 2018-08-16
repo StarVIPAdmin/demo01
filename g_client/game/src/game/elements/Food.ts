@@ -1,6 +1,9 @@
 module Game {
     import Sprite = Laya.Sprite;
 
+    // food类标识（用于对象池回收）
+    const FOOD_CLASS_SIGN:string = "food";
+
     /**
      * 食物类
      */
@@ -12,9 +15,9 @@ module Game {
         }
 
         /** 重写父类函数 */
-        init():void 
+        init(id:number):void 
         {
-            super.init();
+            super.init(id);
 
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -24,13 +27,32 @@ module Game {
         destroy():void 
         {
             super.destroy();
+            Laya.timer.clear(this, this.onLoop);
+            Laya.Pool.recover(FOOD_CLASS_SIGN, this);
         }
 
         onLoop():void 
         {
             let parent = this.parent as FoodContainer;
             let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
-            console.log("--->"+isTouch);
+
+            if (isTouch) 
+            {
+
+                switch (this.data.type) {
+                    case Data.FoodType.BOTANY:
+                        this.data.state = Data.FoodState.DEATH;
+                        EventMgr.instance.event(Global.Event.FOOD_GO_DIE, this);
+                        break;
+                    case Data.FoodType.ANIMAL:
+
+                        if (this.data.state == Data.FoodState.DEATH)
+
+                        break;
+                }
+            } else {
+
+            }
         }
     }
 
@@ -58,8 +80,8 @@ module Game {
         /** 创建食物 */
         createFood(id:number):Food
         {
-            let food = new Food(id);
-            food.init();
+            let food:Food = Laya.Pool.getItemByClass(FOOD_CLASS_SIGN, Food);
+            food.init(id);
             return food;
         }
 

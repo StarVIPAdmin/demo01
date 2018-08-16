@@ -27,8 +27,8 @@ module Game {
         // 创建玩家
         createPlayer(id:number):Player
         {
-            let player = new Player(id);
-            player.init();
+            let player:Player = Laya.Pool.getItemByClass(Game.PLAYER_CLASS_SIGN, Player);
+            player.init(id);
             return player;
         }
 

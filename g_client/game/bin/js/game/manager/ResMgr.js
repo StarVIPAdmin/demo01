@@ -37,8 +37,8 @@ var Game;
         };
         // 创建玩家
         ResMgr.prototype.createPlayer = function (id) {
-            var player = new Game.Player(id);
-            player.init();
+            var player = Laya.Pool.getItemByClass(Game.PLAYER_CLASS_SIGN, Game.Player);
+            player.init(id);
             return player;
         };
         // 创建按钮

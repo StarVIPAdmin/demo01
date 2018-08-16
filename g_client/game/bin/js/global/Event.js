@@ -3,8 +3,9 @@ var Global;
     var Event = /** @class */ (function () {
         function Event() {
         }
-        Event.FLOOR_OUT_COMPLETE = "floor_out_complete";
-        Event.FLOOR_OUT_DIE = "floor_out_die";
+        Event.FOOD_GO_DIE = "FOOD_GO_DIE";
+        // 玩家获得一个buff
+        Event.GET_BUFF = "GET_BUFF";
         return Event;
     }());
     Global.Event = Event;

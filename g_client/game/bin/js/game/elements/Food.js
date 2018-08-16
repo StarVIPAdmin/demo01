@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    // food类标识（用于对象池回收）
+    var FOOD_CLASS_SIGN = "food";
     /**
      * 食物类
      */
@@ -27,16 +29,33 @@ var Game;
             configurable: true
         });
         /** 重写父类函数 */
-        Food.prototype.init = function () {
-            _super.prototype.init.call(this);
+        Food.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Food.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+            Laya.timer.clear(this, this.onLoop);
+            Laya.Pool.recover(FOOD_CLASS_SIGN, this);
         };
         Food.prototype.onLoop = function () {
+            var parent = this.parent;
+            var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+            if (isTouch) {
+                switch (this.data.type) {
+                    case Data.FoodType.BOTANY:
+                        this.data.state = Data.FoodState.DEATH;
+                        Game.EventMgr.instance.event(Global.Event.FOOD_GO_DIE, this);
+                        break;
+                    case Data.FoodType.ANIMAL:
+                        if (this.data.state == Data.FoodState.DEATH)
+                            break;
+                }
+            }
+            else {
+            }
         };
         return Food;
     }(Game.BaseElement));
@@ -48,13 +67,21 @@ var Game;
         function FoodContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        FoodContainer.prototype.init = function () {
+        Object.defineProperty(FoodContainer.prototype, "mapContainer", {
+            get: function () {
+                return this._mapContainer;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        FoodContainer.prototype.init = function (parentContainer) {
+            this._mapContainer = parentContainer;
             this._foodList = [];
         };
         /** 创建食物 */
         FoodContainer.prototype.createFood = function (id) {
-            var food = new Food(id);
-            food.init();
+            var food = Laya.Pool.getItemByClass(FOOD_CLASS_SIGN, Food);
+            food.init(id);
             return food;
         };
         /** 重置食物 */

@@ -6,6 +6,9 @@ var Global;
         // 游戏宽高
         Const.GAME_WIDTH = 1280;
         Const.GAME_HEIGHT = 720;
+        // 地图尺寸
+        Const.MAP_WIDTH = 5120;
+        Const.MAP_HEIGHT = 5120;
         // 游戏最大/最小速度
         Const.MIN_SPEED = 8;
         Const.MAX_SPEED = 12;

@@ -103,6 +103,12 @@ module Game {
             return this.recycleDataList[id];
         }
 
+        /** 删除指定唯一ID的buff数据 */
+        removeBuffData(id:number):void 
+        {
+            this.buffDataList[id] = null;
+        }
+
         // 测试初始化数据
         testInitData():void 
         {

@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    // 玩家类标识（用于对象池回收）
+    Game.PLAYER_CLASS_SIGN = "player";
     /**
      * 玩家类
      */
@@ -27,13 +29,14 @@ var Game;
             configurable: true
         });
         /** 重写父类函数 */
-        Player.prototype.init = function () {
-            _super.prototype.init.call(this);
-            Laya.timer.frameLoop(1, this, this.onLoop);
+        Player.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
+            // Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Player.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+            Laya.Pool.recover(Game.PLAYER_CLASS_SIGN, this);
         };
         Player.prototype.onLoop = function () {
             // 判定玩家是否死亡
@@ -42,9 +45,7 @@ var Game;
             //     return;
             // }
         };
-        Player.prototype.gotoRun = function () {
-        };
-        // 从场景移除（返回对象池）
+        /** 从场景移除（返回对象池） */
         Player.prototype.remove = function () {
         };
         return Player;
@@ -58,7 +59,8 @@ var Game;
         function PlayerContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        PlayerContainer.prototype.init = function () {
+        PlayerContainer.prototype.init = function (parentContainer) {
+            this._mapContainer = parentContainer;
             this._playerList = [];
         };
         /** 重置玩家 */

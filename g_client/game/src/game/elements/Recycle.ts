@@ -2,6 +2,9 @@ module Game {
     import Sprite = Laya.Sprite;
     import Text = Laya.Text;
 
+    // 食物回收点类标识（用于对象池回收）
+    const RECYCLE_CLASS_SIGN:string = "recycle";
+
     /**
      * 食物回收点
      */
@@ -13,15 +16,25 @@ module Game {
         }
 
         /** 重写父类函数 */
-        init():void 
+        init(id:number):void 
         {
-            super.init();
+            super.init(id);
+
+            // 定时器检测
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+            Laya.timer.clear(this, this.onLoop);
+            Laya.Pool.recover(RECYCLE_CLASS_SIGN, this);
+        }
+
+        onLoop():void 
+        {
+
         }
     }
 
@@ -41,8 +54,8 @@ module Game {
         /** 创建回收点 */
         createRecycle(id:number):Recycle
         {
-            let recycle = new Recycle(id);
-            recycle.init();
+            let recycle:Recycle = Laya.Pool.getItemByClass(RECYCLE_CLASS_SIGN, Recycle);
+            recycle.init(id);
             return recycle;
         }
 

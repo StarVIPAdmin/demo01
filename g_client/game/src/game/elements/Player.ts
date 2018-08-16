@@ -1,6 +1,9 @@
 module Game {
     import Sprite = Laya.Sprite;
 
+    // 玩家类标识（用于对象池回收）
+    export const PLAYER_CLASS_SIGN:string = "player";
+
     /**
      * 玩家类
      */
@@ -12,17 +15,18 @@ module Game {
         }
 
         /** 重写父类函数 */
-        init():void 
+        init(id:number):void 
         {
-            super.init();
+            super.init(id);
 
-            Laya.timer.frameLoop(1, this, this.onLoop);
+            // Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+            Laya.Pool.recover(PLAYER_CLASS_SIGN, this);
         }
 
         onLoop():void 

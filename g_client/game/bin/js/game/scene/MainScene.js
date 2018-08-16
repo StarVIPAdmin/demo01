@@ -64,7 +64,8 @@ var Game;
             Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
-            Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            Game.EventMgr.instance.on(Global.Event.FOOD_GO_DIE, this, this.onFoodDie);
         };
         MainScene.prototype.onLoop = function () {
             this._mapContainer.moveMap(this._mainUI.getMoveIconAngle());
@@ -117,8 +118,8 @@ var Game;
         MainScene.prototype.onMouseMove = function (evt) {
             this._mainUI.onMouseMove(evt);
         };
-        MainScene.prototype.onMouseOut = function (evt) {
-            // this._mainUI.onMouseUp(evt);
+        MainScene.prototype.onFoodDie = function (evt) {
+            this._mainUI.setCarryIconVisible(true);
         };
         MainScene.prototype.playerDie = function () {
             Game.DataMgr.instance.isGameOver = true;

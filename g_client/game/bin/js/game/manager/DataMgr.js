@@ -90,11 +90,15 @@ var Game;
         DataMgr.prototype.getRecycleData = function (id) {
             return this.recycleDataList[id];
         };
+        /** 删除指定唯一ID的buff数据 */
+        DataMgr.prototype.removeBuffData = function (id) {
+            this.buffDataList[id] = null;
+        };
         // 测试初始化数据
         DataMgr.prototype.testInitData = function () {
             this.myPlayerData = this.createPlayerData(1);
-            this.myPlayerData.x = 0; //Global.Const.GAME_WIDTH * 0.5;
-            this.myPlayerData.y = 0; //Global.Const.GAME_HEIGHT * 0.5;
+            this.myPlayerData.x = Global.Const.GAME_WIDTH * 0.5;
+            this.myPlayerData.y = Global.Const.GAME_HEIGHT * 0.5;
             var id_buff = 10;
             var id_food = 100;
             var id_player = 50;

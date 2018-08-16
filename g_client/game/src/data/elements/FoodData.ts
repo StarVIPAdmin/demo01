@@ -1,11 +1,18 @@
 module Data {
-    /**
-     * 食物类型
-     */
+
+    /** 食物类型 */
     export enum FoodType 
     {
         BOTANY = 1,     // 植物
         ANIMAL = 2      // 动物
+    }
+
+    /** 食物状态 */
+    export enum FoodState
+    {
+        LIVE = 1,       // 生存状态
+        DEATH = 2,      // 死亡状态
+        CARRY = 3       // 搬运状态
     }
 
     /**
@@ -25,6 +32,9 @@ module Data {
         // 攻击力
         public attack:number;
 
+        // 状态
+        public state:number;
+
         init():void 
         {
             this.nick = "食物"+this.id;
@@ -37,6 +47,8 @@ module Data {
             this.height = 128;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
+
+            this.state = FoodState.LIVE;
 
             if (this.type == FoodType.BOTANY) {
                 this.attack = 0;

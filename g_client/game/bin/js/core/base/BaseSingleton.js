@@ -1,22 +1,36 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Core;
 (function (Core) {
+    var EventDispatcher = Laya.EventDispatcher;
     /**
      * 单例基类
      */
-    var BaseSingleton = /** @class */ (function () {
+    var BaseSingleton = /** @class */ (function (_super) {
+        __extends(BaseSingleton, _super);
         function BaseSingleton() {
-            var cls = this["constructor"];
+            var _this = _super.call(this) || this;
+            var cls = _this["constructor"];
             if (!cls) {
-                return;
+                return _this;
             }
             // 防止重复实例化
             if (-1 != BaseSingleton.clsKey.indexOf(cls)) {
-                throw new Error(this + " 只能被实例化一次!");
+                throw new Error(_this + " 只能被实例化一次!");
             }
             else {
                 BaseSingleton.clsKey.push(cls);
-                BaseSingleton.clsVal.push(this);
+                BaseSingleton.clsVal.push(_this);
             }
+            return _this;
         }
         BaseSingleton.prototype.create = function () {
             this.onCreate();
@@ -75,7 +89,7 @@ var Core;
         BaseSingleton.clsKey = [];
         BaseSingleton.clsVal = [];
         return BaseSingleton;
-    }());
+    }(EventDispatcher));
     Core.BaseSingleton = BaseSingleton;
 })(Core || (Core = {}));
 //# sourceMappingURL=BaseSingleton.js.map

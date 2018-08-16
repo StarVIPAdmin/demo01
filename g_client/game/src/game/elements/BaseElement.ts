@@ -21,17 +21,18 @@ module Game {
             return null;
         }
 
-        constructor(id:number)
+        constructor()
         {
             super();
-            this.id = id;
+            this.id = null;
             this.nickTxt = null;
             this.bodySpr = null;
         }
 
         /** 初始化 */
-        init():void 
+        init(id:number):void 
         {
+            this.id = id;
             if (this.data == null) {
                 return;
             }
@@ -63,6 +64,7 @@ module Game {
                 this.bodySpr.removeSelf();
                 this.bodySpr = null;
             }
+            this.removeSelf();
         }
     }
 }

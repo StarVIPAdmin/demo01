@@ -1,11 +1,14 @@
 module Core {
+    import EventDispatcher = Laya.EventDispatcher;
+
     /**
      * 单例基类
      */
-    export class BaseSingleton
+    export class BaseSingleton extends EventDispatcher
     {
         constructor()
         {
+            super();
             let cls:any = this["constructor"];
             if (!cls) {
                 return;

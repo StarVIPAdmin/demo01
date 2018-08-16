@@ -16,9 +16,9 @@ var Game;
      */
     var BaseElement = /** @class */ (function (_super) {
         __extends(BaseElement, _super);
-        function BaseElement(id) {
+        function BaseElement() {
             var _this = _super.call(this) || this;
-            _this.id = id;
+            _this.id = null;
             _this.nickTxt = null;
             _this.bodySpr = null;
             return _this;
@@ -31,7 +31,8 @@ var Game;
             configurable: true
         });
         /** 初始化 */
-        BaseElement.prototype.init = function () {
+        BaseElement.prototype.init = function (id) {
+            this.id = id;
             if (this.data == null) {
                 return;
             }
@@ -58,6 +59,7 @@ var Game;
                 this.bodySpr.removeSelf();
                 this.bodySpr = null;
             }
+            this.removeSelf();
         };
         return BaseElement;
     }(Sprite));

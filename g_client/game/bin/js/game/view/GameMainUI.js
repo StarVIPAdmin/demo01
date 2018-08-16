@@ -67,7 +67,7 @@ var Game;
             this._moveIcon.graphics.drawTexture(Laya.loader.getRes(Global.Path.PNG_COMBAT_MOVE_ICON), 0, 0, this.MOVE_ICON_WIDTH, this.MOVE_ICON_HEIGHT);
             this.setMoveIconPos(this._halfMoveBGWidth, this._halfMoveBGHeight);
             this._carryIcon = Game.ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
-            this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234);
+            this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
             this.addChild(this._carryIcon);
         };
         // 刷新得分
@@ -130,6 +130,10 @@ var Game;
             var moveIconPosX = this._moveIcon.x + this._halfMoveIconWidth;
             var moveIconPosY = this._moveIcon.y + this._halfMoveIconHeight;
             return Math.atan2(moveIconPosY - this._halfMoveBGHeight, moveIconPosX - this._halfMoveBGWidth);
+        };
+        /** 设置拾取按钮是否显示 */
+        GameMainUI.prototype.setCarryIconVisible = function (isShow) {
+            this._carryIcon.visible = isShow;
         };
         return GameMainUI;
     }(Sprite));

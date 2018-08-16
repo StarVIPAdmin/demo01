@@ -15,6 +15,8 @@ var Data;
             /** 长宽 */
             this.width = 1;
             this.height = 1;
+            /** 碰撞半径 */
+            this.collisionRadius = 0;
             this.id = id;
         }
         return BaseData;

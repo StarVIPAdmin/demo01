@@ -73,7 +73,9 @@ module Game {
             Laya.stage.on(Event.MOUSE_DOWN, this, this.onMouseDown);
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
-            Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+
+            EventMgr.instance.on(Global.Event.FOOD_GO_DIE, this, this.onFoodDie);
         }
 
         onLoop():void 
@@ -143,9 +145,9 @@ module Game {
             
         }
 
-        onMouseOut(evt:Event):void 
+        onFoodDie(evt:Event):void 
         {
-            // this._mainUI.onMouseUp(evt);
+            this._mainUI.setCarryIconVisible(true);
         }
 
         playerDie():void 
