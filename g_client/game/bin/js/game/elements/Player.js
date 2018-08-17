@@ -48,7 +48,7 @@ var Game;
         };
         /** 获取一个buff */
         Player.prototype.onGetBuff = function (cfgId) {
-            this.data.speed = this.data.speed + 5;
+            this.data.speed = this.data.speed + 1;
         };
         /** 处在回收点范围 */
         Player.prototype.onRecycleArea = function () {
@@ -56,6 +56,7 @@ var Game;
         };
         /** 搬运食物 */
         Player.prototype.onCarryFood = function (food) {
+            this.data.state = Data.PlayerState.CARRY;
             this.foodId = food.data.id;
             food.setCarryState();
             food.pos(0, 0);

@@ -44,7 +44,7 @@ module Game {
         /** 获取一个buff */
         onGetBuff(cfgId:number):void 
         {
-            this.data.speed = this.data.speed + 5;
+            this.data.speed = this.data.speed + 1;
         }
 
         /** 处在回收点范围 */
@@ -56,6 +56,7 @@ module Game {
         /** 搬运食物 */
         onCarryFood(food:Food):void 
         {
+            this.data.state = Data.PlayerState.CARRY;
             this.foodId = food.data.id;
             food.setCarryState();
             food.pos(0, 0);

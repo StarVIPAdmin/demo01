@@ -191,8 +191,8 @@ module Game {
 
         initUI():void 
         {
-            // this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
-            // this.addChild(this._mapSpr);
+            this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
+            this.addChild(this._mapSpr);
 
             this._foodContainer = new FoodContainer();
             this._foodContainer.init(this);
