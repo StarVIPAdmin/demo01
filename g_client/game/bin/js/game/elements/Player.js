@@ -31,6 +31,7 @@ var Game;
         /** 重写父类函数 */
         Player.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
+            this.foodId = 0;
             // Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
@@ -44,6 +45,21 @@ var Game;
             //     this.event(Global.Const.PLAYER_STATE_DIE, this);
             //     return;
             // }
+        };
+        /** 获取一个buff */
+        Player.prototype.onGetBuff = function (cfgId) {
+            this.data.speed = this.data.speed + 5;
+        };
+        /** 处在回收点范围 */
+        Player.prototype.onRecycleArea = function () {
+            this.data.attack = this.data.attack + 1;
+        };
+        /** 搬运食物 */
+        Player.prototype.onCarryFood = function (food) {
+            this.foodId = food.data.id;
+            food.setCarryState();
+            food.pos(0, 0);
+            this.addChild(food);
         };
         /** 从场景移除（返回对象池） */
         Player.prototype.remove = function () {

@@ -30,7 +30,7 @@ module Data {
 
             this.power = 100;
             this.attack = 10;
-            this.speed = 10;
+            this.speed = 3;
 
             this.collisionRadius = 90;
             this.width = 96;

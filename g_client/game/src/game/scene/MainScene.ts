@@ -75,7 +75,11 @@ module Game {
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
 
-            EventMgr.instance.on(Global.Event.FOOD_GO_DIE, this, this.onFoodDie);
+            EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
+            EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
+            EventMgr.instance.on(Global.Event.IN_RECYCLE_AREA, this, this.onRecycleArea);
+            EventMgr.instance.on(Global.Event.GAME_OVER, this, this.onGameOver);
+            EventMgr.instance.on(Global.Event.CARRY_FOOD, this, this.onCarryFood);
         }
 
         onLoop():void 
@@ -145,9 +149,35 @@ module Game {
             
         }
 
-        onFoodDie(evt:Event):void 
+        /** 设置搬运图标是否显示 */
+        onSetCarryIconVisible(foodId:number):void 
         {
-            this._mainUI.setCarryIconVisible(true);
+            this._mainUI.setCarryIconVisible(foodId);
+        }
+
+        /** 获取一个buff */
+        onGetBuff(buffCfgId:number):void 
+        {
+            this._player.onGetBuff(buffCfgId);
+        }
+
+        /** 处在回收点范围 */
+        onRecycleArea():void 
+        {
+            this._player.onRecycleArea();
+        }
+
+        /** 游戏结束 */
+        onGameOver():void 
+        {
+            viewMgr.showView(Global.ViewId.GAME_OVER_UI);
+        }
+
+        /** 搬运食物 */
+        onCarryFood(foodId:number):void 
+        {
+            let food = this._mapContainer.getFood(foodId);
+            this._player.onCarryFood(food);
         }
 
         playerDie():void 

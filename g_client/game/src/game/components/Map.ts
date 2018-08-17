@@ -191,8 +191,8 @@ module Game {
 
         initUI():void 
         {
-            this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
-            this.addChild(this._mapSpr);
+            // this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
+            // this.addChild(this._mapSpr);
 
             this._foodContainer = new FoodContainer();
             this._foodContainer.init(this);
@@ -221,6 +221,11 @@ module Game {
             this._playerContainer.resetPlayer();
             this._buffContainer.resetBuff();
             this._recycleContainer.resetRecycle();
+        }
+
+        getFood(foodId:number):Food
+        {
+            return this._foodContainer.getFood(foodId);
         }
 
         // onLoop():void 

@@ -9,6 +9,9 @@ module Game {
      */
     export class Player extends BaseElement 
     {   
+        // 当前锁定的食物ID
+        public foodId:number;
+
         get data():Data.PlayerData
         {
             return DataMgr.instance.getPlayerData(this.id);
@@ -18,7 +21,7 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
-
+            this.foodId = 0;
             // Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
@@ -38,6 +41,27 @@ module Game {
             // }
         }
         
+        /** 获取一个buff */
+        onGetBuff(cfgId:number):void 
+        {
+            this.data.speed = this.data.speed + 5;
+        }
+
+        /** 处在回收点范围 */
+        onRecycleArea():void 
+        {
+            this.data.attack = this.data.attack + 1;
+        }
+
+        /** 搬运食物 */
+        onCarryFood(food:Food):void 
+        {
+            this.foodId = food.data.id;
+            food.setCarryState();
+            food.pos(0, 0);
+            this.addChild(food);
+        }
+
         /** 从场景移除（返回对象池） */
         remove():void 
         {

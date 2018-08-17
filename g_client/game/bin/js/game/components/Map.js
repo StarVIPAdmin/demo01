@@ -159,8 +159,8 @@ var Game;
             this._mapHeight = Global.Const.MAP_HEIGHT;
         };
         MapContainer.prototype.initUI = function () {
-            this._mapSpr = Game.ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
-            this.addChild(this._mapSpr);
+            // this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
+            // this.addChild(this._mapSpr);
             this._foodContainer = new Game.FoodContainer();
             this._foodContainer.init(this);
             this.addChild(this._foodContainer);
@@ -182,6 +182,9 @@ var Game;
             this._playerContainer.resetPlayer();
             this._buffContainer.resetBuff();
             this._recycleContainer.resetRecycle();
+        };
+        MapContainer.prototype.getFood = function (foodId) {
+            return this._foodContainer.getFood(foodId);
         };
         // onLoop():void 
         // {

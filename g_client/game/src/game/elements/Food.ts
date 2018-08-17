@@ -7,8 +7,11 @@ module Game {
     /**
      * 食物类
      */
-    class Food extends BaseElement
+    export class Food extends BaseElement
     {
+        // 是否在锁定状态（true 有玩家碰撞 false 没玩家碰撞）
+        private _isLock:boolean;
+
         get data():Data.FoodData
         {
             return DataMgr.instance.getFoodData(this.id);
@@ -18,6 +21,7 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
+            this._isLock = false;
 
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -31,6 +35,15 @@ module Game {
             Laya.Pool.recover(FOOD_CLASS_SIGN, this);
         }
 
+        setCarryState():void 
+        {
+            this.data.state = Data.FoodState.CARRY;
+            Laya.timer.clear(this, this.onLoop);
+            this._isLock = false;
+            EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [0]);
+            this.removeSelf();
+        }
+
         onLoop():void 
         {
             let parent = this.parent as FoodContainer;
@@ -38,20 +51,42 @@ module Game {
 
             if (isTouch) 
             {
+                this._isLock = true;
 
-                switch (this.data.type) {
-                    case Data.FoodType.BOTANY:
-                        this.data.state = Data.FoodState.DEATH;
-                        EventMgr.instance.event(Global.Event.FOOD_GO_DIE, this);
+                switch (this.data.state) {
+                    case Data.FoodState.LIVE:
+                        this.checkFoodType();
                         break;
-                    case Data.FoodType.ANIMAL:
-
-                        if (this.data.state == Data.FoodState.DEATH)
-
+                    case Data.FoodState.DEATH:
+                        EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [this.data.id]);
+                        break;
+                    case Data.FoodState.CARRY:
                         break;
                 }
-            } else {
+            } else if (this._isLock) {
+                this._isLock = false;
+                EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [0]);
+            }
+        }
 
+        checkFoodType():void
+        {
+            switch (this.data.type) {
+                case Data.FoodType.BOTANY:
+                    // 植物
+                    EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [this.data.id]);
+                    break;
+                case Data.FoodType.ANIMAL:
+                    // 动物
+                    if (this.data.attack > DataMgr.instance.myPlayerData.attack) {
+                        // 玩家死亡
+                        EventMgr.instance.event(Global.Event.GAME_OVER);
+                    } else {
+                        // 杀死动物
+                        this.data.state = Data.FoodState.DEATH;
+                        EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [this.data.id]);
+                    }
+                    break;
             }
         }
     }
@@ -137,6 +172,12 @@ module Game {
                 item.destroy();
             });
             this._foodList = [];
+        }
+
+        /** 获取场景食物 */
+        getFood(id:number):Food
+        {
+            return this._foodList[id];
         }
 
         /** 检测食物列表是否有数据 */

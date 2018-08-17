@@ -36,7 +36,7 @@ var Data;
             this.bodyPath = Global.Path.PNG_PLAYER_1;
             this.power = 100;
             this.attack = 10;
-            this.speed = 10;
+            this.speed = 3;
             this.collisionRadius = 90;
             this.width = 96;
             this.height = 96;

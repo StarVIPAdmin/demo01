@@ -41,6 +41,12 @@ var Game;
             Laya.Pool.recover(RECYCLE_CLASS_SIGN, this);
         };
         Recycle.prototype.onLoop = function () {
+            var parent = this.parent;
+            var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+            if (isTouch) {
+                // 通知玩家处于回收点
+                Game.EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA);
+            }
         };
         return Recycle;
     }(Game.BaseElement));
@@ -49,6 +55,13 @@ var Game;
         function RecycleContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        Object.defineProperty(RecycleContainer.prototype, "mapContainer", {
+            get: function () {
+                return this._mapContainer;
+            },
+            enumerable: true,
+            configurable: true
+        });
         RecycleContainer.prototype.init = function (parentContainer) {
             this._mapContainer = parentContainer;
             this._recycleList = [];

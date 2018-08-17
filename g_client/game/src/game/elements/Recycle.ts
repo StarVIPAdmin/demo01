@@ -34,7 +34,13 @@ module Game {
 
         onLoop():void 
         {
+            let parent = this.parent as RecycleContainer;
+            let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
 
+            if (isTouch) {
+                // 通知玩家处于回收点
+                EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA);
+            }
         }
     }
 
@@ -44,6 +50,11 @@ module Game {
         private _mapContainer:MapContainer;
         // 回收点列表
         private _recycleList:Array<Recycle>;
+
+        get mapContainer():MapContainer
+        {
+            return this._mapContainer;
+        }
 
         init(parentContainer:MapContainer):void 
         {

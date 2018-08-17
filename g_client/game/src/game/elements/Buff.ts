@@ -18,7 +18,6 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
-
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
@@ -38,9 +37,9 @@ module Game {
             let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
 
             if (isTouch) {
+                Laya.timer.clear(this, this.onLoop);
                 // 玩家获取一个buff
                 EventMgr.instance.event(Global.Event.GET_BUFF, [this.data.cfgId]);
-
                 // 删除buff
                 parent.removeBuff(this.data.id);
             }

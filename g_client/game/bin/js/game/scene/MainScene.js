@@ -65,7 +65,11 @@ var Game;
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
-            Game.EventMgr.instance.on(Global.Event.FOOD_GO_DIE, this, this.onFoodDie);
+            Game.EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
+            Game.EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
+            Game.EventMgr.instance.on(Global.Event.IN_RECYCLE_AREA, this, this.onRecycleArea);
+            Game.EventMgr.instance.on(Global.Event.GAME_OVER, this, this.onGameOver);
+            Game.EventMgr.instance.on(Global.Event.CARRY_FOOD, this, this.onCarryFood);
         };
         MainScene.prototype.onLoop = function () {
             this._mapContainer.moveMap(this._mainUI.getMoveIconAngle());
@@ -118,8 +122,26 @@ var Game;
         MainScene.prototype.onMouseMove = function (evt) {
             this._mainUI.onMouseMove(evt);
         };
-        MainScene.prototype.onFoodDie = function (evt) {
-            this._mainUI.setCarryIconVisible(true);
+        /** 设置搬运图标是否显示 */
+        MainScene.prototype.onSetCarryIconVisible = function (foodId) {
+            this._mainUI.setCarryIconVisible(foodId);
+        };
+        /** 获取一个buff */
+        MainScene.prototype.onGetBuff = function (buffCfgId) {
+            this._player.onGetBuff(buffCfgId);
+        };
+        /** 处在回收点范围 */
+        MainScene.prototype.onRecycleArea = function () {
+            this._player.onRecycleArea();
+        };
+        /** 游戏结束 */
+        MainScene.prototype.onGameOver = function () {
+            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI);
+        };
+        /** 搬运食物 */
+        MainScene.prototype.onCarryFood = function (foodId) {
+            var food = this._mapContainer.getFood(foodId);
+            this._player.onCarryFood(food);
         };
         MainScene.prototype.playerDie = function () {
             Game.DataMgr.instance.isGameOver = true;

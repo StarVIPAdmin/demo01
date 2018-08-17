@@ -45,6 +45,7 @@ var Game;
             var parent = this.parent;
             var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
             if (isTouch) {
+                Laya.timer.clear(this, this.onLoop);
                 // 玩家获取一个buff
                 Game.EventMgr.instance.event(Global.Event.GET_BUFF, [this.data.cfgId]);
                 // 删除buff

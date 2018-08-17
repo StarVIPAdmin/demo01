@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    var Event = Laya.Event;
     /**
      * 游戏主UI
      */
@@ -26,6 +27,7 @@ var Game;
             _this.MOVE_ICON_HEIGHT = 95;
             _this.initData();
             _this.initUI();
+            _this.initEvent();
             return _this;
         }
         GameMainUI.prototype.initData = function () {
@@ -69,6 +71,9 @@ var Game;
             this._carryIcon = Game.ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
             this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
             this.addChild(this._carryIcon);
+        };
+        GameMainUI.prototype.initEvent = function () {
+            this._carryIcon.on(Event.MOUSE_UP, this, this.onClickCarryIcon);
         };
         // 刷新得分
         GameMainUI.prototype.refreshScoreTxt = function (Value) {
@@ -132,8 +137,15 @@ var Game;
             return Math.atan2(moveIconPosY - this._halfMoveBGHeight, moveIconPosX - this._halfMoveBGWidth);
         };
         /** 设置拾取按钮是否显示 */
-        GameMainUI.prototype.setCarryIconVisible = function (isShow) {
-            this._carryIcon.visible = isShow;
+        GameMainUI.prototype.setCarryIconVisible = function (foodId) {
+            this._carryFoodId = foodId;
+            this._carryIcon.visible = foodId != 0;
+        };
+        /** 点击搬运按钮 */
+        GameMainUI.prototype.onClickCarryIcon = function () {
+            if (this._carryFoodId != 0) {
+                Game.EventMgr.instance.event(Global.Event.CARRY_FOOD, [this._carryFoodId]);
+            }
         };
         return GameMainUI;
     }(Sprite));

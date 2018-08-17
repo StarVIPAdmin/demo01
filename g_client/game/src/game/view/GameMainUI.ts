@@ -30,6 +30,8 @@ module Game {
 
         private _carryIcon:Sprite;
 
+        private _carryFoodId:number;
+
         // 是否可以移动摇杆
         private _canMove:boolean;
 
@@ -44,6 +46,7 @@ module Game {
             super();
             this.initData();
             this.initUI();
+            this.initEvent();
         }
 
         initData():void
@@ -96,6 +99,11 @@ module Game {
             this._carryIcon = ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
             this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
             this.addChild(this._carryIcon);
+        }
+
+        initEvent():void 
+        {
+            this._carryIcon.on(Event.MOUSE_UP, this, this.onClickCarryIcon);
         }
 
         // 刷新得分
@@ -180,9 +188,18 @@ module Game {
         }
 
         /** 设置拾取按钮是否显示 */
-        setCarryIconVisible(isShow:boolean):void 
+        setCarryIconVisible(foodId:number):void 
         {
-            this._carryIcon.visible = isShow;
+            this._carryFoodId = foodId;
+            this._carryIcon.visible = foodId != 0;
+        }
+
+        /** 点击搬运按钮 */
+        onClickCarryIcon():void 
+        {
+            if (this._carryFoodId != 0) {
+                EventMgr.instance.event(Global.Event.CARRY_FOOD, [this._carryFoodId]);
+            }
         }
     }
 }
