@@ -8,15 +8,14 @@ function clsMaker:MakeTable()
 	client.Const = self.SheetData["常量配置"]
 
 	--角色经验
-	local tserv,tclient = self:GenConfg("角色经验")
+	local tserv,tclient = self:GenConfg("玩家积分")
 	local sTbl, cTbl = {}, {}
 	for k, v in pairs(tserv) do
-		sTbl[v.Level] = v.MaxExp
-		cTbl[v.Level] = v.MaxExp
+		sTbl[v.Level] = v.NeedScore
+		cTbl[v.Level] = v.NeedScore
 	end
-	serv.RoleExpCfg = sTbl
-	client.RoleExpCfg = cTbl
-	
+	serv.ScoreCfg = sTbl
+	client.ScoreCfg = cTbl
 	return serv,client
 end 
 

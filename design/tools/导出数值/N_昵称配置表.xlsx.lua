@@ -1,4 +1,16 @@
 return {
+	["导出"] = {
+		["Type"] = {"string","string","string#default",},
+		["HeaderName"] = {"字段名","变量名","导出端",},
+		["Data"] = {
+			[1] = {"序号Id","Id","c",},
+			[2] = {"文本","Name","c",},
+		},
+	},
+	["常量配置"] = {
+		["Type"] = {"string","lua","string#default",},
+		["HeaderName"] = {"常量名","常量值","描述",},
+	},
 	["姓"] = {
 		["Type"] = {"int#ukey","string",},
 		["HeaderName"] = {"序号Id","文本",},
@@ -88,17 +100,5 @@ return {
 			[38] = {"38","映安",},
 			[39] = {"39","迎梦",},
 		},
-	},
-	["导出"] = {
-		["Type"] = {"string","string","string#default",},
-		["HeaderName"] = {"字段名","变量名","导出端",},
-		["Data"] = {
-			[1] = {"序号Id","Id","c",},
-			[2] = {"文本","Name","c",},
-		},
-	},
-	["常量配置"] = {
-		["Type"] = {"string","lua","string#default",},
-		["HeaderName"] = {"常量名","常量值","描述",},
 	},
 }

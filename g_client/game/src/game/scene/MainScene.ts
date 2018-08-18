@@ -39,7 +39,6 @@ module Game {
             super.onShow();
 
             this._player = ResMgr.instance.createPlayer(DataMgr.instance.myPlayerData.id);
-            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
             this.addChild(this._player);
 
             this._mapContainer.resetElements();
@@ -74,6 +73,8 @@ module Game {
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+
+            this._player.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
 
             EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
             EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
@@ -170,7 +171,8 @@ module Game {
         /** 游戏结束 */
         onGameOver():void 
         {
-            viewMgr.showView(Global.ViewId.GAME_OVER_UI);
+            DataMgr.instance.isGameOver = true;
+            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         }
 
         /** 搬运食物 */
@@ -180,10 +182,10 @@ module Game {
             this._player.onCarryFood(food);
         }
 
-        playerDie():void 
+        /** 更新玩家体力 */
+        onUpdatePower():void 
         {
-            DataMgr.instance.isGameOver = true;
-            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
+
         }
 
         updateScore():void 

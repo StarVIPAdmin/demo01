@@ -11,5 +11,7 @@ module Global {
         public static readonly GAME_OVER:string = "GAME_OVER";
         // 搬运食物
         public static readonly CARRY_FOOD:string = "CARRY_FOOD";
+        // 更新体力
+        public static readonly ON_UPDATE_POWER:string = "ON_UPDATE_POWER";
     }
 }
