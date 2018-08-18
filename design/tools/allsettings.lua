@@ -7,5 +7,6 @@ return {
 	{"F_反馈配置表.lua", 		"F_反馈配置表.xlsx",		"feedback_cfg"},
 	{"Z_中文配置表.lua", 		"Z_中文配置表.xlsx",		"language_cfg"},
 	{"J_积分配置表.lua",		"J_积分配置表.xlsx",		"score_cfg"},
+	{"C_场景配置表.lua",		"C_场景配置表.xlsx",		"scene_cfg"},
 	{"N_昵称配置表.lua", 		"N_昵称配置表.xlsx",		"name_cfg"},
 }
