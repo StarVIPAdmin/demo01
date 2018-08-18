@@ -48,6 +48,12 @@ var Game;
             Game.EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [0]);
             this.removeSelf();
         };
+        Food.prototype.dropout = function () {
+            this._isLock = false;
+            this.data.state = Data.FoodState.DEATH;
+            this.removeSelf();
+            Laya.timer.frameLoop(1, this, this.onLoop);
+        };
         Food.prototype.onLoop = function () {
             var parent = this.parent;
             var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
@@ -148,6 +154,7 @@ var Game;
             var food = this._foodList[id];
             food.destroy();
             this._foodList[id] = null;
+            Game.DataMgr.instance.removeFoodData(id);
         };
         /** 清除食物 */
         FoodContainer.prototype.clearFood = function () {
@@ -158,10 +165,21 @@ var Game;
                 item.destroy();
             });
             this._foodList = [];
+            Game.DataMgr.instance.foodDataList = [];
         };
         /** 获取场景食物 */
         FoodContainer.prototype.getFood = function (id) {
             return this._foodList[id];
+        };
+        /** 掉落食物 */
+        FoodContainer.prototype.dropoutFood = function (id) {
+            var food = this.getFood(id);
+            if (food != null) {
+                food.data.state = Data.FoodState.DEATH;
+                food.dropout();
+                food.pos(Game.DataMgr.instance.myPlayerData.x - this.mapContainer.x, Game.DataMgr.instance.myPlayerData.y - this.mapContainer.y);
+                this.addChild(food);
+            }
         };
         /** 检测食物列表是否有数据 */
         FoodContainer.prototype.checkFoodList = function () {

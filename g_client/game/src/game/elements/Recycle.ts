@@ -10,6 +10,9 @@ module Game {
      */
     class Recycle extends BaseElement 
     {
+        // 锁定状态
+        private _isLock:boolean;
+
         get data():Data.RecycleData
         {
             return DataMgr.instance.getRecycleData(this.id);
@@ -19,7 +22,7 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
-
+            this._isLock = false;
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
@@ -38,9 +41,20 @@ module Game {
             let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
 
             if (isTouch) {
-                // 通知玩家处于回收点
-                EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA);
+                // 走进回收点范围
+                this.setRecycleLock(true);
+            } else if (this._isLock) {
+                // 走出回收点范围
+                this.setRecycleLock(false);
             }
+        }
+
+        /** 设置锁定状态 */
+        setRecycleLock(bool:boolean):void 
+        {
+            this._isLock = bool;
+            // 通知玩家
+            EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA, [bool]);
         }
     }
 

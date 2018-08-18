@@ -9,8 +9,10 @@ module Game {
      */
     export class Player extends BaseElement 
     {   
-        // 当前锁定的食物ID
+        // 当前身上的食物ID
         public foodId:number;
+        // 体力增量
+        public powerDelta:number;
 
         get data():Data.PlayerData
         {
@@ -22,45 +24,80 @@ module Game {
         {
             super.init(id);
             this.foodId = 0;
-            // Laya.timer.frameLoop(1, this, this.onLoop);
+            this.powerDelta = this.data.powerDelta;
+
+            // 定时器检测
+            Laya.timer.loop(1000, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+            Laya.timer.clear(this, this.onLoop);
             Laya.Pool.recover(PLAYER_CLASS_SIGN, this);
         }
 
         onLoop():void 
         {
-            // 判定玩家是否死亡
-            // if (this.y > (Global.Const.GAME_HEIGHT + 100)) {
-            //     this.event(Global.Const.PLAYER_STATE_DIE, this);
-            //     return;
-            // }
+            // 更新玩家的体力
+            let newVal = this.data.curPower + this.powerDelta;
+            this.data.curPower = newVal;
+            let percent = this.data.curPower / this.data.totalPower;
+            this.event(Global.Event.ON_UPDATE_POWER, [percent]);
+
+            // 体力不足
+            if (this.foodId != 0) {
+                if (newVal <= 0) {
+                    this.event(Global.Event.RESET_FOOD, [this.foodId]);
+                    this.foodId = 0;
+                }
+            }
         }
         
         /** 获取一个buff */
         onGetBuff(cfgId:number):void 
         {
-            this.data.speed = this.data.speed + 1;
+            this.data.walkSpeed = this.data.walkSpeed + 1;
         }
 
         /** 处在回收点范围 */
-        onRecycleArea():void 
+        inRecycleArea():void 
         {
-            this.data.attack = this.data.attack + 1;
+            // 回收食物
+            if (this.foodId != 0) {
+                let foodData = DataMgr.instance.getFoodData(this.foodId);
+                this.addScore(foodData.score);
+                this.event(Global.Event.RECYCLE_FOOD, [this.foodId]);
+                this.foodId = 0;
+            }
+
+            this.powerDelta = this.data.powerDelta * 5;
+            this.data.state = Data.PlayerState.PROTECT;
+        }
+
+        /** 离开回收点范围 */
+        outRecycleArea():void 
+        {
+            this.powerDelta = this.data.powerDelta;
+            this.data.state = Data.PlayerState.IDE;
         }
 
         /** 搬运食物 */
         onCarryFood(food:Food):void 
         {
-            this.data.state = Data.PlayerState.CARRY;
             this.foodId = food.data.id;
             food.setCarryState();
             food.pos(0, 0);
             this.addChild(food);
+
+            this.powerDelta = -food.data.weight * 2;
+        }
+
+        /** 增加积分 */
+        addScore(score:number):void 
+        {
+            this.data.score = this.data.score + score;
         }
 
         /** 从场景移除（返回对象池） */

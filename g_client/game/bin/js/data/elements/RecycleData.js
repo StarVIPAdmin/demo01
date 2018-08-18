@@ -21,7 +21,7 @@ var Data;
         RecycleData.prototype.init = function () {
             this.nick = "食物回收" + this.id;
             this.bodyPath = Global.Path.PNG_FOOD_RECYCLE_1;
-            this.collisionRadius = 500;
+            this.collisionRadius = 250;
             this.width = 512;
             this.height = 512;
             this.x = Math.random() * Global.Const.MAP_WIDTH;

@@ -13,5 +13,9 @@ module Global {
         public static readonly CARRY_FOOD:string = "CARRY_FOOD";
         // 更新体力
         public static readonly ON_UPDATE_POWER:string = "ON_UPDATE_POWER";
+        // 回收食物
+        public static readonly RECYCLE_FOOD:string = "RECYCLE_FOOD";
+        // 重置食物
+        public static readonly RESET_FOOD:string = "RESET_FOOD";
     }
 }

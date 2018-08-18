@@ -34,18 +34,17 @@ var Game;
             this._mapContainer = null;
             this._player = null;
             this.initUI();
-            this.initEvent();
         };
         /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
             this._player = Game.ResMgr.instance.createPlayer(Game.DataMgr.instance.myPlayerData.id);
-            this._player.on(Global.Const.PLAYER_STATE_DIE, this, this.playerDie);
             this.addChild(this._player);
             this._mapContainer.resetElements();
             this._mainUI.refreshAttackTxt(Game.DataMgr.instance.myPlayerData.attack);
-            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.myPlayerData.speed);
+            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.myPlayerData.walkSpeed);
             this._mainUI.refreshScoreTxt(this.sceneData.score);
+            this.initEvent();
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
@@ -65,6 +64,9 @@ var Game;
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            this._player.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
+            this._player.on(Global.Event.RECYCLE_FOOD, this, this.onRecycleFood);
+            this._player.on(Global.Event.RESET_FOOD, this, this.onResetFood);
             Game.EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
             Game.EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
             Game.EventMgr.instance.on(Global.Event.IN_RECYCLE_AREA, this, this.onRecycleArea);
@@ -130,26 +132,37 @@ var Game;
         MainScene.prototype.onGetBuff = function (buffCfgId) {
             this._player.onGetBuff(buffCfgId);
         };
-        /** 处在回收点范围 */
-        MainScene.prototype.onRecycleArea = function () {
-            this._player.onRecycleArea();
+        /** 是否处在回收点范围 */
+        MainScene.prototype.onRecycleArea = function (inRecycleArea) {
+            if (inRecycleArea) {
+                this._player.inRecycleArea();
+            }
+            else {
+                this._player.outRecycleArea();
+            }
         };
         /** 游戏结束 */
         MainScene.prototype.onGameOver = function () {
-            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI);
+            Game.DataMgr.instance.isGameOver = true;
+            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
         };
         /** 搬运食物 */
         MainScene.prototype.onCarryFood = function (foodId) {
             var food = this._mapContainer.getFood(foodId);
             this._player.onCarryFood(food);
         };
-        MainScene.prototype.playerDie = function () {
-            Game.DataMgr.instance.isGameOver = true;
-            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
+        /** 更新玩家体力 */
+        MainScene.prototype.onUpdatePower = function (percent) {
+            this._mainUI.refreshPlayerPower(percent);
         };
-        MainScene.prototype.updateScore = function () {
-            this.sceneData.score++;
-            this._mainUI.refreshScoreTxt(this.sceneData.score);
+        /** 回收食物 */
+        MainScene.prototype.onRecycleFood = function (foodId) {
+            this._mapContainer.foodContainer.removeFood(foodId);
+            this._mainUI.refreshScoreTxt(this._player.data.score);
+        };
+        /** 还原食物 */
+        MainScene.prototype.onResetFood = function (foodId) {
+            this._mapContainer.foodContainer.dropoutFood(foodId);
         };
         return MainScene;
     }(Core.BaseScene));

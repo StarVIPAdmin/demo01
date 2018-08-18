@@ -13,7 +13,7 @@ var Game;
     var Sprite = Laya.Sprite;
     // 最小/最大值
     var VALUE_MIN = 0;
-    var VALUE_MAX = 100;
+    var VALUE_MAX = 1;
     ;
     ;
     /**
@@ -39,7 +39,7 @@ var Game;
         ProgressBar.prototype.initData = function () {
             this._bg = null;
             this._bar = null;
-            this._value = VALUE_MIN;
+            this._value = VALUE_MAX;
         };
         ProgressBar.prototype.initUI = function () {
             this._bg = Game.ResMgr.instance.createSprite(Global.Path.PNG_BAR_BG, 180 /* x */, 21 /* y */);
@@ -47,15 +47,20 @@ var Game;
             this._bar = Game.ResMgr.instance.createSprite(Global.Path.PNG_BAR_HP, 155 /* x */, 12 /* y */, 15, 2);
             this.addChild(this._bar);
         };
-        ProgressBar.prototype.changeValue = function (Val) {
-            this._value += Val;
+        /** 增加进度条的值 */
+        ProgressBar.prototype.addValue = function (Val) {
+            this.setValue(this._value + Val);
+        };
+        /** 设置进度条的值 */
+        ProgressBar.prototype.setValue = function (Val) {
+            this._value = Val;
             if (this._value < VALUE_MIN) {
                 this._value = VALUE_MIN;
             }
             else if (this._value > VALUE_MAX) {
                 this._value = VALUE_MAX;
             }
-            this._bar.scale(this._value / VALUE_MAX, 1);
+            this._bar.scale(this._value, 1);
         };
         return ProgressBar;
     }(Sprite));

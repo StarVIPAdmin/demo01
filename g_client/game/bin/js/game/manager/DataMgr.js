@@ -94,6 +94,10 @@ var Game;
         DataMgr.prototype.removeBuffData = function (id) {
             this.buffDataList[id] = null;
         };
+        /** 删除指定唯一ID的食物数据 */
+        DataMgr.prototype.removeFoodData = function (id) {
+            this.foodDataList[id] = null;
+        };
         // 测试初始化数据
         DataMgr.prototype.testInitData = function () {
             this.myPlayerData = this.createPlayerData(1);

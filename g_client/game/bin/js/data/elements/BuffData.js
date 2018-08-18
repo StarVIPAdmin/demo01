@@ -24,7 +24,7 @@ var Data;
             this.bodyPath = Global.Path.PNG_BUFF_1;
             this.width = 512;
             this.height = 512;
-            this.collisionRadius = 500;
+            this.collisionRadius = 250;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };

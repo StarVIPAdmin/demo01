@@ -3,7 +3,7 @@ module Game {
 
     // 最小/最大值
     const VALUE_MIN:number = 0;
-    const VALUE_MAX:number = 100;
+    const VALUE_MAX:number = 1;
 
     // 进度条尺寸
     const enum SIZE_BG {x=180, y=21};
@@ -34,7 +34,7 @@ module Game {
          {
              this._bg = null;
              this._bar = null;
-             this._value = VALUE_MIN;
+             this._value = VALUE_MAX;
          }
 
          initUI():void 
@@ -46,15 +46,22 @@ module Game {
              this.addChild(this._bar);
          }
 
-         changeValue(Val:number):void 
+         /** 增加进度条的值 */
+         addValue(Val:number):void 
          {
-             this._value += Val;
+             this.setValue(this._value + Val);
+         }
+
+         /** 设置进度条的值 */
+         setValue(Val:number):void 
+         {
+             this._value = Val;
              if (this._value < VALUE_MIN) {
                  this._value = VALUE_MIN;
              } else if (this._value > VALUE_MAX) {
                  this._value = VALUE_MAX;
              }
-             this._bar.scale(this._value / VALUE_MAX, 1);
+             this._bar.scale(this._value, 1);
          }
      }
 }

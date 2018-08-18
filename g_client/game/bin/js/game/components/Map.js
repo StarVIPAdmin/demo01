@@ -150,6 +150,13 @@ var Game;
         function MapContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        Object.defineProperty(MapContainer.prototype, "foodContainer", {
+            get: function () {
+                return this._foodContainer;
+            },
+            enumerable: true,
+            configurable: true
+        });
         MapContainer.prototype.init = function () {
             this.initData();
             this.initUI();
@@ -220,8 +227,8 @@ var Game;
         MapContainer.prototype.moveMap = function (angle) {
             if (angle == 0)
                 return;
-            var deltaPosX = Game.DataMgr.instance.myPlayerData.speed * Math.cos(angle);
-            var deltaPosY = Game.DataMgr.instance.myPlayerData.speed * Math.sin(angle);
+            var deltaPosX = Game.DataMgr.instance.myPlayerData.walkSpeed * Math.cos(angle);
+            var deltaPosY = Game.DataMgr.instance.myPlayerData.walkSpeed * Math.sin(angle);
             var targetPosX = this.x - deltaPosX;
             var targetPosY = this.y - deltaPosY;
             var minPosX = -this._mapWidth + Global.Const.GAME_WIDTH * 0.5;

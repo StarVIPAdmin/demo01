@@ -44,6 +44,14 @@ module Game {
             this.removeSelf();
         }
 
+        dropout():void 
+        {
+            this._isLock = false;
+            this.data.state = Data.FoodState.DEATH;
+            this.removeSelf();
+            Laya.timer.frameLoop(1, this, this.onLoop);
+        }
+
         onLoop():void 
         {
             let parent = this.parent as FoodContainer;
@@ -159,6 +167,7 @@ module Game {
             let food = this._foodList[id];
             food.destroy();
             this._foodList[id] = null;
+            DataMgr.instance.removeFoodData(id);
         }
 
         /** 清除食物 */
@@ -172,12 +181,25 @@ module Game {
                 item.destroy();
             });
             this._foodList = [];
+            DataMgr.instance.foodDataList = [];
         }
 
         /** 获取场景食物 */
         getFood(id:number):Food
         {
             return this._foodList[id];
+        }
+
+        /** 掉落食物 */
+        dropoutFood(id:number):void 
+        {
+            let food = this.getFood(id);
+            if (food != null) {
+                food.data.state = Data.FoodState.DEATH;
+                food.dropout();
+                food.pos(DataMgr.instance.myPlayerData.x - this.mapContainer.x, DataMgr.instance.myPlayerData.y - this.mapContainer.y);
+                this.addChild(food);
+            }
         }
 
         /** 检测食物列表是否有数据 */

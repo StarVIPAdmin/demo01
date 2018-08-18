@@ -28,9 +28,7 @@ module Game {
             this._mainUI = null;
             this._mapContainer = null;
             this._player = null;
-
             this.initUI();
-            this.initEvent();
         }
 
         /** 重写父类函数 */
@@ -44,8 +42,10 @@ module Game {
             this._mapContainer.resetElements();
 
             this._mainUI.refreshAttackTxt(DataMgr.instance.myPlayerData.attack);
-            this._mainUI.refreshSpeedTxt(DataMgr.instance.myPlayerData.speed);
+            this._mainUI.refreshSpeedTxt(DataMgr.instance.myPlayerData.walkSpeed);
             this._mainUI.refreshScoreTxt(this.sceneData.score);
+
+            this.initEvent();
 
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -75,6 +75,8 @@ module Game {
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
 
             this._player.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
+            this._player.on(Global.Event.RECYCLE_FOOD, this, this.onRecycleFood);
+            this._player.on(Global.Event.RESET_FOOD, this, this.onResetFood);
 
             EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
             EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
@@ -162,10 +164,14 @@ module Game {
             this._player.onGetBuff(buffCfgId);
         }
 
-        /** 处在回收点范围 */
-        onRecycleArea():void 
+        /** 是否处在回收点范围 */
+        onRecycleArea(inRecycleArea:boolean):void 
         {
-            this._player.onRecycleArea();
+            if (inRecycleArea) {
+                this._player.inRecycleArea();
+            } else {
+                this._player.outRecycleArea();
+            }
         }
 
         /** 游戏结束 */
@@ -183,15 +189,22 @@ module Game {
         }
 
         /** 更新玩家体力 */
-        onUpdatePower():void 
+        onUpdatePower(percent:number):void 
         {
-
+            this._mainUI.refreshPlayerPower(percent);
         }
 
-        updateScore():void 
+        /** 回收食物 */
+        onRecycleFood(foodId:number):void 
         {
-            this.sceneData.score++;
-            this._mainUI.refreshScoreTxt(this.sceneData.score);
+            this._mapContainer.foodContainer.removeFood(foodId);
+            this._mainUI.refreshScoreTxt(this._player.data.score);
+        }
+
+        /** 还原食物 */
+        onResetFood(foodId:number):void 
+        {
+            this._mapContainer.foodContainer.dropoutFood(foodId);
         }
     }
 }

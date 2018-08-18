@@ -147,6 +147,10 @@ var Game;
                 Game.EventMgr.instance.event(Global.Event.CARRY_FOOD, [this._carryFoodId]);
             }
         };
+        /** 刷新玩家体力 */
+        GameMainUI.prototype.refreshPlayerPower = function (percent) {
+            this._powerBar.setValue(percent);
+        };
         return GameMainUI;
     }(Sprite));
     Game.GameMainUI = GameMainUI;

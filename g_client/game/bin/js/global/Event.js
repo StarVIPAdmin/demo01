@@ -13,6 +13,12 @@ var Global;
         Event.GAME_OVER = "GAME_OVER";
         // 搬运食物
         Event.CARRY_FOOD = "CARRY_FOOD";
+        // 更新体力
+        Event.ON_UPDATE_POWER = "ON_UPDATE_POWER";
+        // 回收食物
+        Event.RECYCLE_FOOD = "RECYCLE_FOOD";
+        // 重置食物
+        Event.RESET_FOOD = "RESET_FOOD";
         return Event;
     }());
     Global.Event = Event;

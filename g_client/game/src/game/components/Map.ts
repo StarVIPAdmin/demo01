@@ -176,6 +176,11 @@ module Game {
         private _foodContainer:FoodContainer;
         private _recycleContainer:RecycleContainer;
         private _playerContainer:PlayerContainer;
+        
+        get foodContainer():FoodContainer
+        {
+            return this._foodContainer;
+        }
 
         init():void 
         {
@@ -270,8 +275,8 @@ module Game {
             if (angle == 0) 
                 return;
 
-            let deltaPosX = DataMgr.instance.myPlayerData.speed * Math.cos(angle);
-            let deltaPosY = DataMgr.instance.myPlayerData.speed * Math.sin(angle);
+            let deltaPosX = DataMgr.instance.myPlayerData.walkSpeed * Math.cos(angle);
+            let deltaPosY = DataMgr.instance.myPlayerData.walkSpeed * Math.sin(angle);
             let targetPosX = this.x - deltaPosX;
             let targetPosY = this.y - deltaPosY;
 

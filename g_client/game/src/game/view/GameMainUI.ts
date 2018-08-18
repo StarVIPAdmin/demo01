@@ -201,5 +201,11 @@ module Game {
                 EventMgr.instance.event(Global.Event.CARRY_FOOD, [this._carryFoodId]);
             }
         }
+
+        /** 刷新玩家体力 */
+        refreshPlayerPower(percent:number):void 
+        {
+            this._powerBar.setValue(percent);
+        }
     }
 }

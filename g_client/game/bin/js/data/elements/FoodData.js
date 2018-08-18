@@ -39,11 +39,12 @@ var Data;
             this.bodyPath = Global.Path.PNG_ITEM_1;
             this.weight = 10;
             this.cfgId = 1;
-            this.collisionRadius = 120;
+            this.collisionRadius = 60;
             this.width = 128;
             this.height = 128;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
+            this.score = 1;
             this.state = FoodState.LIVE;
             if (this.type == FoodType.BOTANY) {
                 this.attack = 0;

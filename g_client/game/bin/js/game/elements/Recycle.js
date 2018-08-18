@@ -31,6 +31,7 @@ var Game;
         /** 重写父类函数 */
         Recycle.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
+            this._isLock = false;
             // 定时器检测
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
@@ -44,9 +45,19 @@ var Game;
             var parent = this.parent;
             var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
             if (isTouch) {
-                // 通知玩家处于回收点
-                Game.EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA);
+                // 走进回收点范围
+                this.setRecycleLock(true);
             }
+            else if (this._isLock) {
+                // 走出回收点范围
+                this.setRecycleLock(false);
+            }
+        };
+        /** 设置锁定状态 */
+        Recycle.prototype.setRecycleLock = function (bool) {
+            this._isLock = bool;
+            // 通知玩家
+            Game.EventMgr.instance.event(Global.Event.IN_RECYCLE_AREA, [bool]);
         };
         return Recycle;
     }(Game.BaseElement));

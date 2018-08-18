@@ -109,6 +109,12 @@ module Game {
             this.buffDataList[id] = null;
         }
 
+        /** 删除指定唯一ID的食物数据 */
+        removeFoodData(id:number):void
+        {
+            this.foodDataList[id] = null;
+        }
+
         // 测试初始化数据
         testInitData():void 
         {
