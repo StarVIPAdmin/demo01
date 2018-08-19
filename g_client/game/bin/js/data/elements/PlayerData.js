@@ -18,8 +18,7 @@ var Data;
         PlayerState[PlayerState["IDE"] = 1] = "IDE";
         PlayerState[PlayerState["ATTACK"] = 2] = "ATTACK";
         PlayerState[PlayerState["DEATH"] = 3] = "DEATH";
-        // CARRY = 4,      // 搬运
-        PlayerState[PlayerState["PROTECT"] = 5] = "PROTECT"; // 受保护
+        PlayerState[PlayerState["PROTECT"] = 4] = "PROTECT"; // 受保护
     })(PlayerState = Data.PlayerState || (Data.PlayerState = {}));
     /**
      * 玩家数据类
@@ -33,8 +32,10 @@ var Data;
             return _this;
         }
         PlayerData.prototype.init = function () {
-            this.nick = "玩家" + this.id;
+            var cfg = Laya.loader.getRes(Global.Path.JSON_SCORE_CFG);
+            this.nick = "玩家" + cfg.ScoreCfg[1];
             this.bodyPath = Global.Path.PNG_PLAYER_1;
+            this.foodId = 0;
             this.level = 1;
             this.power = 100;
             this.attack = 10;
@@ -46,7 +47,7 @@ var Data;
             this.score = 0;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
-            this.curPower = this.totalPower;
+            this._curPower = this.totalPower;
         };
         Object.defineProperty(PlayerData.prototype, "powerDelta", {
             /** 体力自然回复增量 */

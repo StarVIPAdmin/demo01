@@ -6,8 +6,7 @@ module Data {
         IDE = 1,        // 正常
         ATTACK = 2,     // 攻击
         DEATH = 3,      // 死亡
-        // CARRY = 4,      // 搬运
-        PROTECT = 5     // 受保护
+        PROTECT = 4     // 受保护
     }
 
     /**
@@ -27,16 +26,21 @@ module Data {
         public powerSpeed:number;
         // 等级
         public level:number;
+        // 身上的食物ID（没有则为0）
+        public foodId:number;
         // 积分
         public score:number;
 
-        
+        private _curPower:number;
 
         init():void 
         {
-            this.nick = "玩家"+this.id;
+            let cfg = Laya.loader.getRes(Global.Path.JSON_SCORE_CFG);
+
+            this.nick = "玩家"+cfg.ScoreCfg[1];
             this.bodyPath = Global.Path.PNG_PLAYER_1;
 
+            this.foodId = 0;
             this.level = 1;
             this.power = 100;
             this.attack = 10;
@@ -49,7 +53,8 @@ module Data {
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
 
-            this.curPower = this.totalPower;
+            this._curPower = this.totalPower;
+
         }
 
         /** 体力自然回复增量 */
@@ -64,8 +69,6 @@ module Data {
             return this.power * this.level;
         }
 
-        private _curPower:number;
-        
         set curPower(Val:number)
         {
             if (Val < 0) {

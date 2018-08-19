@@ -11,11 +11,17 @@ module Global {
         public static readonly GAME_OVER:string = "GAME_OVER";
         // 搬运食物
         public static readonly CARRY_FOOD:string = "CARRY_FOOD";
+        // 丢弃食物
+        public static readonly DROPOUT_FOOD:string = "DROPOUT_FOOD";
         // 更新体力
         public static readonly ON_UPDATE_POWER:string = "ON_UPDATE_POWER";
         // 回收食物
         public static readonly RECYCLE_FOOD:string = "RECYCLE_FOOD";
         // 重置食物
         public static readonly RESET_FOOD:string = "RESET_FOOD";
+        // 改变玩家搬运食物ID
+        public static readonly CHANGE_PLAYER_FOOD_ID:string = "CHANGE_PLAYER_FOOD_ID";
+        // 改变玩家属性
+        public static readonly CHANGE_PLAYER_ATTR:string = "CHANGE_PLAYER_ATTR";
     }
 }

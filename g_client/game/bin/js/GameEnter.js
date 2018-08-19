@@ -31,10 +31,15 @@ function onCompleteHandler() {
     resUrl.push({ "url": Global.Path.PNG_BUFF_2, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BUFF_3, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_CARRY_ICON, "type": Laya.Loader.IMAGE });
+    resUrl.push({ "url": Global.Path.PNG_DROPOUT_ICON, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_COMBAT_MOVE_BG, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_COMBAT_MOVE_ICON, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_HP, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_BG, "type": Laya.Loader.IMAGE });
+    // 配置数据
+    resUrl.push({ "url": Global.Path.JSON_SCENE_CFG, "type": Laya.Loader.JSON });
+    resUrl.push({ "url": Global.Path.JSON_SCORE_CFG, "type": Laya.Loader.JSON });
+    resUrl.push({ "url": Global.Path.JSON_ELEMENT_CFG, "type": Laya.Loader.JSON });
     function onLoaded() {
         // 加载完成, 进入游戏
         Game.main.run();

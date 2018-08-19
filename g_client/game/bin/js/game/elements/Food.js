@@ -41,6 +41,7 @@ var Game;
             Laya.timer.clear(this, this.onLoop);
             Laya.Pool.recover(FOOD_CLASS_SIGN, this);
         };
+        /** 设置被搬运状态 */
         Food.prototype.setCarryState = function () {
             this.data.state = Data.FoodState.CARRY;
             Laya.timer.clear(this, this.onLoop);
@@ -48,6 +49,7 @@ var Game;
             Game.EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [0]);
             this.removeSelf();
         };
+        /** 食物掉落 */
         Food.prototype.dropout = function () {
             this._isLock = false;
             this.data.state = Data.FoodState.DEATH;
@@ -55,6 +57,9 @@ var Game;
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
         Food.prototype.onLoop = function () {
+            if (Game.DataMgr.instance.myPlayerData.foodId != 0) {
+                return;
+            }
             var parent = this.parent;
             var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
             if (isTouch) {
@@ -75,6 +80,7 @@ var Game;
                 Game.EventMgr.instance.event(Global.Event.SET_CARRY_ICON_VISIBLE, [0]);
             }
         };
+        /** 检测食物类型 */
         Food.prototype.checkFoodType = function () {
             switch (this.data.type) {
                 case Data.FoodType.BOTANY:

@@ -28,6 +28,7 @@ module Game {
         private _moveBG:Sprite;
         private _moveIcon:Sprite;
 
+        private _dropoutIcon:Sprite;
         private _carryIcon:Sprite;
 
         private _carryFoodId:number;
@@ -99,11 +100,16 @@ module Game {
             this._carryIcon = ResMgr.instance.createSprite(Global.Path.PNG_CARRY_ICON, 204, 204);
             this._carryIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
             this.addChild(this._carryIcon);
+            
+            this._dropoutIcon = ResMgr.instance.createSprite(Global.Path.PNG_DROPOUT_ICON, 204, 204);
+            this._dropoutIcon.pos(Global.Const.GAME_WIDTH - 234, Global.Const.GAME_HEIGHT - 234).visible = false;
+            this.addChild(this._dropoutIcon);
         }
 
         initEvent():void 
         {
             this._carryIcon.on(Event.MOUSE_UP, this, this.onClickCarryIcon);
+            this._dropoutIcon.on(Event.MOUSE_UP, this, this.onClickDropoutIcon);
         }
 
         // 刷新得分
@@ -200,6 +206,18 @@ module Game {
             if (this._carryFoodId != 0) {
                 EventMgr.instance.event(Global.Event.CARRY_FOOD, [this._carryFoodId]);
             }
+        }
+
+        /** 点击丢弃按钮 */
+        onClickDropoutIcon():void 
+        {
+            EventMgr.instance.event(Global.Event.DROPOUT_FOOD);
+        }
+
+        /** 设置丢弃按钮是否显示 */
+        setDropoutIconVisible(bool:boolean):void 
+        {
+            this._dropoutIcon.visible = bool;
         }
 
         /** 刷新玩家体力 */

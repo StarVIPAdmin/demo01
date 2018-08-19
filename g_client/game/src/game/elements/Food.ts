@@ -35,6 +35,7 @@ module Game {
             Laya.Pool.recover(FOOD_CLASS_SIGN, this);
         }
 
+        /** 设置被搬运状态 */
         setCarryState():void 
         {
             this.data.state = Data.FoodState.CARRY;
@@ -44,6 +45,7 @@ module Game {
             this.removeSelf();
         }
 
+        /** 食物掉落 */
         dropout():void 
         {
             this._isLock = false;
@@ -54,6 +56,10 @@ module Game {
 
         onLoop():void 
         {
+            if (DataMgr.instance.myPlayerData.foodId != 0) {
+                return;
+            }
+            
             let parent = this.parent as FoodContainer;
             let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
 
@@ -77,6 +83,7 @@ module Game {
             }
         }
 
+        /** 检测食物类型 */
         checkFoodType():void
         {
             switch (this.data.type) {

@@ -2,7 +2,7 @@ return
 {
 	["BuffCfg"] = {
 		{
-			["BuffEffect"] = "耐力不变",
+			["BuffEffect"] = "PowerUnChanged",
 			["BuffParam"] = {
 				["Times"] = 30,
 			},
@@ -10,7 +10,7 @@ return
 			["Name"] = "耐力药剂",
 		},
 		{
-			["BuffEffect"] = "速度提升",
+			["BuffEffect"] = "SpeedUp",
 			["BuffParam"] = {
 				["Times"] = 30,
 				["UpVal"] = 50,
@@ -19,7 +19,7 @@ return
 			["Name"] = "速度药剂",
 		},
 		{
-			["BuffEffect"] = "攻击力提升",
+			["BuffEffect"] = "AttackUp",
 			["BuffParam"] = {
 				["Times"] = 30,
 				["UpVal"] = 20,

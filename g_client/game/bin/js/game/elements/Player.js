@@ -11,6 +11,10 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
+    Game.ATTR_TYPE = {
+        attack: "attack",
+        walkSpeed: "walkSpeed"
+    };
     // 玩家类标识（用于对象池回收）
     Game.PLAYER_CLASS_SIGN = "player";
     /**
@@ -31,7 +35,6 @@ var Game;
         /** 重写父类函数 */
         Player.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
-            this.foodId = 0;
             this.powerDelta = this.data.powerDelta;
             // 定时器检测
             Laya.timer.loop(1000, this, this.onLoop);
@@ -39,35 +42,81 @@ var Game;
         /** 重写父类函数 */
         Player.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
-            Laya.timer.clear(this, this.onLoop);
+            Laya.timer.clearAll(this);
             Laya.Pool.recover(Game.PLAYER_CLASS_SIGN, this);
         };
         Player.prototype.onLoop = function () {
             // 更新玩家的体力
             var newVal = this.data.curPower + this.powerDelta;
             this.data.curPower = newVal;
-            var percent = this.data.curPower / this.data.totalPower;
-            this.event(Global.Event.ON_UPDATE_POWER, [percent]);
+            if (this.data.totalPower != 0) {
+                var percent = this.data.curPower / this.data.totalPower;
+                this.event(Global.Event.ON_UPDATE_POWER, [percent]);
+            }
             // 体力不足
-            if (this.foodId != 0) {
+            if (this.data.foodId != 0) {
                 if (newVal <= 0) {
-                    this.event(Global.Event.RESET_FOOD, [this.foodId]);
-                    this.foodId = 0;
+                    this.event(Global.Event.RESET_FOOD, [this.data.foodId]);
+                    this.setFoodId(0);
+                    this.resetPowerDelta();
                 }
             }
         };
         /** 获取一个buff */
         Player.prototype.onGetBuff = function (cfgId) {
-            this.data.walkSpeed = this.data.walkSpeed + 1;
+            var buffCfg = Game.DataMgr.instance.getBuffCfg(cfgId);
+            if (buffCfg == null) {
+                return;
+            }
+            var param;
+            var oldValue;
+            switch (buffCfg.BuffEffect) {
+                case "PowerUnChanged":
+                    // 耐力不变
+                    param = buffCfg.BuffParam;
+                    this.powerDelta = 0;
+                    Laya.timer.clear(this, this.resetPowerDelta);
+                    Laya.timer.once(param.Times * 100, this, this.resetPowerDelta);
+                    break;
+                case "SpeedUp":
+                    // 速度提升
+                    param = buffCfg.BuffParam;
+                    oldValue = this.data.walkSpeed;
+                    this.setPlayerAttr(Game.ATTR_TYPE.walkSpeed, oldValue * (1 + param.UpVal / 100));
+                    Laya.timer.clear(this, this.setPlayerAttr);
+                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [Game.ATTR_TYPE.walkSpeed, oldValue]);
+                    break;
+                case "AttackUp":
+                    // 攻击提升
+                    param = buffCfg.BuffParam;
+                    oldValue = this.data.attack;
+                    this.setPlayerAttr(Game.ATTR_TYPE.attack, oldValue * (1 + param.UpVal / 100));
+                    Laya.timer.clear(this, this.setPlayerAttr);
+                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [Game.ATTR_TYPE.attack, oldValue]);
+                    break;
+            }
+        };
+        /** 设置玩家属性 */
+        Player.prototype.setPlayerAttr = function (attrType, attrValue) {
+            switch (attrType) {
+                case Game.ATTR_TYPE.attack:
+                    this.data.attack = attrValue;
+                    this.event(Global.Event.CHANGE_PLAYER_ATTR, Game.ATTR_TYPE.attack);
+                    break;
+                case Game.ATTR_TYPE.walkSpeed:
+                    this.data.walkSpeed = attrValue;
+                    this.event(Global.Event.CHANGE_PLAYER_ATTR, Game.ATTR_TYPE.walkSpeed);
+                    break;
+            }
         };
         /** 处在回收点范围 */
         Player.prototype.inRecycleArea = function () {
             // 回收食物
-            if (this.foodId != 0) {
-                var foodData = Game.DataMgr.instance.getFoodData(this.foodId);
+            if (this.data.foodId != 0) {
+                var foodData = Game.DataMgr.instance.getFoodData(this.data.foodId);
                 this.addScore(foodData.score);
-                this.event(Global.Event.RECYCLE_FOOD, [this.foodId]);
-                this.foodId = 0;
+                this.event(Global.Event.RECYCLE_FOOD, [this.data.foodId]);
+                this.setFoodId(0);
             }
             this.powerDelta = this.data.powerDelta * 5;
             this.data.state = Data.PlayerState.PROTECT;
@@ -79,15 +128,29 @@ var Game;
         };
         /** 搬运食物 */
         Player.prototype.onCarryFood = function (food) {
-            this.foodId = food.data.id;
+            this.setFoodId(food.data.id);
             food.setCarryState();
             food.pos(0, 0);
             this.addChild(food);
-            this.powerDelta = -food.data.weight * 2;
+            this.powerDelta = food.data.weight * -2;
+        };
+        /** 设置玩家身上食物ID */
+        Player.prototype.setFoodId = function (foodId) {
+            this.data.foodId = foodId;
+            this.event(Global.Event.CHANGE_PLAYER_FOOD_ID, [foodId]);
+        };
+        /** 重置体力回复增量（自然增加值） */
+        Player.prototype.resetPowerDelta = function () {
+            this.powerDelta = this.data.powerDelta;
         };
         /** 增加积分 */
         Player.prototype.addScore = function (score) {
-            this.data.score = this.data.score + score;
+            var newScore = this.data.score + score;
+            this.data.score = newScore;
+            var newLvl = Game.DataMgr.instance.checkLevelByScore(newScore);
+            if (newLvl != this.data.level) {
+                this.data.level = newLvl;
+            }
         };
         /** 从场景移除（返回对象池） */
         Player.prototype.remove = function () {

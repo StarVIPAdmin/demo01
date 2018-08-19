@@ -77,64 +77,22 @@ module Game {
             this._player.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
             this._player.on(Global.Event.RECYCLE_FOOD, this, this.onRecycleFood);
             this._player.on(Global.Event.RESET_FOOD, this, this.onResetFood);
+            this._player.on(Global.Event.CHANGE_PLAYER_FOOD_ID, this, this.onChangePlayerFoodId);
+            this._player.on(Global.Event.CHANGE_PLAYER_ATTR, this, this.onChangePlayerAttr);
 
             EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
             EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
             EventMgr.instance.on(Global.Event.IN_RECYCLE_AREA, this, this.onRecycleArea);
             EventMgr.instance.on(Global.Event.GAME_OVER, this, this.onGameOver);
             EventMgr.instance.on(Global.Event.CARRY_FOOD, this, this.onCarryFood);
+            EventMgr.instance.on(Global.Event.DROPOUT_FOOD, this, this.onDropoutFood);
         }
 
         onLoop():void 
         {
             this._mapContainer.moveMap(this._mainUI.getMoveIconAngle());
-            
-        //     for (var i = this._mapFloor.numChildren - 1; i > -1; i--) {
-        //         let floor = this._mapFloor.getChildAt(i) as Floor;
-        //         if (floor.checkHit(this._player.x, this._player.y)) {
-        //             let itemList = floor.getItems();
-
-        //             for (var j = 0; j < itemList.length; j++) {
-        //                 let item = itemList[j];
-                        
-        //                 if (item.visible) {
-        //                     this._itemPoint.x = item.x + floor.x + this._player.width;
-        //                     this._itemPoint.y = item.y + floor.y + this._player.height;
-
-        //                     if (this._player.hitTestPoint(this._itemPoint.x, this._itemPoint.y)) {
-        //                         if (item.type == Global.Const.ITEM_TYPE_SPEED) {
-        //                             item.visible = false;
-        //                             // this._player.showEffect();
-        //                         } else if (item.type == Global.Const.ITEM_TYPE_FLY) {
-        //                             item.visible = false;
-        //                             this._flyBar.changeValue(100);
-        //                         } else {
-        //                             Laya.Tween.to(item, {y:-10, scaleX:0.1, alpha:0}, 300, null, Laya.Handler.create(this, this.itemTweenComplete, [item]));
-        //                             this.updateScore();
-        //                         }
-        //                     }
-        //                 }
-        //             }
-
-        //             this._player.y = floor.y;
-        //         }
-        //     }
-
         //     let leftTime = new Date().getTime() - this._npcTime;
-        //     if (leftTime > 1500) {
-        //         this._npcTime = new Date().getTime();
-        //         let npc = Laya.Pool.getItemByClass("npc", Npc);
-        //         this.addChild(npc);
-        //     }
         }
-
-        // itemTweenComplete(PItem:Food):void 
-        // {
-        //     PItem.visible = false;
-        //     PItem.y = 0;
-        //     PItem.alpha = 1;
-        //     PItem.scale(1, 1);
-        // }
 
         onMouseDown(evt:Event):void 
         {
@@ -188,6 +146,17 @@ module Game {
             this._player.onCarryFood(food);
         }
 
+        /** 丢弃食物 */
+        onDropoutFood():void 
+        {
+            let foodId = DataMgr.instance.myPlayerData.foodId;
+            if (foodId != 0) {
+                this._player.setFoodId(0);
+                this._player.resetPowerDelta();
+                this.onResetFood(foodId);
+            }
+        }
+
         /** 更新玩家体力 */
         onUpdatePower(percent:number):void 
         {
@@ -205,6 +174,25 @@ module Game {
         onResetFood(foodId:number):void 
         {
             this._mapContainer.foodContainer.dropoutFood(foodId);
+        }
+
+        /** 改变玩家食物ID */
+        onChangePlayerFoodId(foodId:number):void 
+        {
+            this._mainUI.setDropoutIconVisible(foodId != 0);
+        }
+
+        /** 改变玩家属性 */
+        onChangePlayerAttr(attrType:string):void 
+        {
+            switch (attrType) {
+                case ATTR_TYPE.attack:
+                    this._mainUI.refreshAttackTxt(this._player.data.attack);
+                    break;
+                case ATTR_TYPE.walkSpeed:
+                    this._mainUI.refreshSpeedTxt(this._player.data.walkSpeed);
+                    break;
+            }
         }
     }
 }

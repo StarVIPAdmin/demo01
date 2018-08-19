@@ -2,7 +2,7 @@ return
 {
 	["BuffCfg"] = {
 		{
-			["BuffEffect"] = "耐力不变",
+			["BuffEffect"] = "PowerUnChanged",
 			["BuffParam"] = {
 				["Times"] = 30,
 			},
@@ -11,7 +11,7 @@ return
 			["ResName"] = "NPC40002",
 		},
 		{
-			["BuffEffect"] = "速度提升",
+			["BuffEffect"] = "SpeedUp",
 			["BuffParam"] = {
 				["Times"] = 30,
 				["UpVal"] = 50,
@@ -21,7 +21,7 @@ return
 			["ResName"] = "NPC40003",
 		},
 		{
-			["BuffEffect"] = "攻击力提升",
+			["BuffEffect"] = "AttackUp",
 			["BuffParam"] = {
 				["Times"] = 30,
 				["UpVal"] = 20,

@@ -14,9 +14,23 @@ function clsMaker:MakeTable()
 		local target_serv,target_client = {},{}
 		local tserv,tclient = self:GenConfg(SheetName)
 		for k, v in pairs(tserv) do
+			if v.BuffEffect == "耐力不变" then
+				v.BuffEffect = "PowerUnChanged"
+			elseif v.BuffEffect == "速度提升" then
+				v.BuffEffect = "SpeedUp"
+			elseif v.BuffEffect == "攻击提升" then
+				v.BuffEffect = "AttackUp"
+			end
 			target_serv[v.CfgId] = v
 		end
 		for k, v in pairs(tclient) do
+			if v.BuffEffect == "耐力不变" then
+				v.BuffEffect = "PowerUnChanged"
+			elseif v.BuffEffect == "速度提升" then
+				v.BuffEffect = "SpeedUp"
+			elseif v.BuffEffect == "攻击提升" then
+				v.BuffEffect = "AttackUp"
+			end
 			target_client[v.CfgId] = v
 		end
 		return target_serv, target_client

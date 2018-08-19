@@ -1,6 +1,11 @@
 module Game {
     import Sprite = Laya.Sprite;
 
+    export const ATTR_TYPE = {
+        attack : "attack",
+        walkSpeed : "walkSpeed"
+    }
+
     // 玩家类标识（用于对象池回收）
     export const PLAYER_CLASS_SIGN:string = "player";
 
@@ -9,8 +14,6 @@ module Game {
      */
     export class Player extends BaseElement 
     {   
-        // 当前身上的食物ID
-        public foodId:number;
         // 体力增量
         public powerDelta:number;
 
@@ -23,7 +26,6 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
-            this.foodId = 0;
             this.powerDelta = this.data.powerDelta;
 
             // 定时器检测
@@ -34,7 +36,7 @@ module Game {
         destroy():void 
         {
             super.destroy();
-            Laya.timer.clear(this, this.onLoop);
+            Laya.timer.clearAll(this);
             Laya.Pool.recover(PLAYER_CLASS_SIGN, this);
         }
 
@@ -43,14 +45,17 @@ module Game {
             // 更新玩家的体力
             let newVal = this.data.curPower + this.powerDelta;
             this.data.curPower = newVal;
-            let percent = this.data.curPower / this.data.totalPower;
-            this.event(Global.Event.ON_UPDATE_POWER, [percent]);
+            if (this.data.totalPower != 0) {
+                let percent = this.data.curPower / this.data.totalPower;
+                this.event(Global.Event.ON_UPDATE_POWER, [percent]);
+            }
 
             // 体力不足
-            if (this.foodId != 0) {
+            if (this.data.foodId != 0) {
                 if (newVal <= 0) {
-                    this.event(Global.Event.RESET_FOOD, [this.foodId]);
-                    this.foodId = 0;
+                    this.event(Global.Event.RESET_FOOD, [this.data.foodId]);
+                    this.setFoodId(0);
+                    this.resetPowerDelta();
                 }
             }
         }
@@ -58,18 +63,64 @@ module Game {
         /** 获取一个buff */
         onGetBuff(cfgId:number):void 
         {
-            this.data.walkSpeed = this.data.walkSpeed + 1;
+            let buffCfg = DataMgr.instance.getBuffCfg(cfgId);
+            if (buffCfg == null) {
+                return;
+            }
+
+            let param;
+            let oldValue;
+            switch (buffCfg.BuffEffect) {
+                case "PowerUnChanged":
+                    // 耐力不变
+                    param = buffCfg.BuffParam;
+                    this.powerDelta = 0;
+                    Laya.timer.clear(this, this.resetPowerDelta);
+                    Laya.timer.once(param.Times * 100, this, this.resetPowerDelta);
+                    break;
+                case "SpeedUp":
+                    // 速度提升
+                    param = buffCfg.BuffParam;
+                    oldValue = this.data.walkSpeed;
+                    this.setPlayerAttr(ATTR_TYPE.walkSpeed, oldValue * (1 + param.UpVal/100));
+                    Laya.timer.clear(this, this.setPlayerAttr);
+                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [ATTR_TYPE.walkSpeed, oldValue]);
+                    break;
+                case "AttackUp":
+                    // 攻击提升
+                    param = buffCfg.BuffParam;
+                    oldValue = this.data.attack;
+                    this.setPlayerAttr(ATTR_TYPE.attack, oldValue * (1 + param.UpVal/100));
+                    Laya.timer.clear(this, this.setPlayerAttr);
+                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [ATTR_TYPE.attack, oldValue]);
+                    break;
+            }
+        }
+
+        /** 设置玩家属性 */
+        setPlayerAttr(attrType:string, attrValue:number):void
+        {
+            switch (attrType) {
+                case ATTR_TYPE.attack:
+                    this.data.attack = attrValue;
+                    this.event(Global.Event.CHANGE_PLAYER_ATTR, ATTR_TYPE.attack);
+                    break;
+                case ATTR_TYPE.walkSpeed:
+                    this.data.walkSpeed = attrValue;
+                    this.event(Global.Event.CHANGE_PLAYER_ATTR, ATTR_TYPE.walkSpeed);
+                    break;
+            }
         }
 
         /** 处在回收点范围 */
         inRecycleArea():void 
         {
             // 回收食物
-            if (this.foodId != 0) {
-                let foodData = DataMgr.instance.getFoodData(this.foodId);
+            if (this.data.foodId != 0) {
+                let foodData = DataMgr.instance.getFoodData(this.data.foodId);
                 this.addScore(foodData.score);
-                this.event(Global.Event.RECYCLE_FOOD, [this.foodId]);
-                this.foodId = 0;
+                this.event(Global.Event.RECYCLE_FOOD, [this.data.foodId]);
+                this.setFoodId(0);
             }
 
             this.powerDelta = this.data.powerDelta * 5;
@@ -86,18 +137,38 @@ module Game {
         /** 搬运食物 */
         onCarryFood(food:Food):void 
         {
-            this.foodId = food.data.id;
+            this.setFoodId(food.data.id);
+
             food.setCarryState();
             food.pos(0, 0);
             this.addChild(food);
 
-            this.powerDelta = -food.data.weight * 2;
+            this.powerDelta = food.data.weight * -2;
+        }
+
+        /** 设置玩家身上食物ID */
+        setFoodId(foodId:number):void 
+        {
+            this.data.foodId = foodId;
+            this.event(Global.Event.CHANGE_PLAYER_FOOD_ID, [foodId]);
+        }
+
+        /** 重置体力回复增量（自然增加值） */
+        resetPowerDelta():void 
+        {
+            this.powerDelta = this.data.powerDelta;
         }
 
         /** 增加积分 */
         addScore(score:number):void 
         {
-            this.data.score = this.data.score + score;
+            let newScore = this.data.score + score;
+            this.data.score = newScore;
+            let newLvl = DataMgr.instance.checkLevelByScore(newScore);
+
+            if (newLvl != this.data.level) {
+                this.data.level = newLvl;
+            }
         }
 
         /** 从场景移除（返回对象池） */

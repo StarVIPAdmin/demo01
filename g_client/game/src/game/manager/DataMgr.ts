@@ -4,6 +4,8 @@ module Game {
     import BuffData = Data.BuffData;
     import RecycleData = Data.RecycleData;
 
+    // require(".../data/config/element_cfg.json");
+
     /**
      * 游戏数据管理类
      */
@@ -16,15 +18,10 @@ module Game {
         }
 
         isGameOver:boolean;
-
         myPlayerData:PlayerData;
-
         otherPlayerData:Array<PlayerData>;
-
         foodDataList:Array<FoodData>;
-
         buffDataList:Array<BuffData>;
-
         recycleDataList:Array<RecycleData>;
 
         /** 重写父类函数 */
@@ -148,5 +145,46 @@ module Game {
                 this.otherPlayerData[id] = this.createPlayerData(id);
             }
         }
+
+        /* 配置相关----------------------------------------------------------------------- */
+
+        getBuffCfg(cfgId:number):any
+        {
+            let data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
+            return data.BuffCfg[cfgId];
+        }
+
+        getFoodCfg(cfgId:number):any
+        {
+            let data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
+            return data.FoodCfg[cfgId];
+        }
+
+        getRecycleCfg(cfgId:number):any
+        {
+            let data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
+            return data.RecycleCfg[cfgId];
+        }
+
+        getSceneCfg(cfgId:number):any
+        {
+            let data = Laya.loader.getRes(Global.Path.JSON_SCENE_CFG);
+            return data.SceneCfg[cfgId];
+        }
+
+        checkLevelByScore(score:number):number
+        {
+            let data = Laya.loader.getRes(Global.Path.JSON_SCORE_CFG);
+            let scoreCfg = data.ScoreCfg;
+            let len = scoreCfg.length;
+            for (var i = 0; i < len; i++) {
+                if (score < scoreCfg[i]) {
+                    return i + 1;
+                }
+            }
+            return len;
+        }
+
+        /* ------------------------------------------------------------------------------ */
     }
 }
