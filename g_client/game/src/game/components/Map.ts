@@ -223,7 +223,7 @@ module Game {
         resetElements():void 
         {
             this._foodContainer.resetFood();
-            this._playerContainer.resetPlayer();
+            this._playerContainer.resetEnemy();
             this._buffContainer.resetBuff();
             this._recycleContainer.resetRecycle();
         }
@@ -275,8 +275,8 @@ module Game {
             if (angle == 0) 
                 return;
 
-            let deltaPosX = DataMgr.instance.myPlayerData.walkSpeed * Math.cos(angle);
-            let deltaPosY = DataMgr.instance.myPlayerData.walkSpeed * Math.sin(angle);
+            let deltaPosX = DataMgr.instance.roleData.walkSpeed * Math.cos(angle);
+            let deltaPosY = DataMgr.instance.roleData.walkSpeed * Math.sin(angle);
             let targetPosX = this.x - deltaPosX;
             let targetPosY = this.y - deltaPosY;
 
@@ -294,7 +294,7 @@ module Game {
         /** 与玩家的检测碰撞 */
         checkPlayerCollision(x:number, y:number, radius:number=0):boolean
         {
-            let myPlayerData = DataMgr.instance.myPlayerData;
+            let myPlayerData = DataMgr.instance.roleData;
             let xDelta = x - myPlayerData.x + this.x;
             let yDelta = y - myPlayerData.y + this.y;
             let distance = Math.sqrt(xDelta*xDelta + yDelta*yDelta);

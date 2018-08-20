@@ -186,7 +186,7 @@ var Game;
         };
         MapContainer.prototype.resetElements = function () {
             this._foodContainer.resetFood();
-            this._playerContainer.resetPlayer();
+            this._playerContainer.resetEnemy();
             this._buffContainer.resetBuff();
             this._recycleContainer.resetRecycle();
         };
@@ -227,8 +227,8 @@ var Game;
         MapContainer.prototype.moveMap = function (angle) {
             if (angle == 0)
                 return;
-            var deltaPosX = Game.DataMgr.instance.myPlayerData.walkSpeed * Math.cos(angle);
-            var deltaPosY = Game.DataMgr.instance.myPlayerData.walkSpeed * Math.sin(angle);
+            var deltaPosX = Game.DataMgr.instance.roleData.walkSpeed * Math.cos(angle);
+            var deltaPosY = Game.DataMgr.instance.roleData.walkSpeed * Math.sin(angle);
             var targetPosX = this.x - deltaPosX;
             var targetPosY = this.y - deltaPosY;
             var minPosX = -this._mapWidth + Global.Const.GAME_WIDTH * 0.5;
@@ -248,7 +248,7 @@ var Game;
         /** 与玩家的检测碰撞 */
         MapContainer.prototype.checkPlayerCollision = function (x, y, radius) {
             if (radius === void 0) { radius = 0; }
-            var myPlayerData = Game.DataMgr.instance.myPlayerData;
+            var myPlayerData = Game.DataMgr.instance.roleData;
             var xDelta = x - myPlayerData.x + this.x;
             var yDelta = y - myPlayerData.y + this.y;
             var distance = Math.sqrt(xDelta * xDelta + yDelta * yDelta);

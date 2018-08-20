@@ -1,34 +1,55 @@
 module Game {
     import Sprite = Laya.Sprite;
 
-    export const ATTR_TYPE = {
+    // 玩家类标识（用于对象池回收）
+    const ENEMY_CLASS_SIGN:string = "player";
+
+    export const ROLE_CLASS_SIGN:string = "role";
+
+    // 玩家属性类型
+    export const PLAYER_ATTR_TYPE = {
         attack : "attack",
         walkSpeed : "walkSpeed"
     }
 
-    // 玩家类标识（用于对象池回收）
-    export const PLAYER_CLASS_SIGN:string = "player";
-
     /**
      * 玩家类
      */
-    export class Player extends BaseElement 
+    class Player1 extends BaseElement 
     {   
+        /** 重写父类函数 */
+        init(id:number):void 
+        {
+            super.init(id);
+        }
+
+        /** 重写父类函数 */
+        destroy():void 
+        {
+            super.destroy();
+        }
+
+        /** 从场景移除（返回对象池） */
+        remove():void 
+        {
+        }
+    }
+
+    export class Role extends Player1
+    {
         // 体力增量
-        public powerDelta:number;
+        private _powerDelta:number;
 
         get data():Data.PlayerData
         {
-            return DataMgr.instance.getPlayerData(this.id);
+            return DataMgr.instance.roleData;
         }
 
         /** 重写父类函数 */
         init(id:number):void 
         {
             super.init(id);
-            this.powerDelta = this.data.powerDelta;
-
-            // 定时器检测
+            this._powerDelta = this.data.powerDelta;
             Laya.timer.loop(1000, this, this.onLoop);
         }
 
@@ -37,14 +58,14 @@ module Game {
         {
             super.destroy();
             Laya.timer.clearAll(this);
-            Laya.Pool.recover(PLAYER_CLASS_SIGN, this);
+            Laya.Pool.recover(ROLE_CLASS_SIGN, this);
         }
 
         onLoop():void 
         {
-            // 更新玩家的体力
-            let newVal = this.data.curPower + this.powerDelta;
-            this.data.curPower = newVal;
+            // 更新体力
+            let newPower = this.data.curPower + this._powerDelta;
+            this.data.curPower = newPower;
             if (this.data.totalPower != 0) {
                 let percent = this.data.curPower / this.data.totalPower;
                 this.event(Global.Event.ON_UPDATE_POWER, [percent]);
@@ -52,14 +73,14 @@ module Game {
 
             // 体力不足
             if (this.data.foodId != 0) {
-                if (newVal <= 0) {
+                if (newPower <= 0) {
                     this.event(Global.Event.RESET_FOOD, [this.data.foodId]);
                     this.setFoodId(0);
                     this.resetPowerDelta();
                 }
             }
         }
-        
+
         /** 获取一个buff */
         onGetBuff(cfgId:number):void 
         {
@@ -74,7 +95,7 @@ module Game {
                 case "PowerUnChanged":
                     // 耐力不变
                     param = buffCfg.BuffParam;
-                    this.powerDelta = 0;
+                    this._powerDelta = 0;
                     Laya.timer.clear(this, this.resetPowerDelta);
                     Laya.timer.once(param.Times * 100, this, this.resetPowerDelta);
                     break;
@@ -82,34 +103,33 @@ module Game {
                     // 速度提升
                     param = buffCfg.BuffParam;
                     oldValue = this.data.walkSpeed;
-                    this.setPlayerAttr(ATTR_TYPE.walkSpeed, oldValue * (1 + param.UpVal/100));
-                    Laya.timer.clear(this, this.setPlayerAttr);
-                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [ATTR_TYPE.walkSpeed, oldValue]);
+                    this.setWalkSpeedAttrValue(oldValue * (1 + param.UpVal/100));
+                    Laya.timer.clear(this, this.setWalkSpeedAttrValue);
+                    Laya.timer.once(param.Times * 100, this, this.setWalkSpeedAttrValue, [oldValue]);
                     break;
                 case "AttackUp":
                     // 攻击提升
                     param = buffCfg.BuffParam;
                     oldValue = this.data.attack;
-                    this.setPlayerAttr(ATTR_TYPE.attack, oldValue * (1 + param.UpVal/100));
-                    Laya.timer.clear(this, this.setPlayerAttr);
-                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [ATTR_TYPE.attack, oldValue]);
+                    this.setAttackAttrValue(oldValue * (1 + param.UpVal/100));
+                    Laya.timer.clear(this, this.setAttackAttrValue);
+                    Laya.timer.once(param.Times * 100, this, this.setAttackAttrValue, [oldValue]);
                     break;
             }
         }
 
-        /** 设置玩家属性 */
-        setPlayerAttr(attrType:string, attrValue:number):void
+        /** 设置攻击属性 */
+        setAttackAttrValue(attrValue:number):void 
         {
-            switch (attrType) {
-                case ATTR_TYPE.attack:
-                    this.data.attack = attrValue;
-                    this.event(Global.Event.CHANGE_PLAYER_ATTR, ATTR_TYPE.attack);
-                    break;
-                case ATTR_TYPE.walkSpeed:
-                    this.data.walkSpeed = attrValue;
-                    this.event(Global.Event.CHANGE_PLAYER_ATTR, ATTR_TYPE.walkSpeed);
-                    break;
-            }
+            this.data.attack = attrValue;
+            this.event(Global.Event.CHANGE_PLAYER_ATTR, [PLAYER_ATTR_TYPE.attack, attrValue]);
+        }
+
+        /** 设置行走速度属性 */
+        setWalkSpeedAttrValue(attrValue:number):void 
+        {
+            this.data.walkSpeed = attrValue;
+            this.event(Global.Event.CHANGE_PLAYER_ATTR, [PLAYER_ATTR_TYPE.walkSpeed, attrValue]);
         }
 
         /** 处在回收点范围 */
@@ -123,14 +143,14 @@ module Game {
                 this.setFoodId(0);
             }
 
-            this.powerDelta = this.data.powerDelta * 5;
+            this._powerDelta = this.data.powerDelta * 5;
             this.data.state = Data.PlayerState.PROTECT;
         }
 
         /** 离开回收点范围 */
         outRecycleArea():void 
         {
-            this.powerDelta = this.data.powerDelta;
+            this._powerDelta = this.data.powerDelta;
             this.data.state = Data.PlayerState.IDE;
         }
 
@@ -143,7 +163,7 @@ module Game {
             food.pos(0, 0);
             this.addChild(food);
 
-            this.powerDelta = food.data.weight * -2;
+            this._powerDelta = food.data.weight * -2;
         }
 
         /** 设置玩家身上食物ID */
@@ -156,7 +176,7 @@ module Game {
         /** 重置体力回复增量（自然增加值） */
         resetPowerDelta():void 
         {
-            this.powerDelta = this.data.powerDelta;
+            this._powerDelta = this.data.powerDelta;
         }
 
         /** 增加积分 */
@@ -170,95 +190,119 @@ module Game {
                 this.data.level = newLvl;
             }
         }
+    }
 
-        /** 从场景移除（返回对象池） */
-        remove():void 
+    class Enemy extends Player1
+    {
+        get data():Data.PlayerData
         {
+            return DataMgr.instance.getPlayerData(this.id);
+        }
+
+        /** 重写父类函数 */
+        init(id:number):void 
+        {
+            super.init(id);
+        }
+
+        /** 重写父类函数 */
+        destroy():void 
+        {
+            super.destroy();
+            Laya.Pool.recover(ENEMY_CLASS_SIGN, this);
         }
     }
 
     /**
-     * 玩家类容器
+     * 敌人类容器
      */
     export class PlayerContainer extends Sprite
     {
         // 父容器
         private _mapContainer:MapContainer;
-        // 玩家列表
-        private _playerList:Array<Player>;
+        // 敌人列表
+        private _enemyList:Array<Enemy>;
 
         init(parentContainer:MapContainer):void 
         {
             this._mapContainer = parentContainer;
-            this._playerList = [];
+            this._enemyList = [];
+        }
+
+        /** 创建敌人 */
+        createEnemy(id:number):Enemy
+        {
+            let enemy:Enemy = Laya.Pool.getItemByClass(ENEMY_CLASS_SIGN, Enemy);
+            enemy.init(id);
+            return enemy;
         }
 
         /** 重置玩家 */
-        resetPlayer():void 
+        resetEnemy():void 
         {
             // 清理旧数据
-            this.clearPlayer();
+            this.clearEnemy();
 
-            let dataList = DataMgr.instance.otherPlayerData;
+            let dataList = DataMgr.instance.enemyData;
             if (dataList == null || dataList.length == 0) {
                 return;
             }
 
             dataList.forEach(data => {
-                let player = ResMgr.instance.createPlayer(data.id);
-                this.addChild(player);
-                this._playerList[data.id] = player;
+                let enemy = this.createEnemy(data.id);
+                this.addChild(enemy);
+                this._enemyList[data.id] = enemy;
             });
         }
 
         /** 根据唯一ID，增加指定玩家 */
-        addPlayer(id:number):void 
+        addEnemy(id:number):void 
         {
-            if (this.checkPlayer(id)) {
+            if (this.checkEnemy(id)) {
                 return;
             }
 
-            let player = ResMgr.instance.createPlayer(id);
-            this.addChild(player);
-            this._playerList[id] = player;
+            let enemy = this.createEnemy(id);
+            this.addChild(enemy);
+            this._enemyList[id] = enemy;
         }
 
         /** 根据唯一ID，移除指定玩家 */
-        removePlayer(id:number):void 
+        removeEnemy(id:number):void 
         {
-            if (!this.checkPlayer(id))
+            if (!this.checkEnemy(id))
                 return;
 
-            let player = this._playerList[id];
-            player.destroy();
-            this._playerList[id] = null;
+            let enemy = this._enemyList[id];
+            enemy.destroy();
+            this._enemyList[id] = null;
         }
 
         /** 清除玩家 */
-        clearPlayer():void 
+        clearEnemy():void 
         {
-            if (!this.checkPlayerList())
+            if (!this.checkEnemyList())
                 return;
 
-            this._playerList.forEach(item => {
+            this._enemyList.forEach(item => {
                 item.destroy();
             });
-            this._playerList = [];
+            this._enemyList = [];
         }
 
         /** 检测玩家列表是否有数据 */
-        checkPlayerList():boolean 
+        checkEnemyList():boolean 
         {
-            return !(this._playerList == null || this._playerList.length == 0)
+            return !(this._enemyList == null || this._enemyList.length == 0)
         }
 
         /** 根据唯一ID，检测玩家是否存在 */
-        checkPlayer(id:number):boolean 
+        checkEnemy(id:number):boolean 
         {
-            if (!this.checkPlayerList()) {
+            if (!this.checkEnemyList()) {
                 return false;
             }
-            return this._playerList[id] != null
+            return this._enemyList[id] != null
         }
     }
 }

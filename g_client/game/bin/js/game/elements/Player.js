@@ -11,51 +11,70 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
-    Game.ATTR_TYPE = {
+    // 玩家类标识（用于对象池回收）
+    var ENEMY_CLASS_SIGN = "player";
+    Game.ROLE_CLASS_SIGN = "role";
+    // 玩家属性类型
+    Game.PLAYER_ATTR_TYPE = {
         attack: "attack",
         walkSpeed: "walkSpeed"
     };
-    // 玩家类标识（用于对象池回收）
-    Game.PLAYER_CLASS_SIGN = "player";
     /**
      * 玩家类
      */
-    var Player = /** @class */ (function (_super) {
-        __extends(Player, _super);
-        function Player() {
+    var Player1 = /** @class */ (function (_super) {
+        __extends(Player1, _super);
+        function Player1() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        Object.defineProperty(Player.prototype, "data", {
+        /** 重写父类函数 */
+        Player1.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
+        };
+        /** 重写父类函数 */
+        Player1.prototype.destroy = function () {
+            _super.prototype.destroy.call(this);
+        };
+        /** 从场景移除（返回对象池） */
+        Player1.prototype.remove = function () {
+        };
+        return Player1;
+    }(Game.BaseElement));
+    var Role = /** @class */ (function (_super) {
+        __extends(Role, _super);
+        function Role() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        Object.defineProperty(Role.prototype, "data", {
             get: function () {
-                return Game.DataMgr.instance.getPlayerData(this.id);
+                return Game.DataMgr.instance.roleData;
             },
             enumerable: true,
             configurable: true
         });
         /** 重写父类函数 */
-        Player.prototype.init = function (id) {
+        Role.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
-            this.powerDelta = this.data.powerDelta;
-            // 定时器检测
+            this._powerDelta = this.data.powerDelta;
             Laya.timer.loop(1000, this, this.onLoop);
         };
         /** 重写父类函数 */
-        Player.prototype.destroy = function () {
+        Role.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
             Laya.timer.clearAll(this);
-            Laya.Pool.recover(Game.PLAYER_CLASS_SIGN, this);
+            Laya.Pool.recover(Game.ROLE_CLASS_SIGN, this);
         };
-        Player.prototype.onLoop = function () {
-            // 更新玩家的体力
-            var newVal = this.data.curPower + this.powerDelta;
-            this.data.curPower = newVal;
+        Role.prototype.onLoop = function () {
+            // 更新体力
+            var newPower = this.data.curPower + this._powerDelta;
+            this.data.curPower = newPower;
             if (this.data.totalPower != 0) {
                 var percent = this.data.curPower / this.data.totalPower;
                 this.event(Global.Event.ON_UPDATE_POWER, [percent]);
             }
             // 体力不足
             if (this.data.foodId != 0) {
-                if (newVal <= 0) {
+                if (newPower <= 0) {
                     this.event(Global.Event.RESET_FOOD, [this.data.foodId]);
                     this.setFoodId(0);
                     this.resetPowerDelta();
@@ -63,7 +82,7 @@ var Game;
             }
         };
         /** 获取一个buff */
-        Player.prototype.onGetBuff = function (cfgId) {
+        Role.prototype.onGetBuff = function (cfgId) {
             var buffCfg = Game.DataMgr.instance.getBuffCfg(cfgId);
             if (buffCfg == null) {
                 return;
@@ -74,7 +93,7 @@ var Game;
                 case "PowerUnChanged":
                     // 耐力不变
                     param = buffCfg.BuffParam;
-                    this.powerDelta = 0;
+                    this._powerDelta = 0;
                     Laya.timer.clear(this, this.resetPowerDelta);
                     Laya.timer.once(param.Times * 100, this, this.resetPowerDelta);
                     break;
@@ -82,35 +101,32 @@ var Game;
                     // 速度提升
                     param = buffCfg.BuffParam;
                     oldValue = this.data.walkSpeed;
-                    this.setPlayerAttr(Game.ATTR_TYPE.walkSpeed, oldValue * (1 + param.UpVal / 100));
-                    Laya.timer.clear(this, this.setPlayerAttr);
-                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [Game.ATTR_TYPE.walkSpeed, oldValue]);
+                    this.setWalkSpeedAttrValue(oldValue * (1 + param.UpVal / 100));
+                    Laya.timer.clear(this, this.setWalkSpeedAttrValue);
+                    Laya.timer.once(param.Times * 100, this, this.setWalkSpeedAttrValue, [oldValue]);
                     break;
                 case "AttackUp":
                     // 攻击提升
                     param = buffCfg.BuffParam;
                     oldValue = this.data.attack;
-                    this.setPlayerAttr(Game.ATTR_TYPE.attack, oldValue * (1 + param.UpVal / 100));
-                    Laya.timer.clear(this, this.setPlayerAttr);
-                    Laya.timer.once(param.Times * 100, this, this.setPlayerAttr, [Game.ATTR_TYPE.attack, oldValue]);
+                    this.setAttackAttrValue(oldValue * (1 + param.UpVal / 100));
+                    Laya.timer.clear(this, this.setAttackAttrValue);
+                    Laya.timer.once(param.Times * 100, this, this.setAttackAttrValue, [oldValue]);
                     break;
             }
         };
-        /** 设置玩家属性 */
-        Player.prototype.setPlayerAttr = function (attrType, attrValue) {
-            switch (attrType) {
-                case Game.ATTR_TYPE.attack:
-                    this.data.attack = attrValue;
-                    this.event(Global.Event.CHANGE_PLAYER_ATTR, Game.ATTR_TYPE.attack);
-                    break;
-                case Game.ATTR_TYPE.walkSpeed:
-                    this.data.walkSpeed = attrValue;
-                    this.event(Global.Event.CHANGE_PLAYER_ATTR, Game.ATTR_TYPE.walkSpeed);
-                    break;
-            }
+        /** 设置攻击属性 */
+        Role.prototype.setAttackAttrValue = function (attrValue) {
+            this.data.attack = attrValue;
+            this.event(Global.Event.CHANGE_PLAYER_ATTR, [Game.PLAYER_ATTR_TYPE.attack, attrValue]);
+        };
+        /** 设置行走速度属性 */
+        Role.prototype.setWalkSpeedAttrValue = function (attrValue) {
+            this.data.walkSpeed = attrValue;
+            this.event(Global.Event.CHANGE_PLAYER_ATTR, [Game.PLAYER_ATTR_TYPE.walkSpeed, attrValue]);
         };
         /** 处在回收点范围 */
-        Player.prototype.inRecycleArea = function () {
+        Role.prototype.inRecycleArea = function () {
             // 回收食物
             if (this.data.foodId != 0) {
                 var foodData = Game.DataMgr.instance.getFoodData(this.data.foodId);
@@ -118,33 +134,33 @@ var Game;
                 this.event(Global.Event.RECYCLE_FOOD, [this.data.foodId]);
                 this.setFoodId(0);
             }
-            this.powerDelta = this.data.powerDelta * 5;
+            this._powerDelta = this.data.powerDelta * 5;
             this.data.state = Data.PlayerState.PROTECT;
         };
         /** 离开回收点范围 */
-        Player.prototype.outRecycleArea = function () {
-            this.powerDelta = this.data.powerDelta;
+        Role.prototype.outRecycleArea = function () {
+            this._powerDelta = this.data.powerDelta;
             this.data.state = Data.PlayerState.IDE;
         };
         /** 搬运食物 */
-        Player.prototype.onCarryFood = function (food) {
+        Role.prototype.onCarryFood = function (food) {
             this.setFoodId(food.data.id);
             food.setCarryState();
             food.pos(0, 0);
             this.addChild(food);
-            this.powerDelta = food.data.weight * -2;
+            this._powerDelta = food.data.weight * -2;
         };
         /** 设置玩家身上食物ID */
-        Player.prototype.setFoodId = function (foodId) {
+        Role.prototype.setFoodId = function (foodId) {
             this.data.foodId = foodId;
             this.event(Global.Event.CHANGE_PLAYER_FOOD_ID, [foodId]);
         };
         /** 重置体力回复增量（自然增加值） */
-        Player.prototype.resetPowerDelta = function () {
-            this.powerDelta = this.data.powerDelta;
+        Role.prototype.resetPowerDelta = function () {
+            this._powerDelta = this.data.powerDelta;
         };
         /** 增加积分 */
-        Player.prototype.addScore = function (score) {
+        Role.prototype.addScore = function (score) {
             var newScore = this.data.score + score;
             this.data.score = newScore;
             var newLvl = Game.DataMgr.instance.checkLevelByScore(newScore);
@@ -152,14 +168,34 @@ var Game;
                 this.data.level = newLvl;
             }
         };
-        /** 从场景移除（返回对象池） */
-        Player.prototype.remove = function () {
+        return Role;
+    }(Player1));
+    Game.Role = Role;
+    var Enemy = /** @class */ (function (_super) {
+        __extends(Enemy, _super);
+        function Enemy() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        Object.defineProperty(Enemy.prototype, "data", {
+            get: function () {
+                return Game.DataMgr.instance.getPlayerData(this.id);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /** 重写父类函数 */
+        Enemy.prototype.init = function (id) {
+            _super.prototype.init.call(this, id);
         };
-        return Player;
-    }(Game.BaseElement));
-    Game.Player = Player;
+        /** 重写父类函数 */
+        Enemy.prototype.destroy = function () {
+            _super.prototype.destroy.call(this);
+            Laya.Pool.recover(ENEMY_CLASS_SIGN, this);
+        };
+        return Enemy;
+    }(Player1));
     /**
-     * 玩家类容器
+     * 敌人类容器
      */
     var PlayerContainer = /** @class */ (function (_super) {
         __extends(PlayerContainer, _super);
@@ -168,59 +204,65 @@ var Game;
         }
         PlayerContainer.prototype.init = function (parentContainer) {
             this._mapContainer = parentContainer;
-            this._playerList = [];
+            this._enemyList = [];
+        };
+        /** 创建敌人 */
+        PlayerContainer.prototype.createEnemy = function (id) {
+            var enemy = Laya.Pool.getItemByClass(ENEMY_CLASS_SIGN, Enemy);
+            enemy.init(id);
+            return enemy;
         };
         /** 重置玩家 */
-        PlayerContainer.prototype.resetPlayer = function () {
+        PlayerContainer.prototype.resetEnemy = function () {
             var _this = this;
             // 清理旧数据
-            this.clearPlayer();
-            var dataList = Game.DataMgr.instance.otherPlayerData;
+            this.clearEnemy();
+            var dataList = Game.DataMgr.instance.enemyData;
             if (dataList == null || dataList.length == 0) {
                 return;
             }
             dataList.forEach(function (data) {
-                var player = Game.ResMgr.instance.createPlayer(data.id);
-                _this.addChild(player);
-                _this._playerList[data.id] = player;
+                var enemy = _this.createEnemy(data.id);
+                _this.addChild(enemy);
+                _this._enemyList[data.id] = enemy;
             });
         };
         /** 根据唯一ID，增加指定玩家 */
-        PlayerContainer.prototype.addPlayer = function (id) {
-            if (this.checkPlayer(id)) {
+        PlayerContainer.prototype.addEnemy = function (id) {
+            if (this.checkEnemy(id)) {
                 return;
             }
-            var player = Game.ResMgr.instance.createPlayer(id);
-            this.addChild(player);
-            this._playerList[id] = player;
+            var enemy = this.createEnemy(id);
+            this.addChild(enemy);
+            this._enemyList[id] = enemy;
         };
         /** 根据唯一ID，移除指定玩家 */
-        PlayerContainer.prototype.removePlayer = function (id) {
-            if (!this.checkPlayer(id))
+        PlayerContainer.prototype.removeEnemy = function (id) {
+            if (!this.checkEnemy(id))
                 return;
-            var player = this._playerList[id];
-            player.destroy();
-            this._playerList[id] = null;
+            var enemy = this._enemyList[id];
+            enemy.destroy();
+            this._enemyList[id] = null;
         };
         /** 清除玩家 */
-        PlayerContainer.prototype.clearPlayer = function () {
-            if (!this.checkPlayerList())
+        PlayerContainer.prototype.clearEnemy = function () {
+            if (!this.checkEnemyList())
                 return;
-            this._playerList.forEach(function (item) {
+            this._enemyList.forEach(function (item) {
                 item.destroy();
             });
-            this._playerList = [];
+            this._enemyList = [];
         };
         /** 检测玩家列表是否有数据 */
-        PlayerContainer.prototype.checkPlayerList = function () {
-            return !(this._playerList == null || this._playerList.length == 0);
+        PlayerContainer.prototype.checkEnemyList = function () {
+            return !(this._enemyList == null || this._enemyList.length == 0);
         };
         /** 根据唯一ID，检测玩家是否存在 */
-        PlayerContainer.prototype.checkPlayer = function (id) {
-            if (!this.checkPlayerList()) {
+        PlayerContainer.prototype.checkEnemy = function (id) {
+            if (!this.checkEnemyList()) {
                 return false;
             }
-            return this._playerList[id] != null;
+            return this._enemyList[id] != null;
         };
         return PlayerContainer;
     }(Sprite));

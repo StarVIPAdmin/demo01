@@ -32,17 +32,17 @@ var Game;
             _super.prototype.onInit.call(this);
             this._mainUI = null;
             this._mapContainer = null;
-            this._player = null;
+            this._role = null;
             this.initUI();
         };
         /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
-            this._player = Game.ResMgr.instance.createPlayer(Game.DataMgr.instance.myPlayerData.id);
-            this.addChild(this._player);
+            this._role = Game.ResMgr.instance.createRole(Game.DataMgr.instance.roleData.id);
+            this.addChild(this._role);
             this._mapContainer.resetElements();
-            this._mainUI.refreshAttackTxt(Game.DataMgr.instance.myPlayerData.attack);
-            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.myPlayerData.walkSpeed);
+            this._mainUI.refreshAttackTxt(Game.DataMgr.instance.roleData.attack);
+            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.roleData.walkSpeed);
             this._mainUI.refreshScoreTxt(this.sceneData.score);
             this.initEvent();
             // 场景定时器
@@ -64,11 +64,11 @@ var Game;
             Laya.stage.on(Event.MOUSE_UP, this, this.onMouseUp);
             Laya.stage.on(Event.MOUSE_MOVE, this, this.onMouseMove);
             // Laya.stage.on(Event.MOUSE_OUT, this, this.onMouseOut);
-            this._player.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
-            this._player.on(Global.Event.RECYCLE_FOOD, this, this.onRecycleFood);
-            this._player.on(Global.Event.RESET_FOOD, this, this.onResetFood);
-            this._player.on(Global.Event.CHANGE_PLAYER_FOOD_ID, this, this.onChangePlayerFoodId);
-            this._player.on(Global.Event.CHANGE_PLAYER_ATTR, this, this.onChangePlayerAttr);
+            this._role.on(Global.Event.ON_UPDATE_POWER, this, this.onUpdatePower);
+            this._role.on(Global.Event.RECYCLE_FOOD, this, this.onRecycleFood);
+            this._role.on(Global.Event.RESET_FOOD, this, this.onResetFood);
+            this._role.on(Global.Event.CHANGE_PLAYER_FOOD_ID, this, this.onChangePlayerFoodId);
+            this._role.on(Global.Event.CHANGE_PLAYER_ATTR, this, this.onChangePlayerAttr);
             Game.EventMgr.instance.on(Global.Event.SET_CARRY_ICON_VISIBLE, this, this.onSetCarryIconVisible);
             Game.EventMgr.instance.on(Global.Event.GET_BUFF, this, this.onGetBuff);
             Game.EventMgr.instance.on(Global.Event.IN_RECYCLE_AREA, this, this.onRecycleArea);
@@ -95,15 +95,15 @@ var Game;
         };
         /** 获取一个buff */
         MainScene.prototype.onGetBuff = function (buffCfgId) {
-            this._player.onGetBuff(buffCfgId);
+            this._role.onGetBuff(buffCfgId);
         };
         /** 是否处在回收点范围 */
         MainScene.prototype.onRecycleArea = function (inRecycleArea) {
             if (inRecycleArea) {
-                this._player.inRecycleArea();
+                this._role.inRecycleArea();
             }
             else {
-                this._player.outRecycleArea();
+                this._role.outRecycleArea();
             }
         };
         /** 游戏结束 */
@@ -114,14 +114,14 @@ var Game;
         /** 搬运食物 */
         MainScene.prototype.onCarryFood = function (foodId) {
             var food = this._mapContainer.getFood(foodId);
-            this._player.onCarryFood(food);
+            this._role.onCarryFood(food);
         };
         /** 丢弃食物 */
         MainScene.prototype.onDropoutFood = function () {
-            var foodId = Game.DataMgr.instance.myPlayerData.foodId;
+            var foodId = Game.DataMgr.instance.roleData.foodId;
             if (foodId != 0) {
-                this._player.setFoodId(0);
-                this._player.resetPowerDelta();
+                this._role.setFoodId(0);
+                this._role.resetPowerDelta();
                 this.onResetFood(foodId);
             }
         };
@@ -132,7 +132,7 @@ var Game;
         /** 回收食物 */
         MainScene.prototype.onRecycleFood = function (foodId) {
             this._mapContainer.foodContainer.removeFood(foodId);
-            this._mainUI.refreshScoreTxt(this._player.data.score);
+            this._mainUI.refreshScoreTxt(this._role.data.score);
         };
         /** 还原食物 */
         MainScene.prototype.onResetFood = function (foodId) {
@@ -143,13 +143,13 @@ var Game;
             this._mainUI.setDropoutIconVisible(foodId != 0);
         };
         /** 改变玩家属性 */
-        MainScene.prototype.onChangePlayerAttr = function (attrType) {
+        MainScene.prototype.onChangePlayerAttr = function (attrType, attrValue) {
             switch (attrType) {
-                case Game.ATTR_TYPE.attack:
-                    this._mainUI.refreshAttackTxt(this._player.data.attack);
+                case Game.PLAYER_ATTR_TYPE.attack:
+                    this._mainUI.refreshAttackTxt(attrValue);
                     break;
-                case Game.ATTR_TYPE.walkSpeed:
-                    this._mainUI.refreshSpeedTxt(this._player.data.walkSpeed);
+                case Game.PLAYER_ATTR_TYPE.walkSpeed:
+                    this._mainUI.refreshSpeedTxt(attrValue);
                     break;
             }
         };

@@ -36,8 +36,8 @@ var Game;
         ResMgr.prototype.onDestroy = function () {
         };
         // 创建玩家
-        ResMgr.prototype.createPlayer = function (id) {
-            var player = Laya.Pool.getItemByClass(Game.PLAYER_CLASS_SIGN, Game.Player);
+        ResMgr.prototype.createRole = function (id) {
+            var player = Laya.Pool.getItemByClass(Game.ROLE_CLASS_SIGN, Game.Role);
             player.init(id);
             return player;
         };

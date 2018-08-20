@@ -34,14 +34,14 @@ var Game;
         /** 重写父类函数 */
         DataMgr.prototype.onCreate = function () {
             this.isGameOver = false;
-            this.otherPlayerData = [];
+            this.enemyData = [];
             this.foodDataList = [];
             this.buffDataList = [];
             this.recycleDataList = [];
         };
         /** 重写父类函数 */
         DataMgr.prototype.onDestroy = function () {
-            this.otherPlayerData = null;
+            this.enemyData = null;
             this.foodDataList = null;
             this.buffDataList = null;
             this.recycleDataList = null;
@@ -72,11 +72,11 @@ var Game;
         };
         /** 获取玩家数据 */
         DataMgr.prototype.getPlayerData = function (id) {
-            if (this.myPlayerData.id == id) {
-                return this.myPlayerData;
+            if (this.roleData.id == id) {
+                return this.roleData;
             }
             else {
-                return this.otherPlayerData[id];
+                return this.enemyData[id];
             }
         };
         /** 获取食物数据 */
@@ -101,9 +101,9 @@ var Game;
         };
         // 测试初始化数据
         DataMgr.prototype.testInitData = function () {
-            this.myPlayerData = this.createPlayerData(1);
-            this.myPlayerData.x = Global.Const.GAME_WIDTH * 0.5;
-            this.myPlayerData.y = Global.Const.GAME_HEIGHT * 0.5;
+            this.roleData = this.createPlayerData(1);
+            this.roleData.x = Global.Const.GAME_WIDTH * 0.5;
+            this.roleData.y = Global.Const.GAME_HEIGHT * 0.5;
             var id_buff = 10;
             var id_food = 100;
             var id_player = 50;
@@ -123,7 +123,7 @@ var Game;
             }
             for (var i = 0; i < 100; i++) {
                 id = i + id_player;
-                this.otherPlayerData[id] = this.createPlayerData(id);
+                this.enemyData[id] = this.createPlayerData(id);
             }
         };
         /* 配置相关----------------------------------------------------------------------- */

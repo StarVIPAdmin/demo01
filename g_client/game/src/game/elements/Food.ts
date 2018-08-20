@@ -56,7 +56,7 @@ module Game {
 
         onLoop():void 
         {
-            if (DataMgr.instance.myPlayerData.foodId != 0) {
+            if (DataMgr.instance.roleData.foodId != 0) {
                 return;
             }
             
@@ -93,7 +93,7 @@ module Game {
                     break;
                 case Data.FoodType.ANIMAL:
                     // 动物
-                    if (this.data.attack > DataMgr.instance.myPlayerData.attack) {
+                    if (this.data.attack > DataMgr.instance.roleData.attack) {
                         // 玩家死亡
                         EventMgr.instance.event(Global.Event.GAME_OVER);
                     } else {
@@ -204,7 +204,7 @@ module Game {
             if (food != null) {
                 food.data.state = Data.FoodState.DEATH;
                 food.dropout();
-                food.pos(DataMgr.instance.myPlayerData.x - this.mapContainer.x, DataMgr.instance.myPlayerData.y - this.mapContainer.y);
+                food.pos(DataMgr.instance.roleData.x - this.mapContainer.x, DataMgr.instance.roleData.y - this.mapContainer.y);
                 this.addChild(food);
             }
         }

@@ -57,7 +57,7 @@ var Game;
             Laya.timer.frameLoop(1, this, this.onLoop);
         };
         Food.prototype.onLoop = function () {
-            if (Game.DataMgr.instance.myPlayerData.foodId != 0) {
+            if (Game.DataMgr.instance.roleData.foodId != 0) {
                 return;
             }
             var parent = this.parent;
@@ -89,7 +89,7 @@ var Game;
                     break;
                 case Data.FoodType.ANIMAL:
                     // 动物
-                    if (this.data.attack > Game.DataMgr.instance.myPlayerData.attack) {
+                    if (this.data.attack > Game.DataMgr.instance.roleData.attack) {
                         // 玩家死亡
                         Game.EventMgr.instance.event(Global.Event.GAME_OVER);
                     }
@@ -183,7 +183,7 @@ var Game;
             if (food != null) {
                 food.data.state = Data.FoodState.DEATH;
                 food.dropout();
-                food.pos(Game.DataMgr.instance.myPlayerData.x - this.mapContainer.x, Game.DataMgr.instance.myPlayerData.y - this.mapContainer.y);
+                food.pos(Game.DataMgr.instance.roleData.x - this.mapContainer.x, Game.DataMgr.instance.roleData.y - this.mapContainer.y);
                 this.addChild(food);
             }
         };
