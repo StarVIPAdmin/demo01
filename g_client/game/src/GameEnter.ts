@@ -43,11 +43,11 @@ function onCompleteHandler():void
     resUrl.push({"url":Global.Path.PNG_BAR_HP, "type":Laya.Loader.IMAGE});
     resUrl.push({"url":Global.Path.PNG_BAR_BG, "type":Laya.Loader.IMAGE});
 
-    // 配置数据
-    let cfgPathList = Game.ConfigMgr.instance.cfgPathList;
-    cfgPathList.forEach(path => {
-        resUrl.push(path);
-    });
+    // 加载配置数据
+    let cfgPath = Global.Path.CFG_PATH;
+    resUrl.push({"url":cfgPath+ElementCfg.name+".json", "type":Laya.Loader.JSON});
+    resUrl.push({"url":cfgPath+SceneCfg.name+".json", "type":Laya.Loader.JSON});
+    resUrl.push({"url":cfgPath+ScoreCfg.name+".json", "type":Laya.Loader.JSON});
 
     function onLoaded():void {
         // 加载完成, 进入游戏

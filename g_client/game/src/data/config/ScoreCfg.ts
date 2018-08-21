@@ -8,4 +8,16 @@ class ScoreCfg extends BaseCfg
     {
         return "score_cfg";
     }
+
+    static checkLevelByScore(score:number):number
+    {
+        let scoreCfg = this._data.ScoreCfg;
+        let len = scoreCfg.length;
+        for (var i = 0; i < len; i++) {
+            if (score < scoreCfg[i]) {
+                return i + 1;
+            }
+        }
+        return len;
+    }
 }

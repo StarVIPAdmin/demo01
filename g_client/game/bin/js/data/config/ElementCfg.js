@@ -27,6 +27,12 @@ var ElementCfg = /** @class */ (function (_super) {
     ElementCfg.getBuffCfg = function (cfgId) {
         return this._data.BuffCfg[cfgId];
     };
+    ElementCfg.getFoodCfg = function (cfgId) {
+        return this._data.FoodCfg[cfgId];
+    };
+    ElementCfg.getRecycleCfg = function (cfgId) {
+        return this._data.RecycleCfg[cfgId];
+    };
     return ElementCfg;
 }(BaseCfg));
 //# sourceMappingURL=ElementCfg.js.map

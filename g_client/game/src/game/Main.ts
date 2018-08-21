@@ -15,6 +15,7 @@ module Game {
 		{
 			this.initRegister();
 
+			ConfigMgr.instance.initConfig();
 			DataMgr.instance.testInitData();
 			// NetMgr.instance.testInitData();
 

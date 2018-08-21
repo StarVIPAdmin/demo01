@@ -29,6 +29,7 @@ var Game;
         // 执行
         Main.prototype.run = function () {
             this.initRegister();
+            Game.ConfigMgr.instance.initConfig();
             Game.DataMgr.instance.testInitData();
             // NetMgr.instance.testInitData();
             // 进入主场景

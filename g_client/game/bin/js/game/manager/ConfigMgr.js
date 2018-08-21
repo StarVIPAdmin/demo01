@@ -10,6 +10,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Game;
 (function (Game) {
+    /**
+     * 配置管理
+     */
     var ConfigMgr = /** @class */ (function (_super) {
         __extends(ConfigMgr, _super);
         function ConfigMgr() {
@@ -25,24 +28,16 @@ var Game;
         });
         /** 重写父类函数 */
         ConfigMgr.prototype.onCreate = function () {
-            var cfgPath = Global.Path.CFG_PATH;
-            this._cfgPathList = [
-                { "url": cfgPath + ElementCfg.name + ".json", "type": Laya.Loader.JSON },
-                { "url": cfgPath + SceneCfg.name + ".json", "type": Laya.Loader.JSON },
-                { "url": cfgPath + ScoreCfg.name + ".json", "type": Laya.Loader.JSON }
-            ];
         };
         /** 重写父类函数 */
         ConfigMgr.prototype.onDestroy = function () {
-            this._cfgPathList = null;
         };
-        Object.defineProperty(ConfigMgr.prototype, "cfgPathList", {
-            get: function () {
-                return this._cfgPathList;
-            },
-            enumerable: true,
-            configurable: true
-        });
+        /** 初始化配置 */
+        ConfigMgr.prototype.initConfig = function () {
+            ElementCfg.onInit();
+            SceneCfg.onInit();
+            ScoreCfg.onInit();
+        };
         return ConfigMgr;
     }(Core.BaseSingleton));
     Game.ConfigMgr = ConfigMgr;

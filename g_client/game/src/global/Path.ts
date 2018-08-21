@@ -32,5 +32,6 @@ module Global {
         public static readonly PNG_COMBAT_MOVE_ICON:string = "res/move_icon.png";
 
         public static readonly CFG_PATH:string = "res/config/";
+        public static readonly BUFF_PATH:string = "res/buff/";
     }
 }

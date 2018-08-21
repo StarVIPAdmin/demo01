@@ -8,4 +8,9 @@ class SceneCfg extends BaseCfg
     {
         return "scene_cfg";
     }
+
+    static getSceneCfg(cfgId:number):any
+    {
+        return this._data.SceneCfg[cfgId];
+    }
 }

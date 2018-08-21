@@ -13,4 +13,14 @@ class ElementCfg extends BaseCfg
     {
         return this._data.BuffCfg[cfgId];
     }
+
+    static getFoodCfg(cfgId:number):any
+    {
+        return this._data.FoodCfg[cfgId];
+    }
+
+    static getRecycleCfg(cfgId:number):any
+    {
+        return this._data.RecycleCfg[cfgId];
+    }
 }

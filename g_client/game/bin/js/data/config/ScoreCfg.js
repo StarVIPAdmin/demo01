@@ -24,6 +24,16 @@ var ScoreCfg = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    ScoreCfg.checkLevelByScore = function (score) {
+        var scoreCfg = this._data.ScoreCfg;
+        var len = scoreCfg.length;
+        for (var i = 0; i < len; i++) {
+            if (score < scoreCfg[i]) {
+                return i + 1;
+            }
+        }
+        return len;
+    };
     return ScoreCfg;
 }(BaseCfg));
 //# sourceMappingURL=ScoreCfg.js.map

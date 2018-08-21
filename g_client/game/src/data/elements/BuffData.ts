@@ -6,7 +6,7 @@ module Data {
     export class BuffData extends BaseData
     {
         // 配置ID
-        public cfgId:number;
+        private _cfgId:number;
 
         init():void 
         {
@@ -18,6 +18,20 @@ module Data {
             this.collisionRadius = 250;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
+        }
+
+        set cfgId(cfgId:number)
+        {
+            this._cfgId = cfgId;
+
+            let cfg = ElementCfg.getBuffCfg(cfgId);
+            this.nick = cfg.Name;
+            this.bodyPath = Global.Path.BUFF_PATH + cfg.ResName + ".png";
+        }
+
+        get cfgId():number
+        {
+            return this._cfgId;
         }
     }
 }

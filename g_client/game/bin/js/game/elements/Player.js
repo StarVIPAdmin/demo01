@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
-    // 玩家类标识（用于对象池回收）
+    // 类标识（用于对象池回收）
     var ENEMY_CLASS_SIGN = "enemy";
     Game.ROLE_CLASS_SIGN = "role";
     // 玩家属性类型
@@ -86,7 +86,7 @@ var Game;
         };
         /** 获取一个buff */
         Role.prototype.onGetBuff = function (cfgId) {
-            var buffCfg = Game.DataMgr.instance.getBuffCfg(cfgId);
+            var buffCfg = ElementCfg.getBuffCfg(cfgId);
             if (buffCfg == null) {
                 return;
             }
@@ -166,7 +166,7 @@ var Game;
         Role.prototype.addScore = function (score) {
             var newScore = this.data.score + score;
             this.data.score = newScore;
-            var newLvl = Game.DataMgr.instance.checkLevelByScore(newScore);
+            var newLvl = ScoreCfg.checkLevelByScore(newScore);
             if (newLvl != this.data.level) {
                 this.data.level = newLvl;
             }

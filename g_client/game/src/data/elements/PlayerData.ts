@@ -35,7 +35,8 @@ module Data {
 
         init():void 
         {
-            this.nick = "玩家";
+            let cfg = ElementCfg.getBuffCfg(1);
+            this.nick = "玩家"+cfg.Name;
             this.bodyPath = Global.Path.PNG_PLAYER_1;
 
             this.foodId = 0;

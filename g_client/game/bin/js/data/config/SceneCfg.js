@@ -24,6 +24,9 @@ var SceneCfg = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    SceneCfg.getSceneCfg = function (cfgId) {
+        return this._data.SceneCfg[cfgId];
+    };
     return SceneCfg;
 }(BaseCfg));
 //# sourceMappingURL=SceneCfg.js.map

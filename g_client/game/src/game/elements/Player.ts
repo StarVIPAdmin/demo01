@@ -1,7 +1,7 @@
 module Game {
     import Sprite = Laya.Sprite;
 
-    // 玩家类标识（用于对象池回收）
+    // 类标识（用于对象池回收）
     const ENEMY_CLASS_SIGN:string = "enemy";
     export const ROLE_CLASS_SIGN:string = "role";
 
@@ -86,7 +86,7 @@ module Game {
         /** 获取一个buff */
         onGetBuff(cfgId:number):void 
         {
-            let buffCfg = DataMgr.instance.getBuffCfg(cfgId);
+            let buffCfg = ElementCfg.getBuffCfg(cfgId);
             if (buffCfg == null) {
                 return;
             }
@@ -186,7 +186,7 @@ module Game {
         {
             let newScore = this.data.score + score;
             this.data.score = newScore;
-            let newLvl = DataMgr.instance.checkLevelByScore(newScore);
+            let newLvl = ScoreCfg.checkLevelByScore(newScore);
 
             if (newLvl != this.data.level) {
                 this.data.level = newLvl;
