@@ -14,7 +14,6 @@ var Game;
     var FoodData = Data.FoodData;
     var BuffData = Data.BuffData;
     var RecycleData = Data.RecycleData;
-    // require(".../data/config/element_cfg.json");
     /**
      * 游戏数据管理类
      */
@@ -125,34 +124,6 @@ var Game;
                 id = i + id_player;
                 this.enemyData[id] = this.createPlayerData(id);
             }
-        };
-        /* 配置相关----------------------------------------------------------------------- */
-        DataMgr.prototype.getBuffCfg = function (cfgId) {
-            var data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
-            return data.BuffCfg[cfgId];
-        };
-        DataMgr.prototype.getFoodCfg = function (cfgId) {
-            var data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
-            return data.FoodCfg[cfgId];
-        };
-        DataMgr.prototype.getRecycleCfg = function (cfgId) {
-            var data = Laya.loader.getRes(Global.Path.JSON_ELEMENT_CFG);
-            return data.RecycleCfg[cfgId];
-        };
-        DataMgr.prototype.getSceneCfg = function (cfgId) {
-            var data = Laya.loader.getRes(Global.Path.JSON_SCENE_CFG);
-            return data.SceneCfg[cfgId];
-        };
-        DataMgr.prototype.checkLevelByScore = function (score) {
-            var data = Laya.loader.getRes(Global.Path.JSON_SCORE_CFG);
-            var scoreCfg = data.ScoreCfg;
-            var len = scoreCfg.length;
-            for (var i = 0; i < len; i++) {
-                if (score < scoreCfg[i]) {
-                    return i + 1;
-                }
-            }
-            return len;
         };
         return DataMgr;
     }(Core.BaseSingleton));

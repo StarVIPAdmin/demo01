@@ -2,8 +2,7 @@ module Game {
     import Sprite = Laya.Sprite;
 
     // 玩家类标识（用于对象池回收）
-    const ENEMY_CLASS_SIGN:string = "player";
-
+    const ENEMY_CLASS_SIGN:string = "enemy";
     export const ROLE_CLASS_SIGN:string = "role";
 
     // 玩家属性类型
@@ -13,9 +12,9 @@ module Game {
     }
 
     /**
-     * 玩家类
+     * 玩家基类
      */
-    class Player1 extends BaseElement 
+    class Player extends BaseElement 
     {   
         /** 重写父类函数 */
         init(id:number):void 
@@ -35,7 +34,10 @@ module Game {
         }
     }
 
-    export class Role extends Player1
+    /**
+     * 主角类
+     */
+    export class Role extends Player
     {
         // 体力增量
         private _powerDelta:number;
@@ -192,7 +194,10 @@ module Game {
         }
     }
 
-    class Enemy extends Player1
+    /**
+     * 敌人类
+     */
+    class Enemy extends Player
     {
         get data():Data.PlayerData
         {
@@ -203,25 +208,58 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
+
+            Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
         /** 重写父类函数 */
         destroy():void 
         {
             super.destroy();
+            Laya.timer.clearAll(this);
             Laya.Pool.recover(ENEMY_CLASS_SIGN, this);
+        }
+
+        onLoop():void 
+        {
+            let parent = this.parent as EnemyContainer;
+            let isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+
+            if (isTouch) {
+                let roleAttack = DataMgr.instance.roleData.attack;
+                
+                if (roleAttack < this.data.attack) {
+                    // 玩家阵亡
+                    EventMgr.instance.event(Global.Event.GAME_OVER);
+                } else if (roleAttack > this.data.attack) {
+                    // 杀死敌人
+                    // parent.removeEnemy(this.data.id);
+                    this.setDeathState();
+                }
+            }
+        }
+
+        /** 设置死亡状态 */
+        setDeathState():void 
+        {
+            this.data.state = Data.PlayerState.DEATH;
         }
     }
 
     /**
      * 敌人类容器
      */
-    export class PlayerContainer extends Sprite
+    export class EnemyContainer extends Sprite
     {
         // 父容器
         private _mapContainer:MapContainer;
         // 敌人列表
         private _enemyList:Array<Enemy>;
+
+        get mapContainer():MapContainer
+        {
+            return this._mapContainer;
+        }
 
         init(parentContainer:MapContainer):void 
         {

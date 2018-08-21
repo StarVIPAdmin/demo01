@@ -32,8 +32,7 @@ var Data;
             return _this;
         }
         PlayerData.prototype.init = function () {
-            var cfg = Laya.loader.getRes(Global.Path.JSON_SCORE_CFG);
-            this.nick = "玩家" + cfg.ScoreCfg[1];
+            this.nick = "玩家";
             this.bodyPath = Global.Path.PNG_PLAYER_1;
             this.foodId = 0;
             this.level = 1;

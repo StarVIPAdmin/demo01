@@ -37,9 +37,10 @@ function onCompleteHandler() {
     resUrl.push({ "url": Global.Path.PNG_BAR_HP, "type": Laya.Loader.IMAGE });
     resUrl.push({ "url": Global.Path.PNG_BAR_BG, "type": Laya.Loader.IMAGE });
     // 配置数据
-    resUrl.push({ "url": Global.Path.JSON_SCENE_CFG, "type": Laya.Loader.JSON });
-    resUrl.push({ "url": Global.Path.JSON_SCORE_CFG, "type": Laya.Loader.JSON });
-    resUrl.push({ "url": Global.Path.JSON_ELEMENT_CFG, "type": Laya.Loader.JSON });
+    var cfgPathList = Game.ConfigMgr.instance.cfgPathList;
+    cfgPathList.forEach(function (path) {
+        resUrl.push(path);
+    });
     function onLoaded() {
         // 加载完成, 进入游戏
         Game.main.run();

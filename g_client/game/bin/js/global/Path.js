@@ -26,10 +26,7 @@ var Global;
         // 战斗
         Path.PNG_COMBAT_MOVE_BG = "res/move_bg.png";
         Path.PNG_COMBAT_MOVE_ICON = "res/move_icon.png";
-        // 配置json文件路径
-        Path.JSON_SCORE_CFG = "res/config/score_cfg.json";
-        Path.JSON_SCENE_CFG = "res/config/scene_cfg.json";
-        Path.JSON_ELEMENT_CFG = "res/config/element_cfg.json";
+        Path.CFG_PATH = "res/config/";
         return Path;
     }());
     Global.Path = Path;

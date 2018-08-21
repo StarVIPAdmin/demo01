@@ -31,9 +31,6 @@ module Global {
         public static readonly PNG_COMBAT_MOVE_BG:string = "res/move_bg.png";
         public static readonly PNG_COMBAT_MOVE_ICON:string = "res/move_icon.png";
 
-        // 配置json文件路径
-        public static readonly JSON_SCORE_CFG:string = "res/config/score_cfg.json";
-        public static readonly JSON_SCENE_CFG:string = "res/config/scene_cfg.json";
-        public static readonly JSON_ELEMENT_CFG:string = "res/config/element_cfg.json";
+        public static readonly CFG_PATH:string = "res/config/";
     }
 }

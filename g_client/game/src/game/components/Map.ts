@@ -175,7 +175,7 @@ module Game {
         private _buffContainer:BuffContainer;
         private _foodContainer:FoodContainer;
         private _recycleContainer:RecycleContainer;
-        private _playerContainer:PlayerContainer;
+        private _enemyContainer:EnemyContainer;
         
         get foodContainer():FoodContainer
         {
@@ -211,9 +211,9 @@ module Game {
             this._recycleContainer.init(this);
             this.addChild(this._recycleContainer);
 
-            this._playerContainer = new PlayerContainer();
-            this._playerContainer.init(this);
-            this.addChild(this._playerContainer);
+            this._enemyContainer = new EnemyContainer();
+            this._enemyContainer.init(this);
+            this.addChild(this._enemyContainer);
 
             // let floor = this.addFloor(1);
             // floor.pos(0, Global.Const.GAME_HEIGHT - floor.height, true);
@@ -223,7 +223,7 @@ module Game {
         resetElements():void 
         {
             this._foodContainer.resetFood();
-            this._playerContainer.resetEnemy();
+            this._enemyContainer.resetEnemy();
             this._buffContainer.resetBuff();
             this._recycleContainer.resetRecycle();
         }

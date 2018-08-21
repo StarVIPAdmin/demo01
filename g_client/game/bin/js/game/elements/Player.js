@@ -12,7 +12,7 @@ var Game;
 (function (Game) {
     var Sprite = Laya.Sprite;
     // 玩家类标识（用于对象池回收）
-    var ENEMY_CLASS_SIGN = "player";
+    var ENEMY_CLASS_SIGN = "enemy";
     Game.ROLE_CLASS_SIGN = "role";
     // 玩家属性类型
     Game.PLAYER_ATTR_TYPE = {
@@ -20,26 +20,29 @@ var Game;
         walkSpeed: "walkSpeed"
     };
     /**
-     * 玩家类
+     * 玩家基类
      */
-    var Player1 = /** @class */ (function (_super) {
-        __extends(Player1, _super);
-        function Player1() {
+    var Player = /** @class */ (function (_super) {
+        __extends(Player, _super);
+        function Player() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         /** 重写父类函数 */
-        Player1.prototype.init = function (id) {
+        Player.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
         };
         /** 重写父类函数 */
-        Player1.prototype.destroy = function () {
+        Player.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
         };
         /** 从场景移除（返回对象池） */
-        Player1.prototype.remove = function () {
+        Player.prototype.remove = function () {
         };
-        return Player1;
+        return Player;
     }(Game.BaseElement));
+    /**
+     * 主角类
+     */
     var Role = /** @class */ (function (_super) {
         __extends(Role, _super);
         function Role() {
@@ -169,8 +172,11 @@ var Game;
             }
         };
         return Role;
-    }(Player1));
+    }(Player));
     Game.Role = Role;
+    /**
+     * 敌人类
+     */
     var Enemy = /** @class */ (function (_super) {
         __extends(Enemy, _super);
         function Enemy() {
@@ -186,34 +192,63 @@ var Game;
         /** 重写父类函数 */
         Enemy.prototype.init = function (id) {
             _super.prototype.init.call(this, id);
+            Laya.timer.frameLoop(1, this, this.onLoop);
         };
         /** 重写父类函数 */
         Enemy.prototype.destroy = function () {
             _super.prototype.destroy.call(this);
+            Laya.timer.clearAll(this);
             Laya.Pool.recover(ENEMY_CLASS_SIGN, this);
         };
+        Enemy.prototype.onLoop = function () {
+            var parent = this.parent;
+            var isTouch = parent.mapContainer.checkPlayerCollision(this.x, this.y, this.data.collisionRadius);
+            if (isTouch) {
+                var roleAttack = Game.DataMgr.instance.roleData.attack;
+                if (roleAttack < this.data.attack) {
+                    // 玩家阵亡
+                    Game.EventMgr.instance.event(Global.Event.GAME_OVER);
+                }
+                else if (roleAttack > this.data.attack) {
+                    // 杀死敌人
+                    // parent.removeEnemy(this.data.id);
+                    this.setDeathState();
+                }
+            }
+        };
+        /** 设置死亡状态 */
+        Enemy.prototype.setDeathState = function () {
+            this.data.state = Data.PlayerState.DEATH;
+        };
         return Enemy;
-    }(Player1));
+    }(Player));
     /**
      * 敌人类容器
      */
-    var PlayerContainer = /** @class */ (function (_super) {
-        __extends(PlayerContainer, _super);
-        function PlayerContainer() {
+    var EnemyContainer = /** @class */ (function (_super) {
+        __extends(EnemyContainer, _super);
+        function EnemyContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        PlayerContainer.prototype.init = function (parentContainer) {
+        Object.defineProperty(EnemyContainer.prototype, "mapContainer", {
+            get: function () {
+                return this._mapContainer;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        EnemyContainer.prototype.init = function (parentContainer) {
             this._mapContainer = parentContainer;
             this._enemyList = [];
         };
         /** 创建敌人 */
-        PlayerContainer.prototype.createEnemy = function (id) {
+        EnemyContainer.prototype.createEnemy = function (id) {
             var enemy = Laya.Pool.getItemByClass(ENEMY_CLASS_SIGN, Enemy);
             enemy.init(id);
             return enemy;
         };
         /** 重置玩家 */
-        PlayerContainer.prototype.resetEnemy = function () {
+        EnemyContainer.prototype.resetEnemy = function () {
             var _this = this;
             // 清理旧数据
             this.clearEnemy();
@@ -228,7 +263,7 @@ var Game;
             });
         };
         /** 根据唯一ID，增加指定玩家 */
-        PlayerContainer.prototype.addEnemy = function (id) {
+        EnemyContainer.prototype.addEnemy = function (id) {
             if (this.checkEnemy(id)) {
                 return;
             }
@@ -237,7 +272,7 @@ var Game;
             this._enemyList[id] = enemy;
         };
         /** 根据唯一ID，移除指定玩家 */
-        PlayerContainer.prototype.removeEnemy = function (id) {
+        EnemyContainer.prototype.removeEnemy = function (id) {
             if (!this.checkEnemy(id))
                 return;
             var enemy = this._enemyList[id];
@@ -245,7 +280,7 @@ var Game;
             this._enemyList[id] = null;
         };
         /** 清除玩家 */
-        PlayerContainer.prototype.clearEnemy = function () {
+        EnemyContainer.prototype.clearEnemy = function () {
             if (!this.checkEnemyList())
                 return;
             this._enemyList.forEach(function (item) {
@@ -254,18 +289,18 @@ var Game;
             this._enemyList = [];
         };
         /** 检测玩家列表是否有数据 */
-        PlayerContainer.prototype.checkEnemyList = function () {
+        EnemyContainer.prototype.checkEnemyList = function () {
             return !(this._enemyList == null || this._enemyList.length == 0);
         };
         /** 根据唯一ID，检测玩家是否存在 */
-        PlayerContainer.prototype.checkEnemy = function (id) {
+        EnemyContainer.prototype.checkEnemy = function (id) {
             if (!this.checkEnemyList()) {
                 return false;
             }
             return this._enemyList[id] != null;
         };
-        return PlayerContainer;
+        return EnemyContainer;
     }(Sprite));
-    Game.PlayerContainer = PlayerContainer;
+    Game.EnemyContainer = EnemyContainer;
 })(Game || (Game = {}));
 //# sourceMappingURL=Player.js.map
