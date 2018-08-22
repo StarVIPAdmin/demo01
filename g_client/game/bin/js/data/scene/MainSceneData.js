@@ -21,6 +21,9 @@ var Data;
         /** 重写父类函数 */
         MainSceneData.prototype.onInit = function (Params) {
             _super.prototype.onInit.call(this);
+            this._buffPos = [];
+            this._foodPos = [];
+            this._recyclePos = [];
             this.cfgId = Params;
         };
         /** 重写父类函数 */
@@ -33,10 +36,37 @@ var Data;
                     return;
                 }
                 this._cfgId = cfgId;
+                var sceneCfg = SceneCfg.getSceneCfg(cfgId);
+                this._mapPath = Global.Path.MAP_PATH + sceneCfg.MapName + ".jpg";
+                this._buffPos = sceneCfg.BuffPos;
+                this._foodPos = sceneCfg.FoodPos;
+                this._recyclePos = sceneCfg.RecyclePos;
             },
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(MainSceneData.prototype, "mapPath", {
+            get: function () {
+                return this._mapPath;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        MainSceneData.prototype.getBuffPos = function () {
+            var result = [];
+            this._buffPos.forEach(function (pos) {
+                if (!pos.hasOwnProperty("isUse")) {
+                    result.push(pos);
+                }
+            });
+            return {};
+        };
+        MainSceneData.prototype.getFoodPos = function () {
+            return {};
+        };
+        MainSceneData.prototype.getRecyclePos = function () {
+            return {};
+        };
         return MainSceneData;
     }(Core.BaseSceneData));
     Data.MainSceneData = MainSceneData;

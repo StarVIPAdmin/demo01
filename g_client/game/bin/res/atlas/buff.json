@@ -1,0 +1,71 @@
+{
+    "frames": {
+        "NPC40002.png": {
+            "frame": {
+                "h": 232,
+                "idx": 0,
+                "w": 230,
+                "x": 0,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 232,
+                "w": 230,
+                "x": 163,
+                "y": 155
+            },
+            "trimmed": true
+        },
+        "NPC40003.png": {
+            "frame": {
+                "h": 232,
+                "idx": 0,
+                "w": 230,
+                "x": 0,
+                "y": 233
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 232,
+                "w": 230,
+                "x": 163,
+                "y": 155
+            },
+            "trimmed": true
+        },
+        "NPC40004.png": {
+            "frame": {
+                "h": 232,
+                "idx": 0,
+                "w": 230,
+                "x": 231,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 232,
+                "w": 230,
+                "x": 163,
+                "y": 155
+            },
+            "trimmed": true
+        }
+    },
+    "meta": {
+        "image": "buff.png",
+        "prefix": "buff/"
+    }
+}

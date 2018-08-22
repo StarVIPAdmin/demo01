@@ -60,7 +60,7 @@ module Game {
         initUI():void 
         {
             this._mapContainer = new MapContainer();
-            this._mapContainer.init();
+            this._mapContainer.init(this.sceneData.mapPath);
             this.addChild(this._mapContainer);
 
             this._mainUI = new GameMainUI();

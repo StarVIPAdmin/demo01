@@ -46,8 +46,22 @@ module Data {
             this._recyclePos = sceneCfg.RecyclePos;
         }
 
+        get mapPath():string
+        {
+            return this._mapPath;
+        }
+
         getBuffPos():Object
         {
+            let result:Array<Object> = [];
+            this._buffPos.forEach(pos => {
+                if (!pos.hasOwnProperty("isUse")) {
+                    result.push(pos);
+                }
+            });
+
+            
+
             return {};
         }
 

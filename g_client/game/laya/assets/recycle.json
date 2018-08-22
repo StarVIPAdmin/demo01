@@ -1,0 +1,71 @@
+{
+    "frames": {
+        "building50001.png": {
+            "frame": {
+                "h": 440,
+                "idx": 0,
+                "w": 505,
+                "x": 0,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 440,
+                "w": 505,
+                "x": 7,
+                "y": 61
+            },
+            "trimmed": true
+        },
+        "building50002.png": {
+            "frame": {
+                "h": 437,
+                "idx": 0,
+                "w": 512,
+                "x": 506,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 437,
+                "w": 512,
+                "x": 0,
+                "y": 75
+            },
+            "trimmed": true
+        },
+        "building50013.png": {
+            "frame": {
+                "h": 176,
+                "idx": 0,
+                "w": 277,
+                "x": 506,
+                "y": 438
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 512,
+                "w": 512
+            },
+            "spriteSourceSize": {
+                "h": 176,
+                "w": 277,
+                "x": 139,
+                "y": 195
+            },
+            "trimmed": true
+        }
+    },
+    "meta": {
+        "image": "recycle.png",
+        "prefix": "recycle/"
+    }
+}

@@ -182,10 +182,10 @@ module Game {
             return this._foodContainer;
         }
 
-        init():void 
+        init(mapPath:string):void 
         {
             this.initData();
-            this.initUI();
+            this.initUI(mapPath);
         }
 
         initData():void 
@@ -194,9 +194,9 @@ module Game {
             this._mapHeight = Global.Const.MAP_HEIGHT;
         }
 
-        initUI():void 
+        initUI(mapPath:string):void 
         {
-            this._mapSpr = ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
+            this._mapSpr = ResMgr.instance.createSprite(mapPath, this._mapWidth, this._mapHeight);
             this.addChild(this._mapSpr);
 
             this._foodContainer = new FoodContainer();

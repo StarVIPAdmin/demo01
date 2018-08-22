@@ -233,7 +233,7 @@ module Game {
                     EventMgr.instance.event(Global.Event.GAME_OVER);
                 } else if (roleAttack > this.data.attack) {
                     // 杀死敌人
-                    // parent.removeEnemy(this.data.id);
+                    parent.removeEnemy(this.data.id);
                     this.setDeathState();
                 }
             }

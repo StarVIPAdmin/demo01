@@ -4,7 +4,7 @@ var Global;
         function Path() {
         }
         // 游戏资源
-        Path.JPG_BACKGROUND = "res/map/map.jpg";
+        // public static readonly JPG_BACKGROUND:string = "res/map/map.jpg";
         Path.PNG_PLAYER_1 = "res/role/role10001.png";
         Path.PNG_PLAYER_2 = "res/role/role10002.png";
         Path.PNG_PLAYER_3 = "res/role/role10003.png";
@@ -17,9 +17,10 @@ var Global;
         Path.PNG_COMBAT_MOVE_BG = "res/move_bg.png";
         Path.PNG_COMBAT_MOVE_ICON = "res/move_icon.png";
         Path.CFG_PATH = "res/config/";
-        Path.BUFF_PATH = "res/buff/";
-        Path.FOOD_PATH = "res/food/";
-        Path.RECYCLE_PATH = "res/recycle/";
+        Path.BUFF_PATH = "buff/";
+        Path.FOOD_PATH = "food/";
+        Path.RECYCLE_PATH = "recycle/";
+        Path.MAP_PATH = "res/map/";
         return Path;
     }());
     Global.Path = Path;

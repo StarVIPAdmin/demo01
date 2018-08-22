@@ -157,16 +157,16 @@ var Game;
             enumerable: true,
             configurable: true
         });
-        MapContainer.prototype.init = function () {
+        MapContainer.prototype.init = function (mapPath) {
             this.initData();
-            this.initUI();
+            this.initUI(mapPath);
         };
         MapContainer.prototype.initData = function () {
             this._mapWidth = Global.Const.MAP_WIDTH;
             this._mapHeight = Global.Const.MAP_HEIGHT;
         };
-        MapContainer.prototype.initUI = function () {
-            this._mapSpr = Game.ResMgr.instance.createSprite(Global.Path.JPG_BACKGROUND, this._mapWidth, this._mapHeight);
+        MapContainer.prototype.initUI = function (mapPath) {
+            this._mapSpr = Game.ResMgr.instance.createSprite(mapPath, this._mapWidth, this._mapHeight);
             this.addChild(this._mapSpr);
             this._foodContainer = new Game.FoodContainer();
             this._foodContainer.init(this);

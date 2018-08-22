@@ -18,11 +18,14 @@ function onCompleteHandler() {
     Laya.Stat.show(300, 0);
     var resUrl = [];
     // resUrl.push({"url":Global.Path.JSON_PLAYER, "type":Laya.Loader.ATLAS});
-    resUrl.push({ "url": Global.Path.JPG_BACKGROUND, "type": Laya.Loader.IMAGE });
+    // resUrl.push({"url":Global.Path.JPG_BACKGROUND, "type":Laya.Loader.IMAGE});
     resUrl.push({ "url": Global.Path.PNG_PLAYER_1, "type": Laya.Loader.IMAGE });
-    // resUrl.push({"url":Global.Path.PNG_ITEM_1, "type":Laya.Loader.IMAGE});
-    // resUrl.push({"url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE});
-    // resUrl.push({"url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE});
+    resUrl.push({ "url": "res/atlas/buff.json", "type": Laya.Loader.ATLAS });
+    resUrl.push({ "url": "res/atlas/buff.png", "type": Laya.Loader.IMAGE });
+    resUrl.push({ "url": "res/atlas/food.json", "type": Laya.Loader.ATLAS });
+    resUrl.push({ "url": "res/atlas/food.png", "type": Laya.Loader.IMAGE });
+    resUrl.push({ "url": "res/atlas/recycle.json", "type": Laya.Loader.ATLAS });
+    resUrl.push({ "url": "res/atlas/recycle.png", "type": Laya.Loader.IMAGE });
     // resUrl.push({"url":Global.Path.PNG_ITEM_4, "type":Laya.Loader.IMAGE});
     // resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_1, "type":Laya.Loader.IMAGE});
     // resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_2, "type":Laya.Loader.IMAGE});

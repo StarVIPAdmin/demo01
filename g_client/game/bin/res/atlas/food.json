@@ -1,0 +1,92 @@
+{
+    "frames": {
+        "moster20001.png": {
+            "frame": {
+                "h": 90,
+                "idx": 0,
+                "w": 102,
+                "x": 0,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 128,
+                "w": 128
+            },
+            "spriteSourceSize": {
+                "h": 90,
+                "w": 102,
+                "x": 1,
+                "y": 22
+            },
+            "trimmed": true
+        },
+        "moster20002.png": {
+            "frame": {
+                "h": 76,
+                "idx": 0,
+                "w": 128,
+                "x": 0,
+                "y": 91
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 128,
+                "w": 128
+            },
+            "spriteSourceSize": {
+                "h": 76,
+                "w": 128,
+                "x": 0,
+                "y": 29
+            },
+            "trimmed": true
+        },
+        "moster20003.png": {
+            "frame": {
+                "h": 95,
+                "idx": 0,
+                "w": 128,
+                "x": 129,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 128,
+                "w": 128
+            },
+            "spriteSourceSize": {
+                "h": 95,
+                "w": 128,
+                "x": 0,
+                "y": 17
+            },
+            "trimmed": true
+        },
+        "moster20004.png": {
+            "frame": {
+                "h": 105,
+                "idx": 0,
+                "w": 128,
+                "x": 129,
+                "y": 96
+            },
+            "rotated": false,
+            "sourceSize": {
+                "h": 128,
+                "w": 128
+            },
+            "spriteSourceSize": {
+                "h": 105,
+                "w": 128,
+                "x": 0,
+                "y": 8
+            },
+            "trimmed": true
+        }
+    },
+    "meta": {
+        "image": "food.png",
+        "prefix": "food/"
+    }
+}
