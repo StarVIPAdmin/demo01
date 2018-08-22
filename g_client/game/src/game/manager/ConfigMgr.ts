@@ -24,9 +24,9 @@ module Game {
         /** 初始化配置 */
         initConfig():void 
         {
-            ElementCfg.onInit();
-            SceneCfg.onInit();
-            ScoreCfg.onInit();
+            ElementCfg.onInit(ElementCfg.path);
+            SceneCfg.onInit(SceneCfg.path);
+            ScoreCfg.onInit(ScoreCfg.path);
         }
     }
 }

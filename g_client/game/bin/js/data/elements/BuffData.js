@@ -20,14 +20,28 @@ var Data;
         }
         BuffData.prototype.init = function () {
             this.cfgId = 1;
-            this.nick = "药剂" + this.id;
-            this.bodyPath = Global.Path.PNG_BUFF_1;
             this.width = 512;
             this.height = 512;
             this.collisionRadius = 250;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };
+        Object.defineProperty(BuffData.prototype, "cfgId", {
+            get: function () {
+                return this._cfgId;
+            },
+            set: function (cfgId) {
+                if (this._cfgId == cfgId) {
+                    return;
+                }
+                this._cfgId = cfgId;
+                var cfg = ElementCfg.getBuffCfg(cfgId);
+                this.nick = cfg.Name;
+                this.bodyPath = Global.Path.BUFF_PATH + cfg.ResName + ".png";
+            },
+            enumerable: true,
+            configurable: true
+        });
         return BuffData;
     }(Data.BaseData));
     Data.BuffData = BuffData;

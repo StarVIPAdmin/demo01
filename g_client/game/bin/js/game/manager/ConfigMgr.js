@@ -34,9 +34,9 @@ var Game;
         };
         /** 初始化配置 */
         ConfigMgr.prototype.initConfig = function () {
-            ElementCfg.onInit();
-            SceneCfg.onInit();
-            ScoreCfg.onInit();
+            ElementCfg.onInit(ElementCfg.path);
+            SceneCfg.onInit(SceneCfg.path);
+            ScoreCfg.onInit(ScoreCfg.path);
         };
         return ConfigMgr;
     }(Core.BaseSingleton));

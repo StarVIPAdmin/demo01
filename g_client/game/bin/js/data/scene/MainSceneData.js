@@ -19,15 +19,24 @@ var Data;
             return _super !== null && _super.apply(this, arguments) || this;
         }
         /** 重写父类函数 */
-        MainSceneData.prototype.onInit = function () {
+        MainSceneData.prototype.onInit = function (Params) {
             _super.prototype.onInit.call(this);
-            this.score = 0;
+            this.cfgId = Params;
         };
         /** 重写父类函数 */
         MainSceneData.prototype.onClear = function () {
             _super.prototype.onClear.call(this);
-            this.score = 0;
         };
+        Object.defineProperty(MainSceneData.prototype, "cfgId", {
+            set: function (cfgId) {
+                if (this._cfgId == cfgId) {
+                    return;
+                }
+                this._cfgId = cfgId;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return MainSceneData;
     }(Core.BaseSceneData));
     Data.MainSceneData = MainSceneData;

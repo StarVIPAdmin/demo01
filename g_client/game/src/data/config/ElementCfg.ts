@@ -3,10 +3,10 @@
  */
 class ElementCfg extends BaseCfg
 {
-    /** 重写父类函数 */
-    static get name():string
+    /** 配置表路径 */
+    static get path():string
     {
-        return "element_cfg";
+        return Global.Path.CFG_PATH + "element_cfg.json";
     }
 
     static getBuffCfg(cfgId:number):any

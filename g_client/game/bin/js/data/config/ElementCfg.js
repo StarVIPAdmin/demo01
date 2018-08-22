@@ -16,10 +16,10 @@ var ElementCfg = /** @class */ (function (_super) {
     function ElementCfg() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(ElementCfg, "name", {
-        /** 重写父类函数 */
+    Object.defineProperty(ElementCfg, "path", {
+        /** 配置表路径 */
         get: function () {
-            return "element_cfg";
+            return Global.Path.CFG_PATH + "element_cfg.json";
         },
         enumerable: true,
         configurable: true

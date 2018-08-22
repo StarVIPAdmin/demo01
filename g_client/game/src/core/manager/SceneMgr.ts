@@ -31,7 +31,7 @@ module Core {
             this._sceneDataCls = null;
         }
 
-        enterScene(SceneId:number):void 
+        enterScene(SceneId:number, Params?:any):void 
         {
             let curSceneId:number;
             if (this._curScene) {
@@ -62,7 +62,7 @@ module Core {
             let sceneData = new sceneDataCls(SceneId);
             let scene:BaseScene = new sceneCls();
             scene.__sceneData = sceneData;
-            scene.onInit();
+            scene.onInit(Params);
             scene.onShow();
             this._curScene = scene;
         }

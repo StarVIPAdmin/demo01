@@ -18,7 +18,7 @@ var Core;
             this.sceneId = SceneId;
         }
         /** 初始化数据（进入场景调用） */
-        BaseSceneData.prototype.onInit = function () { };
+        BaseSceneData.prototype.onInit = function (Params) { };
         /** 清除数据（退出场景调用） */
         BaseSceneData.prototype.onClear = function () {
             this.sceneId = null;
@@ -45,9 +45,9 @@ var Core;
             configurable: true
         });
         /** 场景初始化 */
-        BaseScene.prototype.onInit = function () {
+        BaseScene.prototype.onInit = function (Params) {
             if (this.sceneData != null)
-                this.sceneData.onInit();
+                this.sceneData.onInit(Params);
         };
         /** 场景显示 */
         BaseScene.prototype.onShow = function () {

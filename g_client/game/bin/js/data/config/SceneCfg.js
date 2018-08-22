@@ -16,10 +16,10 @@ var SceneCfg = /** @class */ (function (_super) {
     function SceneCfg() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(SceneCfg, "name", {
-        /** 重写父类函数 */
+    Object.defineProperty(SceneCfg, "path", {
+        /** 配置表路径 */
         get: function () {
-            return "scene_cfg";
+            return Global.Path.CFG_PATH + "scene_cfg.json";
         },
         enumerable: true,
         configurable: true

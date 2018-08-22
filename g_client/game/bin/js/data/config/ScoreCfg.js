@@ -16,10 +16,10 @@ var ScoreCfg = /** @class */ (function (_super) {
     function ScoreCfg() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(ScoreCfg, "name", {
-        /** 重写父类函数 */
+    Object.defineProperty(ScoreCfg, "path", {
+        /** 配置表路径 */
         get: function () {
-            return "score_cfg";
+            return Global.Path.CFG_PATH + "score_cfg.json";
         },
         enumerable: true,
         configurable: true

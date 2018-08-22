@@ -40,7 +40,7 @@ module Core {
         }
 
         /** 初始化数据（进入场景调用） */
-        onInit():void {}
+        onInit(Params?:any):void {}
         
         /** 清除数据（退出场景调用） */
         onClear():void 
@@ -62,10 +62,10 @@ module Core {
         }
 
         /** 场景初始化 */
-        onInit():void 
+        onInit(Params?:any):void 
         {
             if (this.sceneData != null) 
-                this.sceneData.onInit();
+                this.sceneData.onInit(Params);
         }
 
         /** 场景显示 */

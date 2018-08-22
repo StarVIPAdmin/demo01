@@ -11,8 +11,7 @@ module Data {
         init():void 
         {
             this.cfgId = 1;
-            this.nick = "药剂"+this.id;
-            this.bodyPath = Global.Path.PNG_BUFF_1;
+
             this.width = 512;
             this.height = 512;
             this.collisionRadius = 250;
@@ -20,18 +19,21 @@ module Data {
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
         }
 
-        set cfgId(cfgId:number)
-        {
-            this._cfgId = cfgId;
-
-            let cfg = ElementCfg.getBuffCfg(cfgId);
-            this.nick = cfg.Name;
-            this.bodyPath = Global.Path.BUFF_PATH + cfg.ResName + ".png";
-        }
-
         get cfgId():number
         {
             return this._cfgId;
+        }
+
+        set cfgId(cfgId:number)
+        {
+            if (this._cfgId == cfgId) {
+                return;
+            }
+
+            this._cfgId = cfgId;
+            let cfg = ElementCfg.getBuffCfg(cfgId);
+            this.nick = cfg.Name;
+            this.bodyPath = Global.Path.BUFF_PATH + cfg.ResName + ".png";
         }
     }
 }

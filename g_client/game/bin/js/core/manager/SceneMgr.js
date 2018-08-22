@@ -36,7 +36,7 @@ var Core;
             this._sceneCls = null;
             this._sceneDataCls = null;
         };
-        SceneMgr.prototype.enterScene = function (SceneId) {
+        SceneMgr.prototype.enterScene = function (SceneId, Params) {
             var curSceneId;
             if (this._curScene) {
                 curSceneId = this._curScene.sceneData.sceneId;
@@ -61,7 +61,7 @@ var Core;
             var sceneData = new sceneDataCls(SceneId);
             var scene = new sceneCls();
             scene.__sceneData = sceneData;
-            scene.onInit();
+            scene.onInit(Params);
             scene.onShow();
             this._curScene = scene;
         };

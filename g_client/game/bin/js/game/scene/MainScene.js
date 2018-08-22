@@ -28,8 +28,8 @@ var Game;
             configurable: true
         });
         /** 重写父类函数 */
-        MainScene.prototype.onInit = function () {
-            _super.prototype.onInit.call(this);
+        MainScene.prototype.onInit = function (Params) {
+            _super.prototype.onInit.call(this, Params);
             this._mainUI = null;
             this._mapContainer = null;
             this._role = null;
@@ -43,7 +43,7 @@ var Game;
             this._mapContainer.resetElements();
             this._mainUI.refreshAttackTxt(Game.DataMgr.instance.roleData.attack);
             this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.roleData.walkSpeed);
-            this._mainUI.refreshScoreTxt(this.sceneData.score);
+            this._mainUI.refreshScoreTxt(Game.DataMgr.instance.roleData.score);
             this.initEvent();
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);
@@ -109,7 +109,7 @@ var Game;
         /** 游戏结束 */
         MainScene.prototype.onGameOver = function () {
             Game.DataMgr.instance.isGameOver = true;
-            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
+            Game.viewMgr.showView(Global.ViewId.GAME_OVER_UI, Game.DataMgr.instance.roleData.score);
         };
         /** 搬运食物 */
         MainScene.prototype.onCarryFood = function (foodId) {

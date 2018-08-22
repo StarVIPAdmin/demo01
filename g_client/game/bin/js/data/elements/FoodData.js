@@ -31,28 +31,66 @@ var Data;
         function FoodData() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
             // 类型（默认是植物）
-            _this.type = FoodType.BOTANY;
+            _this._type = FoodType.BOTANY;
             return _this;
         }
         FoodData.prototype.init = function () {
-            this.nick = "食物" + this.id;
-            this.bodyPath = Global.Path.PNG_ITEM_1;
-            this.weight = 10;
             this.cfgId = 1;
+            this.state = FoodState.LIVE;
             this.collisionRadius = 60;
             this.width = 128;
             this.height = 128;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
-            this.score = 1;
-            this.state = FoodState.LIVE;
-            if (this.type == FoodType.BOTANY) {
-                this.attack = 0;
-            }
-            else {
-                this.attack = 10;
-            }
         };
+        Object.defineProperty(FoodData.prototype, "cfgId", {
+            get: function () {
+                return this._cfgId;
+            },
+            set: function (cfgId) {
+                if (this._cfgId == cfgId) {
+                    return;
+                }
+                this._cfgId = cfgId;
+                var cfg = ElementCfg.getFoodCfg(cfgId);
+                this.nick = cfg.Name;
+                this.bodyPath = Global.Path.FOOD_PATH + cfg.ResName + ".png";
+                this._weight = cfg.Weight;
+                this._score = cfg.Score;
+                this._attack = cfg.Attack;
+                this._type = cfg.Type;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FoodData.prototype, "type", {
+            get: function () {
+                return this._cfgId;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FoodData.prototype, "weight", {
+            get: function () {
+                return this._weight;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FoodData.prototype, "attack", {
+            get: function () {
+                return this._attack;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FoodData.prototype, "score", {
+            get: function () {
+                return this._score;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return FoodData;
     }(Data.BaseData));
     Data.FoodData = FoodData;

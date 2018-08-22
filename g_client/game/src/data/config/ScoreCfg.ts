@@ -3,10 +3,10 @@
  */
 class ScoreCfg extends BaseCfg
 {
-    /** 重写父类函数 */
-    static get name():string
+    /** 配置表路径 */
+    static get path():string
     {
-        return "score_cfg";
+        return Global.Path.CFG_PATH + "score_cfg.json";
     }
 
     static checkLevelByScore(score:number):number

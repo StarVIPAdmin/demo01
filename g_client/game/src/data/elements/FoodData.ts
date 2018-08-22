@@ -20,44 +20,70 @@ module Data {
      */
     export class FoodData extends BaseData
     {
-        // 配置ID
-        public cfgId:number;
-
-        // 类型（默认是植物）
-        public type:number = FoodType.BOTANY;
-
-        // 重量
-        public weight:number;
-
-        // 攻击力
-        public attack:number;
-
         // 状态
         public state:number;
 
+        // 配置ID
+        private _cfgId:number;
+        // 类型（默认是植物）
+        private _type:number = FoodType.BOTANY;
+        // 重量
+        private _weight:number;
+        // 攻击力
+        private _attack:number;
         // 搬运完成后所提供的积分
-        public score:number;
+        private _score:number;
 
         init():void 
         {
-            this.nick = "食物"+this.id;
-            this.bodyPath = Global.Path.PNG_ITEM_1;
-            this.weight = 10;
             this.cfgId = 1;
 
+            this.state = FoodState.LIVE;
             this.collisionRadius = 60;
             this.width = 128;
             this.height = 128;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
-            this.score = 1;
-            this.state = FoodState.LIVE;
+        }
 
-            if (this.type == FoodType.BOTANY) {
-                this.attack = 0;
-            } else {
-                this.attack = 10;
+        get cfgId():number
+        {
+            return this._cfgId;
+        }
+
+        set cfgId(cfgId:number) 
+        {
+            if (this._cfgId == cfgId) {
+                return;
             }
+            this._cfgId = cfgId;
+            let cfg = ElementCfg.getFoodCfg(cfgId);
+            this.nick = cfg.Name;
+            this.bodyPath = Global.Path.FOOD_PATH + cfg.ResName + ".png";
+            this._weight = cfg.Weight;
+            this._score = cfg.Score;
+            this._attack = cfg.Attack;
+            this._type = cfg.Type;
+        }
+
+        get type():number
+        {
+            return this._cfgId;
+        }
+
+        get weight():number
+        {
+            return this._weight;
+        }
+
+        get attack():number
+        {
+            return this._attack;
+        }
+
+        get score():number
+        {
+            return this._score;
         }
     }
 }

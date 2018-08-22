@@ -22,9 +22,9 @@ module Game {
         }
 
         /** 重写父类函数 */
-        onInit():void 
+        onInit(Params?:any):void 
         {
-            super.onInit();
+            super.onInit(Params);
             this._mainUI = null;
             this._mapContainer = null;
             this._role = null;
@@ -43,7 +43,7 @@ module Game {
 
             this._mainUI.refreshAttackTxt(DataMgr.instance.roleData.attack);
             this._mainUI.refreshSpeedTxt(DataMgr.instance.roleData.walkSpeed);
-            this._mainUI.refreshScoreTxt(this.sceneData.score);
+            this._mainUI.refreshScoreTxt(DataMgr.instance.roleData.score);
 
             this.initEvent();
 
@@ -135,7 +135,7 @@ module Game {
         onGameOver():void 
         {
             DataMgr.instance.isGameOver = true;
-            viewMgr.showView(Global.ViewId.GAME_OVER_UI, this.sceneData.score);
+            viewMgr.showView(Global.ViewId.GAME_OVER_UI, DataMgr.instance.roleData.score);
         }
 
         /** 搬运食物 */

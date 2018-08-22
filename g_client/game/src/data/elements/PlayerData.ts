@@ -53,7 +53,6 @@ module Data {
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
 
             this._curPower = this.totalPower;
-
         }
 
         /** 体力自然回复增量 */

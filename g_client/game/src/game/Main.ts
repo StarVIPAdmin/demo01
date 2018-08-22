@@ -20,7 +20,7 @@ module Game {
 			// NetMgr.instance.testInitData();
 
 			// 进入主场景
-			sceneMgr.enterScene(Global.SceneId.MAIN_SCENE);
+			sceneMgr.enterScene(Global.SceneId.MAIN_SCENE, 1);
 			viewMgr.showView(Global.ViewId.GAME_INFO_UI);
 		}
 

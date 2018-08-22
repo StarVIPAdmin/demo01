@@ -24,17 +24,17 @@ function onCompleteHandler():void
     resUrl.push({"url":Global.Path.JPG_BACKGROUND, "type":Laya.Loader.IMAGE});
     resUrl.push({"url":Global.Path.PNG_PLAYER_1, "type":Laya.Loader.IMAGE});
 
-    resUrl.push({"url":Global.Path.PNG_ITEM_1, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_ITEM_4, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_ITEM_1, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_ITEM_2, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_ITEM_3, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_ITEM_4, "type":Laya.Loader.IMAGE});
 
-    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_1, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_2, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_3, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_BUFF_1, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_BUFF_2, "type":Laya.Loader.IMAGE});
-    resUrl.push({"url":Global.Path.PNG_BUFF_3, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_1, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_2, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_FOOD_RECYCLE_3, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_BUFF_1, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_BUFF_2, "type":Laya.Loader.IMAGE});
+    // resUrl.push({"url":Global.Path.PNG_BUFF_3, "type":Laya.Loader.IMAGE});
     resUrl.push({"url":Global.Path.PNG_CARRY_ICON, "type":Laya.Loader.IMAGE});
     resUrl.push({"url":Global.Path.PNG_DROPOUT_ICON, "type":Laya.Loader.IMAGE});
     resUrl.push({"url":Global.Path.PNG_COMBAT_MOVE_BG, "type":Laya.Loader.IMAGE});
@@ -44,10 +44,9 @@ function onCompleteHandler():void
     resUrl.push({"url":Global.Path.PNG_BAR_BG, "type":Laya.Loader.IMAGE});
 
     // 加载配置数据
-    let cfgPath = Global.Path.CFG_PATH;
-    resUrl.push({"url":cfgPath+ElementCfg.name+".json", "type":Laya.Loader.JSON});
-    resUrl.push({"url":cfgPath+SceneCfg.name+".json", "type":Laya.Loader.JSON});
-    resUrl.push({"url":cfgPath+ScoreCfg.name+".json", "type":Laya.Loader.JSON});
+    resUrl.push({"url":ElementCfg.path, "type":Laya.Loader.JSON});
+    resUrl.push({"url":SceneCfg.path, "type":Laya.Loader.JSON});
+    resUrl.push({"url":ScoreCfg.path, "type":Laya.Loader.JSON});
 
     function onLoaded():void {
         // 加载完成, 进入游戏

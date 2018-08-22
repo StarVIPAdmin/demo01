@@ -5,21 +5,60 @@ module Data {
      */
     export class MainSceneData extends Core.BaseSceneData
     {
-        // 得分
-        public score:number;
+        // 配置ID
+        private _cfgId:number;
+        // 地图路径
+        private _mapPath:string;
+        // 药剂坐标
+        private _buffPos:Array<Object>;
+        // 食物坐标
+        private _foodPos:Array<Object>;
+        // 洞穴坐标
+        private _recyclePos:Array<Object>;
 
         /** 重写父类函数 */
-        onInit():void 
+        onInit(Params?:any):void 
         {
             super.onInit();
-            this.score = 0;
+            this._buffPos = [];
+            this._foodPos = [];
+            this._recyclePos = [];
+            this.cfgId = Params;
         }
 
         /** 重写父类函数 */
         onClear():void 
         {
             super.onClear();
-            this.score = 0;
+        }
+
+        set cfgId(cfgId:number)
+        {
+            if (this._cfgId == cfgId) {
+                return;
+            }
+            this._cfgId = cfgId;
+
+            let sceneCfg = SceneCfg.getSceneCfg(cfgId);
+            this._mapPath = Global.Path.MAP_PATH + sceneCfg.MapName + ".jpg";
+            this._buffPos = sceneCfg.BuffPos;
+            this._foodPos = sceneCfg.FoodPos;
+            this._recyclePos = sceneCfg.RecyclePos;
+        }
+
+        getBuffPos():Object
+        {
+            return {};
+        }
+
+        getFoodPos():Object
+        {
+            return {};
+        }
+
+        getRecyclePos():Object
+        {
+            return {};
         }
     }
 }

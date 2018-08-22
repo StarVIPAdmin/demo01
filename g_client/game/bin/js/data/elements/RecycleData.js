@@ -19,14 +19,26 @@ var Data;
             return _super !== null && _super.apply(this, arguments) || this;
         }
         RecycleData.prototype.init = function () {
-            this.nick = "食物回收" + this.id;
-            this.bodyPath = Global.Path.PNG_FOOD_RECYCLE_1;
+            this.cfgId = 1;
             this.collisionRadius = 250;
             this.width = 512;
             this.height = 512;
             this.x = Math.random() * Global.Const.MAP_WIDTH;
             this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };
+        Object.defineProperty(RecycleData.prototype, "cfgId", {
+            get: function () {
+                return this._cfgId;
+            },
+            set: function (cfgId) {
+                this._cfgId = cfgId;
+                var cfg = ElementCfg.getRecycleCfg(cfgId);
+                this.nick = cfg.Name;
+                this.bodyPath = Global.Path.RECYCLE_PATH + cfg.ResName + ".png";
+            },
+            enumerable: true,
+            configurable: true
+        });
         return RecycleData;
     }(Data.BaseData));
     Data.RecycleData = RecycleData;
