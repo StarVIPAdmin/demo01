@@ -108,17 +108,20 @@ var Game;
             var id_player = 50;
             var id_recycle = 80;
             var id;
-            for (var i = 0; i < 50; i++) {
+            for (var i = 0; i < 3; i++) {
                 id = i + id_buff;
-                this.buffDataList[id] = this.createBuffData(id, 1);
+                this.buffDataList[id] = this.createBuffData(id, i);
+                this.buffDataList[id].posIdx = i;
             }
-            for (var i = 0; i < 200; i++) {
+            for (var i = 0; i < 5; i++) {
                 id = i + id_food;
-                this.foodDataList[id] = this.createFoodData(id, 1);
+                this.foodDataList[id] = this.createFoodData(id, i);
+                this.foodDataList[id].posIdx = i;
             }
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < 3; i++) {
                 id = i + id_recycle;
-                this.recycleDataList[id] = this.createRecycleData(id, 1);
+                this.recycleDataList[id] = this.createRecycleData(id, i);
+                this.recycleDataList[id].posIdx = i;
             }
             for (var i = 0; i < 100; i++) {
                 id = i + id_player;

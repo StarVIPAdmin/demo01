@@ -32,8 +32,7 @@ var Data;
             return _this;
         }
         PlayerData.prototype.init = function () {
-            var cfg = ElementCfg.getBuffCfg(1);
-            this.nick = "玩家" + cfg.Name;
+            this.nick = "玩家" + this.id;
             this.bodyPath = Global.Path.PNG_PLAYER_1;
             this.foodId = 0;
             this.level = 1;

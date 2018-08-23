@@ -38,12 +38,14 @@ var Game;
         /** 重写父类函数 */
         MainScene.prototype.onShow = function () {
             _super.prototype.onShow.call(this);
-            this._role = Game.ResMgr.instance.createRole(Game.DataMgr.instance.roleData.id);
+            var roleData = Game.DataMgr.instance.roleData;
+            this._role = Game.ResMgr.instance.createRole(roleData.id);
+            this._role.pos(roleData.x, roleData.y);
             this.addChild(this._role);
             this._mapContainer.resetElements();
-            this._mainUI.refreshAttackTxt(Game.DataMgr.instance.roleData.attack);
-            this._mainUI.refreshSpeedTxt(Game.DataMgr.instance.roleData.walkSpeed);
-            this._mainUI.refreshScoreTxt(Game.DataMgr.instance.roleData.score);
+            this._mainUI.refreshAttackTxt(roleData.attack);
+            this._mainUI.refreshSpeedTxt(roleData.walkSpeed);
+            this._mainUI.refreshScoreTxt(roleData.score);
             this.initEvent();
             // 场景定时器
             Laya.timer.frameLoop(1, this, this.onLoop);

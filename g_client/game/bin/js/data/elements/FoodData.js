@@ -65,7 +65,7 @@ var Data;
         });
         Object.defineProperty(FoodData.prototype, "type", {
             get: function () {
-                return this._cfgId;
+                return this._type;
             },
             enumerable: true,
             configurable: true

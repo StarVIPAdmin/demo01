@@ -211,7 +211,6 @@ module Game {
         init(id:number):void 
         {
             super.init(id);
-
             Laya.timer.frameLoop(1, this, this.onLoop);
         }
 
@@ -290,9 +289,7 @@ module Game {
             }
 
             dataList.forEach(data => {
-                let enemy = this.createEnemy(data.id);
-                this.addChild(enemy);
-                this._enemyList[data.id] = enemy;
+                this.showEnemy(data.id, data.x, data.y);
             });
         }
 
@@ -302,10 +299,8 @@ module Game {
             if (this.checkEnemy(id)) {
                 return;
             }
-
-            let enemy = this.createEnemy(id);
-            this.addChild(enemy);
-            this._enemyList[id] = enemy;
+            let data = DataMgr.instance.getPlayerData(id);
+            this.showEnemy(data.id, data.x, data.y);
         }
 
         /** 根据唯一ID，移除指定玩家 */
@@ -344,6 +339,15 @@ module Game {
                 return false;
             }
             return this._enemyList[id] != null
+        }
+
+        /** 显示敌人 */
+        private showEnemy(id:number, xPos:number, yPos:number):void 
+        {
+            let enemy = this.createEnemy(id);
+            enemy.pos(xPos, yPos);
+            this.addChild(enemy);
+            this._enemyList[id] = enemy;
         }
     }
 }

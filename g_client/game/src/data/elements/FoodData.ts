@@ -68,7 +68,7 @@ module Data {
 
         get type():number
         {
-            return this._cfgId;
+            return this._type;
         }
 
         get weight():number

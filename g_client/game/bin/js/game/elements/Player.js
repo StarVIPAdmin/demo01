@@ -259,9 +259,7 @@ var Game;
                 return;
             }
             dataList.forEach(function (data) {
-                var enemy = _this.createEnemy(data.id);
-                _this.addChild(enemy);
-                _this._enemyList[data.id] = enemy;
+                _this.showEnemy(data.id, data.x, data.y);
             });
         };
         /** 根据唯一ID，增加指定玩家 */
@@ -269,9 +267,8 @@ var Game;
             if (this.checkEnemy(id)) {
                 return;
             }
-            var enemy = this.createEnemy(id);
-            this.addChild(enemy);
-            this._enemyList[id] = enemy;
+            var data = Game.DataMgr.instance.getPlayerData(id);
+            this.showEnemy(data.id, data.x, data.y);
         };
         /** 根据唯一ID，移除指定玩家 */
         EnemyContainer.prototype.removeEnemy = function (id) {
@@ -300,6 +297,13 @@ var Game;
                 return false;
             }
             return this._enemyList[id] != null;
+        };
+        /** 显示敌人 */
+        EnemyContainer.prototype.showEnemy = function (id, xPos, yPos) {
+            var enemy = this.createEnemy(id);
+            enemy.pos(xPos, yPos);
+            this.addChild(enemy);
+            this._enemyList[id] = enemy;
         };
         return EnemyContainer;
     }(Sprite));

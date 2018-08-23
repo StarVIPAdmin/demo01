@@ -36,14 +36,16 @@ module Game {
         {
             super.onShow();
 
-            this._role = ResMgr.instance.createRole(DataMgr.instance.roleData.id);
+            let roleData = DataMgr.instance.roleData
+            this._role = ResMgr.instance.createRole(roleData.id);
+            this._role.pos(roleData.x, roleData.y);
             this.addChild(this._role);
 
             this._mapContainer.resetElements();
 
-            this._mainUI.refreshAttackTxt(DataMgr.instance.roleData.attack);
-            this._mainUI.refreshSpeedTxt(DataMgr.instance.roleData.walkSpeed);
-            this._mainUI.refreshScoreTxt(DataMgr.instance.roleData.score);
+            this._mainUI.refreshAttackTxt(roleData.attack);
+            this._mainUI.refreshSpeedTxt(roleData.walkSpeed);
+            this._mainUI.refreshScoreTxt(roleData.score);
 
             this.initEvent();
 
