@@ -89,9 +89,7 @@ var Game;
                 return;
             }
             dataList.forEach(function (data) {
-                var buff = _this.createBuff(data.id);
-                _this.addChild(buff);
-                _this._buffList[data.id] = buff;
+                _this.showBuff(data.id, data.posIdx);
             });
         };
         /** 根据唯一ID，增加指定buff */
@@ -99,9 +97,8 @@ var Game;
             if (this.checkBuff(id)) {
                 return;
             }
-            var buff = this.createBuff(id);
-            this.addChild(buff);
-            this._buffList[id] = buff;
+            var data = Game.DataMgr.instance.getBuffData(id);
+            this.showBuff(id, data.posIdx);
         };
         /** 根据唯一ID，移除指定buff */
         BuffContainer.prototype.removeBuff = function (id) {
@@ -132,6 +129,14 @@ var Game;
                 return false;
             }
             return this._buffList[id] != null;
+        };
+        /** 显示buff */
+        BuffContainer.prototype.showBuff = function (id, posIdx) {
+            var pos = this.mapContainer.mainScene.sceneData.getBuffPosByIdx(posIdx);
+            var buff = this.createBuff(id);
+            buff.pos(pos.x, pos.y);
+            this.addChild(buff);
+            this._buffList[id] = buff;
         };
         return BuffContainer;
     }(Sprite));

@@ -150,6 +150,13 @@ var Game;
         function MapContainer() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        Object.defineProperty(MapContainer.prototype, "mainScene", {
+            get: function () {
+                return this._mainScene;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(MapContainer.prototype, "foodContainer", {
             get: function () {
                 return this._foodContainer;
@@ -157,9 +164,10 @@ var Game;
             enumerable: true,
             configurable: true
         });
-        MapContainer.prototype.init = function (mapPath) {
+        MapContainer.prototype.init = function (mainScene) {
+            this._mainScene = mainScene;
             this.initData();
-            this.initUI(mapPath);
+            this.initUI(mainScene.sceneData.mapPath);
         };
         MapContainer.prototype.initData = function () {
             this._mapWidth = Global.Const.MAP_WIDTH;

@@ -147,9 +147,7 @@ module Game {
             }
 
             dataList.forEach(data => {
-                let food = this.createFood(data.id);
-                this.addChild(food);
-                this._foodList[data.id] = food;
+                this.showFood(data.id, data.posIdx);
             });
         }
 
@@ -159,10 +157,8 @@ module Game {
             if (this.checkFood(id)) {
                 return;
             }
-
-            let food = this.createFood(id);
-            this.addChild(food);
-            this._foodList[id] = food;
+            let data = DataMgr.instance.getFoodData(id);
+            this.showFood(id, data.posIdx);
         }
 
         /** 根据唯一ID，移除指定食物 */
@@ -222,6 +218,16 @@ module Game {
                 return false;
             }
             return this._foodList[id] != null;
+        }
+
+        /** 显示食物 */
+        private showFood(id:number, posIdx:number):void 
+        {
+            let pos = this.mapContainer.mainScene.sceneData.getFoodPosByIdx(posIdx);
+            let food = this.createFood(id);
+            food.pos(pos.x, pos.y);
+            this.addChild(food);
+            this._foodList[id] = food;
         }
     }
 }

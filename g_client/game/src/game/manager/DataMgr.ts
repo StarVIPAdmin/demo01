@@ -50,26 +50,26 @@ module Game {
         }
 
         /** 创建食物数据 */
-        createFoodData(id:number):FoodData
+        createFoodData(id:number, cfgId:number):FoodData
         {
             let data = new FoodData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         }
 
         /** 创建药剂BUFF数据 */
-        createBuffData(id:number):BuffData
+        createBuffData(id:number, cfgId:number):BuffData
         {
             let data = new BuffData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         }
 
         /** 创建回收点数据 */
-        createRecycleData(id:number):RecycleData
+        createRecycleData(id:number, cfgId:number):RecycleData
         {
             let data = new RecycleData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         }
 
@@ -110,6 +110,9 @@ module Game {
             this.foodDataList[id] = null;
         }
 
+
+
+
         // 测试初始化数据
         testInitData():void 
         {
@@ -125,17 +128,17 @@ module Game {
             let id
             for (var i = 0; i < 50; i++) {
                 id = i + id_buff;
-                this.buffDataList[id] = this.createBuffData(id);
+                this.buffDataList[id] = this.createBuffData(id, 1);
             }
 
             for (var i = 0; i < 200; i++) {
                 id = i + id_food;
-                this.foodDataList[id] = this.createFoodData(id);
+                this.foodDataList[id] = this.createFoodData(id, 1);
             }
 
             for (var i = 0; i < 30; i++) {
                 id = i + id_recycle;
-                this.recycleDataList[id] = this.createRecycleData(id);
+                this.recycleDataList[id] = this.createRecycleData(id, 1);
             }
 
             for (var i = 0; i < 100; i++) {

@@ -16,15 +16,16 @@ var Data;
     var RecycleData = /** @class */ (function (_super) {
         __extends(RecycleData, _super);
         function RecycleData() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            // 位置索引
+            _this.posIdx = 0;
+            return _this;
         }
-        RecycleData.prototype.init = function () {
-            this.cfgId = 1;
+        RecycleData.prototype.init = function (cfgId) {
+            this.cfgId = cfgId;
             this.collisionRadius = 250;
             this.width = 512;
             this.height = 512;
-            this.x = Math.random() * Global.Const.MAP_WIDTH;
-            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };
         Object.defineProperty(RecycleData.prototype, "cfgId", {
             get: function () {

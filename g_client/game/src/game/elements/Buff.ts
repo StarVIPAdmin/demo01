@@ -87,9 +87,7 @@ module Game {
             }
 
             dataList.forEach(data => {
-                let buff = this.createBuff(data.id);
-                this.addChild(buff);
-                this._buffList[data.id] = buff;
+                this.showBuff(data.id, data.posIdx);
             });
         }
 
@@ -99,10 +97,8 @@ module Game {
             if (this.checkBuff(id)) {
                 return;
             }
-
-            let buff = this.createBuff(id);
-            this.addChild(buff);
-            this._buffList[id] = buff;
+            let data = DataMgr.instance.getBuffData(id);
+            this.showBuff(id, data.posIdx);
         }
 
         /** 根据唯一ID，移除指定buff */
@@ -143,6 +139,16 @@ module Game {
                 return false;
             }
             return this._buffList[id] != null
+        }
+
+        /** 显示buff */
+        private showBuff(id:number, posIdx:number):void 
+        {
+            let pos = this.mapContainer.mainScene.sceneData.getBuffPosByIdx(posIdx);
+            let buff = this.createBuff(id);
+            buff.pos(pos.x, pos.y);
+            this.addChild(buff);
+            this._buffList[id] = buff;
         }
     }
 }

@@ -30,18 +30,18 @@ var Data;
         __extends(FoodData, _super);
         function FoodData() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
+            // 位置索引
+            _this.posIdx = 0;
             // 类型（默认是植物）
             _this._type = FoodType.BOTANY;
             return _this;
         }
-        FoodData.prototype.init = function () {
-            this.cfgId = 1;
+        FoodData.prototype.init = function (cfgId) {
+            this.cfgId = cfgId;
             this.state = FoodState.LIVE;
             this.collisionRadius = 60;
             this.width = 128;
             this.height = 128;
-            this.x = Math.random() * Global.Const.MAP_WIDTH;
-            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };
         Object.defineProperty(FoodData.prototype, "cfgId", {
             get: function () {

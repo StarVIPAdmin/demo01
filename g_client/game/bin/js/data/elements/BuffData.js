@@ -16,15 +16,16 @@ var Data;
     var BuffData = /** @class */ (function (_super) {
         __extends(BuffData, _super);
         function BuffData() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            // 位置索引
+            _this.posIdx = 0;
+            return _this;
         }
-        BuffData.prototype.init = function () {
-            this.cfgId = 1;
+        BuffData.prototype.init = function (cfgId) {
+            this.cfgId = cfgId;
             this.width = 512;
             this.height = 512;
             this.collisionRadius = 250;
-            this.x = Math.random() * Global.Const.MAP_WIDTH;
-            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         };
         Object.defineProperty(BuffData.prototype, "cfgId", {
             get: function () {

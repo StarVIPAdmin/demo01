@@ -23,6 +23,9 @@ module Data {
         // 状态
         public state:number;
 
+        // 位置索引
+        public posIdx:number = 0;
+
         // 配置ID
         private _cfgId:number;
         // 类型（默认是植物）
@@ -34,16 +37,13 @@ module Data {
         // 搬运完成后所提供的积分
         private _score:number;
 
-        init():void 
+        init(cfgId:number):void 
         {
-            this.cfgId = 1;
-
+            this.cfgId = cfgId;
             this.state = FoodState.LIVE;
             this.collisionRadius = 60;
             this.width = 128;
             this.height = 128;
-            this.x = Math.random() * Global.Const.MAP_WIDTH;
-            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         }
 
         get cfgId():number

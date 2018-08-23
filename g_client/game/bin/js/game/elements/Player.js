@@ -169,6 +169,8 @@ var Game;
             var newLvl = ScoreCfg.checkLevelByScore(newScore);
             if (newLvl != this.data.level) {
                 this.data.level = newLvl;
+                var scale = 1 + (newLvl - 1) * 0.1;
+                this.scale(scale, scale);
             }
         };
         return Role;

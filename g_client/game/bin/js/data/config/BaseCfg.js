@@ -4,7 +4,7 @@ var BaseCfg = /** @class */ (function () {
     Object.defineProperty(BaseCfg, "data", {
         /** 提供外部获取配置数据 */
         get: function () {
-            return this.data;
+            return this._data;
         },
         enumerable: true,
         configurable: true

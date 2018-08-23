@@ -33,6 +33,9 @@ module Data {
 
         private _curPower:number;
 
+        public x:number;
+        public y:number;
+
         init():void 
         {
             let cfg = ElementCfg.getBuffCfg(1);

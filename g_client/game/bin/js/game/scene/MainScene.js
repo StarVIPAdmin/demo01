@@ -54,7 +54,7 @@ var Game;
         };
         MainScene.prototype.initUI = function () {
             this._mapContainer = new Game.MapContainer();
-            this._mapContainer.init(this.sceneData.mapPath);
+            this._mapContainer.init(this);
             this.addChild(this._mapContainer);
             this._mainUI = new Game.GameMainUI();
             this.addChild(this._mainUI);

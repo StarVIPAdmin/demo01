@@ -35,8 +35,8 @@ var Data;
                 if (this._cfgId == cfgId) {
                     return;
                 }
-                this._cfgId = cfgId;
                 var sceneCfg = SceneCfg.getSceneCfg(cfgId);
+                this._cfgId = cfgId;
                 this._mapPath = Global.Path.MAP_PATH + sceneCfg.MapName + ".jpg";
                 this._buffPos = sceneCfg.BuffPos;
                 this._foodPos = sceneCfg.FoodPos;
@@ -52,20 +52,17 @@ var Data;
             enumerable: true,
             configurable: true
         });
-        MainSceneData.prototype.getBuffPos = function () {
-            var result = [];
-            this._buffPos.forEach(function (pos) {
-                if (!pos.hasOwnProperty("isUse")) {
-                    result.push(pos);
-                }
-            });
-            return {};
+        /** 根据索引获取buff药剂坐标 */
+        MainSceneData.prototype.getBuffPosByIdx = function (idx) {
+            return this._buffPos[idx] || { "x": 0, "y": 0 };
         };
-        MainSceneData.prototype.getFoodPos = function () {
-            return {};
+        /** 根据索引获取食物坐标 */
+        MainSceneData.prototype.getFoodPosByIdx = function (idx) {
+            return this._foodPos[idx] || { "x": 0, "y": 0 };
         };
-        MainSceneData.prototype.getRecyclePos = function () {
-            return {};
+        /** 根据索引获取洞穴坐标 */
+        MainSceneData.prototype.getRecyclePosByIdx = function (idx) {
+            return this._recyclePos[idx] || { "x": 0, "y": 0 };
         };
         return MainSceneData;
     }(Core.BaseSceneData));

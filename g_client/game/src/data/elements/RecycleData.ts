@@ -5,18 +5,18 @@ module Data {
      */
     export class RecycleData extends BaseData
     {
+        // 位置索引
+        public posIdx:number = 0;
+
         // 配置ID
         private _cfgId:number;
 
-        init():void 
+        init(cfgId:number):void 
         {
-            this.cfgId = 1;
-
+            this.cfgId = cfgId;
             this.collisionRadius = 250;
             this.width = 512;
             this.height = 512;
-            this.x = Math.random() * Global.Const.MAP_WIDTH;
-            this.y = Math.random() * Global.Const.MAP_HEIGHT;
         }
 
         get cfgId():number

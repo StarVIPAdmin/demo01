@@ -31,9 +31,8 @@ var Game;
             this.initRegister();
             Game.ConfigMgr.instance.initConfig();
             Game.DataMgr.instance.testInitData();
-            // NetMgr.instance.testInitData();
             // 进入主场景
-            Game.sceneMgr.enterScene(Global.SceneId.MAIN_SCENE, 1);
+            Game.sceneMgr.enterScene(Global.SceneId.MAIN_SCENE, 0);
             Game.viewMgr.showView(Global.ViewId.GAME_INFO_UI);
         };
         Main.prototype.initRegister = function () {

@@ -6,7 +6,7 @@ class BaseCfg
     /** 提供外部获取配置数据 */
     static get data():any
     {
-        return this.data;
+        return this._data;
     }
 
     /** 初始化 */

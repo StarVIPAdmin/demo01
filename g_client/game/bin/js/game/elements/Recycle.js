@@ -93,7 +93,9 @@ var Game;
                 return;
             }
             dataList.forEach(function (data) {
+                var pos = _this.mapContainer.mainScene.sceneData.getRecyclePosByIdx(data.posIdx);
                 var recycle = _this.createRecycle(data.id);
+                recycle.pos(pos.x, pos.y);
                 _this.addChild(recycle);
                 _this._recycleList[data.id] = recycle;
             });

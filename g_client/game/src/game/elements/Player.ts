@@ -190,6 +190,9 @@ module Game {
 
             if (newLvl != this.data.level) {
                 this.data.level = newLvl;
+
+                let scale = 1 + (newLvl - 1) * 0.1
+                this.scale(scale, scale);
             }
         }
     }

@@ -139,9 +139,7 @@ var Game;
                 return;
             }
             dataList.forEach(function (data) {
-                var food = _this.createFood(data.id);
-                _this.addChild(food);
-                _this._foodList[data.id] = food;
+                _this.showFood(data.id, data.posIdx);
             });
         };
         /** 根据唯一ID，增加指定食物 */
@@ -149,9 +147,8 @@ var Game;
             if (this.checkFood(id)) {
                 return;
             }
-            var food = this.createFood(id);
-            this.addChild(food);
-            this._foodList[id] = food;
+            var data = Game.DataMgr.instance.getFoodData(id);
+            this.showFood(id, data.posIdx);
         };
         /** 根据唯一ID，移除指定食物 */
         FoodContainer.prototype.removeFood = function (id) {
@@ -197,6 +194,14 @@ var Game;
                 return false;
             }
             return this._foodList[id] != null;
+        };
+        /** 显示食物 */
+        FoodContainer.prototype.showFood = function (id, posIdx) {
+            var pos = this.mapContainer.mainScene.sceneData.getFoodPosByIdx(posIdx);
+            var food = this.createFood(id);
+            food.pos(pos.x, pos.y);
+            this.addChild(food);
+            this._foodList[id] = food;
         };
         return FoodContainer;
     }(Sprite));

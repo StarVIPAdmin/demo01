@@ -96,7 +96,9 @@ module Game {
             }
 
             dataList.forEach(data => {
+                let pos = this.mapContainer.mainScene.sceneData.getRecyclePosByIdx(data.posIdx);
                 let recycle = this.createRecycle(data.id);
+                recycle.pos(pos.x, pos.y);
                 this.addChild(recycle);
                 this._recycleList[data.id] = recycle;
             });

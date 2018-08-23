@@ -172,20 +172,28 @@ module Game {
         // private _dieFloorList:Array<Floor>;
         // private _liveFloorList:Array<Floor>;
 
+        private _mainScene:MainScene;
+
         private _buffContainer:BuffContainer;
         private _foodContainer:FoodContainer;
         private _recycleContainer:RecycleContainer;
         private _enemyContainer:EnemyContainer;
         
+        get mainScene():MainScene
+        {
+            return this._mainScene;
+        }
+
         get foodContainer():FoodContainer
         {
             return this._foodContainer;
         }
 
-        init(mapPath:string):void 
+        init(mainScene:MainScene):void 
         {
+            this._mainScene = mainScene;
             this.initData();
-            this.initUI(mapPath);
+            this.initUI(mainScene.sceneData.mapPath);
         }
 
         initData():void 

@@ -52,21 +52,21 @@ var Game;
             return data;
         };
         /** 创建食物数据 */
-        DataMgr.prototype.createFoodData = function (id) {
+        DataMgr.prototype.createFoodData = function (id, cfgId) {
             var data = new FoodData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         };
         /** 创建药剂BUFF数据 */
-        DataMgr.prototype.createBuffData = function (id) {
+        DataMgr.prototype.createBuffData = function (id, cfgId) {
             var data = new BuffData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         };
         /** 创建回收点数据 */
-        DataMgr.prototype.createRecycleData = function (id) {
+        DataMgr.prototype.createRecycleData = function (id, cfgId) {
             var data = new RecycleData(id);
-            data.init();
+            data.init(cfgId);
             return data;
         };
         /** 获取玩家数据 */
@@ -110,15 +110,15 @@ var Game;
             var id;
             for (var i = 0; i < 50; i++) {
                 id = i + id_buff;
-                this.buffDataList[id] = this.createBuffData(id);
+                this.buffDataList[id] = this.createBuffData(id, 1);
             }
             for (var i = 0; i < 200; i++) {
                 id = i + id_food;
-                this.foodDataList[id] = this.createFoodData(id);
+                this.foodDataList[id] = this.createFoodData(id, 1);
             }
             for (var i = 0; i < 30; i++) {
                 id = i + id_recycle;
-                this.recycleDataList[id] = this.createRecycleData(id);
+                this.recycleDataList[id] = this.createRecycleData(id, 1);
             }
             for (var i = 0; i < 100; i++) {
                 id = i + id_player;
